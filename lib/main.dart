@@ -1,6 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'DB/UserDB.dart';
+import 'DTO/UserDTO.dart';
+import 'firebase_options.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  UserDB userDB = UserDB();
+  UserDTO user = await userDB.getUserById("LnJI7Coex2KhjMyHg2gO");
+  debugPrint(user.firstName + " db access");
   runApp(const MyApp());
 }
 
