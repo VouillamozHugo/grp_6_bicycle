@@ -39,6 +39,8 @@ dependencies:
   english_words: ^4.0.0
   flutter_map: ^3.0.0
   cloud_firestore: ^4.1.0
+  http: ^0.13.3
+  
 
 dev_dependencies:
   flutter_test:
