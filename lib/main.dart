@@ -5,7 +5,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-
 import 'DB/UserDB.dart';
 import 'DTO/UserDTO.dart';
 import 'firebase_options.dart';
@@ -22,9 +21,7 @@ void main() async {
   UserDB userDB = UserDB();
   UserDTO user = await userDB.getUserById("LnJI7Coex2KhjMyHg2gO");
   debugPrint(user.firstName + " db access");
-  runApp(const MyApp());
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
-
 }
 
 class MyApp extends StatefulWidget {
