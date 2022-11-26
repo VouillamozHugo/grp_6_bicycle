@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:grp_6_bicycle/DB/FirebaseConst.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 
@@ -30,7 +28,14 @@ class RouteDB {
     return false;
   }
 
-  void deleteRouteByRouteName(String routeName) {
-    final query = routeRef.where("routeName", isEqualTo: routeName);
+  Future<bool> deleteRouteByRouteName(String routeName) async {
+    final querySnapshot =
+        await routeRef.where("routeName", isEqualTo: routeName).get();
+    try {
+      await routeRef.doc(querySnapshot.docs.single.id).delete();
+      return true;
+    } on StateError {
+      return false;
+    }
   }
 }
