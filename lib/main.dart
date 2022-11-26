@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:grp_6_bicycle/DB/RouteDB.dart';
+import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'DB/UserDB.dart';
@@ -18,11 +20,34 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  UserDB userDB = UserDB();
-  UserDTO user = await userDB.getUserById("LnJI7Coex2KhjMyHg2gO");
-  debugPrint(user.firstName + " db access");
+  readDB();
   runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
 }
+
+void readDB() async {
+  RouteDB routeDB = RouteDB();
+  RouteDTO? route = await routeDB.getRouteByName("Cycleway favorite");
+  debugPrint("Height up diff: " + route!.heightDiffUpMeters.toString());
+}
+
+/* //ADD ROUTE
+  Map<String, double> coordinates = Map();
+  coordinates['startLatitude'] = 46.22;
+  coordinates['endLatitude'] = 45.99;
+  coordinates['startLongitude'] = 7.4;
+  coordinates['endLongitude'] = 7.184;
+  RouteDTO route = RouteDTO(
+      routeName: "Cycleway favorite",
+      startPoint: "Bramois",
+      endPoint: "Liddes",
+      coordinates: coordinates,
+      distanceKm: 59,
+      durationMinutes: 240,
+      heightDiffUpMeters: 800,
+      heightDiffDownMeters: 200);
+  bool success = await routeDB.addRoute(route);
+  debugPrint("Start point " + success.toString());
+*/
 
 class MyApp extends StatefulWidget {
   @override
