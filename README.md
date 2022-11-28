@@ -2,7 +2,7 @@
 
 CycleWay aims to connect Swiss cyclists, allowing them to discover new routes beyond their imagination!
 
-Shortly after creating an account, a cyclist can browse all available routes and select one or more. Also, our tool details some route properties such as the height difference or the length. You discovered a problem within the route? Let us and other cyclists know through our reporting service.
+Immediatly after creating an account, a cyclist can browse all available routes and select one or more. Also, our tool details some route properties such as the height difference or the length. You discovered a problem within the route? Let us and other cyclists know through our reporting service.
 
 As for now, only administrators can edit and create new routes, by drawing them on a fully intuitive map.
 
