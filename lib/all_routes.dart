@@ -39,7 +39,6 @@ class _AllRoutesState extends State<AllRoutes> {
   }
 
   getAllRoutes() async {
-    if (routes.isNotEmpty) return;
     debugPrint("DATABASE ACCESS");
     RouteDB routeDB = RouteDB();
     List<RouteDTO> routesList = await routeDB.getAllRoutes();
