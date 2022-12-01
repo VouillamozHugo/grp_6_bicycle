@@ -74,7 +74,7 @@ class _AllRoutesState extends State<AllRoutes> {
 
 class Routes extends StatefulWidget {
   final RouteDTO route;
-  const Routes(this.route);
+  const Routes(this.route, {super.key});
 
   @override
   State<Routes> createState() => _RoutesState();
