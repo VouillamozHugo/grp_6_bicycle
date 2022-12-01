@@ -174,9 +174,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
 
-      var distance = data['features'][0]['properties']['segments']['distance'];
-      print(distance);
-
       //  print(distance.toString());
 
       for (int i = 0; i < ls.lineString.length; i++) {
@@ -206,7 +203,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   }
 
   findRouteInDB() async {
-    RouteDTO? route = await routeDB.getRouteByName("benjamin");
+    RouteDTO? route = await routeDB.getRouteByName("daniel");
     if (route != null) {
       LatLng startpoint = LatLng(route.coordinates['startLatitude']!,
           route.coordinates['startLongitude']!);
