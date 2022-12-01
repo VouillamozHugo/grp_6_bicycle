@@ -19,6 +19,15 @@ class RouteDB {
     }
   }
 
+  Future<List<RouteDTO>> getAllRoutes() async {
+    final querySnapshot = await routeRef.get();
+    List<RouteDTO> routes = [];
+    for (var doc in querySnapshot.docs) {
+      routes.add(doc.data());
+    }
+    return routes;
+  }
+
   Future<bool> addRoute(RouteDTO route) async {
     //route name must be unique
     if (await getRouteByName(route.routeName) == null) {
