@@ -40,7 +40,6 @@ class AllRoutes extends StatelessWidget {
 class Routes extends StatefulWidget {
   final RouteDTO route;
   const Routes(this.route);
-  //const Routes({super.key, required RouteDTO route});
 
   @override
   State<Routes> createState() => _RoutesState();
@@ -69,18 +68,18 @@ class _RoutesState extends State<Routes> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text(
-                  "widget.route.routeName",
-                  style: TextStyle(
+                  widget.route.routeName,
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 80, 62, 33)),
                 ),
-                Icon(
+                const Icon(
                   Icons.warning,
                   color: Colors.yellow,
                 ),
-                Icon(
+                const Icon(
                   Icons.favorite,
                   color: Colors.pink,
                 )
@@ -90,17 +89,24 @@ class _RoutesState extends State<Routes> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
                     Center(child: Text("Distance")),
                     Center(child: Text("Duration")),
-                    Center(child: Text("+700m")),
+                    Center(child: Text("Start")),
+                    Center(child: Text("End")),
                   ],
                 ),
                 Column(
-                  children: const [
-                    Center(child: Text("4km")),
-                    Center(child: Text("60m")),
-                    Center(child: Text("-200m")),
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Center(child: Text("${widget.route.distanceKm}km")),
+                    Center(child: Text("${widget.route.heightDiffUpMeters}m")),
+                    Text(
+                      widget.route.startPoint,
+                      textAlign: TextAlign.left,
+                    ),
+                    Center(child: Text(widget.route.endPoint)),
                   ],
                 ),
                 const smallMap()
