@@ -49,35 +49,6 @@ class _AllRoutesState extends State<AllRoutes> {
   }
 }
 
-/*
-class AllRoutes extends StatelessWidget {
-  const AllRoutes({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    getAllRoutes();
-    return ListView.separated(
-      itemCount: routes.length,
-      itemBuilder: (BuildContext contect, int index) {
-        return Container(
-          margin: const EdgeInsets.all(10.0),
-          child: Routes(routes[index]),
-        );
-      },
-      separatorBuilder: (context, position) {
-        return const Card(
-          color: Color.fromARGB(255, 252, 252, 252),
-        );
-      },
-    );
-  }
-
-  getAllRoutes() async {
-    RouteDB routeDB = RouteDB();
-    routes = await routeDB.getAllRoutes();
-  }
-}*/
-
 class Routes extends StatefulWidget {
   final RouteDTO route;
   const Routes(this.route);
