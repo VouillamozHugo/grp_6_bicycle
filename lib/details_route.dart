@@ -80,21 +80,23 @@ class DetailsText extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              Center(child: Text("Start")),
-              Center(child: Text("End")),
-              Center(child: Text("Distance")),
-              Center(child: Text("Duration")),
-              Center(child: Text("Height diff.")),
+              Text("Start"),
+              Text("End"),
+              Text("Distance"),
+              Text("Duration"),
+              Text("Height diff."),
             ],
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: const [
-              Center(child: Text("Bramois")),
-              Center(child: Text("Vex")),
-              Center(child: Text("4km")),
-              Center(child: Text("60m")),
-              Center(child: Text("700m -200m")),
+              Text("Bramois"),
+              Text("Vex"),
+              Text("4km"),
+              Text("60m"),
+              Text("700m -200m"),
             ],
           ),
         ],
