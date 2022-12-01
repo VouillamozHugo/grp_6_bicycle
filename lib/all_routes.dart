@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:grp_6_bicycle/DB/RouteDB.dart';
+import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 
 import 'details_route.dart';
 
 const int itemCount = 20;
+List<RouteDTO> routes = [];
 
 class AllRoutes extends StatelessWidget {
   const AllRoutes({super.key});
 
   @override
   Widget build(BuildContext context) {
+    getAllRoutes();
     return ListView.separated(
-      itemCount: itemCount,
+      itemCount: routes.length,
       itemBuilder: (BuildContext contect, int index) {
-        return const Card(
-          margin: EdgeInsets.all(10.0),
-          child: Routes(),
+        return Container(
+          margin: const EdgeInsets.all(10.0),
+          child: Routes(routes[index]),
         );
       },
       separatorBuilder: (context, position) {
@@ -24,10 +28,17 @@ class AllRoutes extends StatelessWidget {
       },
     );
   }
+
+  getAllRoutes() async {
+    RouteDB routeDB = RouteDB();
+    routes = await routeDB.getAllRoutes();
+  }
 }
 
 class Routes extends StatefulWidget {
-  const Routes({super.key});
+  final RouteDTO route;
+  const Routes(this.route);
+  //const Routes({super.key, required RouteDTO route});
 
   @override
   State<Routes> createState() => _RoutesState();
@@ -36,6 +47,7 @@ class Routes extends StatefulWidget {
 class _RoutesState extends State<Routes> {
   @override
   Widget build(BuildContext context) {
+    debugPrint(widget.route.routeName);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -57,7 +69,7 @@ class _RoutesState extends State<Routes> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: const [
                 Text(
-                  'From Bramois to Vex',
+                  "widget.route.routeName",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 80, 62, 33)),
@@ -101,6 +113,8 @@ class _RoutesState extends State<Routes> {
       ),
     );
   }
+
+  void setRoute() {}
 }
 
 BoxDecoration myBoxDecoration() {
