@@ -32,10 +32,13 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   final RouteDB routeDB = RouteDB();
 
   var data;
+
+  final inputTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(children: [
+        TextField(controller: inputTextController),
         Flexible(
             child: FlutterMap(
           options: MapOptions(
@@ -63,19 +66,16 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
             //Icons.keyboard_backspace_rounded,
             backgroundColor: const Color.fromARGB(255, 235, 146, 35),
             onPressed: () {
-              saveRouteInDatabase();
+              if (_allPoints.length == 2) {
+                if (inputTextController.text.isNotEmpty) {
+                  saveRouteInDatabase(inputTextController.text);
+                }
+              }
               _allMarkers.clear();
               _allPoints.clear();
               _allPolylines.clear();
               _allRoutePoints.clear();
 
-              setState(() {});
-            }),
-        FloatingActionButton(
-            //Icons.keyboard_backspace_rounded,
-            backgroundColor: const Color.fromARGB(255, 0, 146, 35),
-            onPressed: () {
-              findRouteInDB();
               setState(() {});
             }),
       ]),
@@ -164,14 +164,14 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     }
   }
 
-  saveRouteInDatabase() async {
+  saveRouteInDatabase(nameOfRoute) async {
     Map<String, double> coordinates = Map();
     coordinates['startLatitude'] = _allPoints.elementAt(0).latitude;
     coordinates['endLatitude'] = _allPoints.elementAt(1).latitude;
     coordinates['startLongitude'] = _allPoints.elementAt(0).longitude;
     coordinates['endLongitude'] = _allPoints.elementAt(1).longitude;
     RouteDTO route = RouteDTO(
-        routeName: "benjamin",
+        routeName: nameOfRoute,
         startPoint: "Bramois",
         endPoint: "Liddes",
         coordinates: coordinates,

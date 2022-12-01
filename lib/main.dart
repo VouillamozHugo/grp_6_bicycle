@@ -8,7 +8,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/adminAddRoute.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
+import 'package:grp_6_bicycle/details_route.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'mapUtils.dart';
@@ -65,7 +67,24 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("My map")),
-        body: const Center(child: AllRoutes()));
+      appBar: AppBar(
+        title: const Text("My map"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return const AdminMap();
+                  },
+                ),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
+      body: const Center(child: AllRoutes()),
+    );
   }
 }
