@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -11,13 +10,11 @@ import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:latlong2/latlong.dart';
 
-
 import 'networkin.dart';
 
 import 'DB/UserDB.dart';
 import 'DTO/UserDTO.dart';
 import 'firebase_options.dart';
-
 
 //LINK TO API MAP => `https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg`
 // carte the base Flutter => https://tile.openstreetmap.org/{z}/{x}/{y}.png
@@ -83,10 +80,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   final _allRoutePoints = <LatLng>[];
   final _allMarkers = <Marker>[];
   final _allPolylines = <Polyline>[]; //
-  double startLat = 46.283274;
-  double startLng = 7.539856;
-  double endLat = 46.292957;
-  double endLng = 7.532569;
+  final RouteDB routeDB = RouteDB();
+
   var data;
   @override
   Widget build(BuildContext context) {
@@ -119,10 +114,19 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
             //Icons.keyboard_backspace_rounded,
             backgroundColor: const Color.fromARGB(255, 235, 146, 35),
             onPressed: () {
+              saveRouteInDatabase();
               _allMarkers.clear();
               _allPoints.clear();
               _allPolylines.clear();
               _allRoutePoints.clear();
+
+              setState(() {});
+            }),
+        FloatingActionButton(
+            //Icons.keyboard_backspace_rounded,
+            backgroundColor: const Color.fromARGB(255, 0, 146, 35),
+            onPressed: () {
+              findRouteInDB();
               setState(() {});
             }),
       ]),
@@ -170,10 +174,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
 
-      var distance = data['features'][0]['properties']['segments']['distance'];
-      print(distance);
-
-      //  print(distance.toString());
+      //  var distance = data['features'][0]['properties']['segments']['distance'];
 
       for (int i = 0; i < ls.lineString.length; i++) {
         _allRoutePoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
@@ -199,6 +200,38 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     _allPolylines.add(polyline);
 
     setState(() {});
+  }
+
+  findRouteInDB() async {
+    RouteDTO? route = await routeDB.getRouteByName("benjamin");
+    if (route != null) {
+      LatLng startpoint = LatLng(route.coordinates['startLatitude']!,
+          route.coordinates['startLongitude']!);
+      LatLng endPoint = LatLng(route.coordinates['endLatitude']!,
+          route.coordinates['endLongitude']!);
+      _allPoints.add(startpoint);
+      _allPoints.add(endPoint);
+      getJsonData();
+    }
+  }
+
+  saveRouteInDatabase() async {
+    Map<String, double> coordinates = Map();
+    coordinates['startLatitude'] = _allPoints.elementAt(0).latitude;
+    coordinates['endLatitude'] = _allPoints.elementAt(1).latitude;
+    coordinates['startLongitude'] = _allPoints.elementAt(0).longitude;
+    coordinates['endLongitude'] = _allPoints.elementAt(1).longitude;
+    RouteDTO route = RouteDTO(
+        routeName: "benjamin",
+        startPoint: "Bramois",
+        endPoint: "Liddes",
+        coordinates: coordinates,
+        distanceKm: 59,
+        durationMinutes: 240,
+        heightDiffUpMeters: 800,
+        heightDiffDownMeters: 200);
+    bool success = await routeDB.addRoute(route);
+    debugPrint("Start point " + success.toString());
   }
 }
 
