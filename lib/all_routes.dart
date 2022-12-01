@@ -5,6 +5,7 @@ import 'package:grp_6_bicycle/mapUtils.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 
+import 'adminAddRoute.dart';
 import 'details_route.dart';
 
 const int itemCount = 20;
@@ -22,19 +23,40 @@ class _AllRoutesState extends State<AllRoutes> {
   @override
   Widget build(BuildContext context) {
     getAllRoutes();
-    return ListView.separated(
-      itemCount: routes.length,
-      itemBuilder: (BuildContext contect, int index) {
-        return Container(
-          margin: const EdgeInsets.all(10.0),
-          child: Routes(routes[index]),
-        );
-      },
-      separatorBuilder: (context, position) {
-        return const Card(
-          color: Color.fromARGB(255, 252, 252, 252),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("My map"),
+        backgroundColor: const Color.fromARGB(255, 131, 90, 33),
+        foregroundColor: const Color.fromARGB(255, 252, 252, 252),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return const AdminMap();
+                  },
+                ),
+              );
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
+      body: ListView.separated(
+        itemCount: routes.length,
+        itemBuilder: (BuildContext contect, int index) {
+          return Container(
+            margin: const EdgeInsets.all(10.0),
+            child: Routes(routes[index]),
+          );
+        },
+        separatorBuilder: (context, position) {
+          return const Card(
+            color: Color.fromARGB(255, 252, 252, 252),
+          );
+        },
+      ),
     );
   }
 

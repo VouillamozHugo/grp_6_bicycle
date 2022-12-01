@@ -69,6 +69,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
               if (_allPoints.length == 2) {
                 if (inputTextController.text.isNotEmpty) {
                   saveRouteInDatabase(inputTextController.text);
+                  Navigator.of(context).pop();
                 }
               }
               _allMarkers.clear();
