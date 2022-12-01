@@ -1,16 +1,11 @@
 # grp_6_bicycle
 
-A new Flutter project.
+CycleWay aims to connect Swiss cyclists, allowing them to discover new routes beyond their imagination!
 
-## Getting Started
+Immediatly after creating an account, a cyclist can browse all available routes and select one or more. Also, our tool details some route properties such as the height difference or the length. You discovered a problem within the route? Let us and other cyclists know through our reporting service.
 
-This project is a starting point for a Flutter application.
+As for now, only administrators can edit and create new routes, by drawing them on a fully intuitive map.
 
-A few resources to get you started if this is your first Flutter project:
+Some boring, dull description is not explicit enough for you ? We got you; follow this link to gaze at our immersive prototype : https://www.figma.com/proto/YPwBniwmKTw6KvBQrTgORd/Untitled?node-id=4%3A104&scaling=scale-down&page-id=0%3A1&starting-point-node-id=0%3A3.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+CycleWay is developped in academic context at HES-SO Valais/Wallis.
