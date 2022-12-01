@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/all_routes.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -69,7 +70,13 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
               if (_allPoints.length == 2) {
                 if (inputTextController.text.isNotEmpty) {
                   saveRouteInDatabase(inputTextController.text);
-                  Navigator.of(context).pop();
+                  //clear previous navigation history
+                  //and load all routes page
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AllRoutes()),
+                      ModalRoute.withName("/Home"));
                 }
               }
               _allMarkers.clear();
