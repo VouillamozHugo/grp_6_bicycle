@@ -3,6 +3,7 @@ import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/mapUtils.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
+import 'package:latlong2/latlong.dart';
 
 import 'details_route.dart';
 
@@ -49,6 +50,10 @@ class Routes extends StatefulWidget {
 class _RoutesState extends State<Routes> {
   @override
   Widget build(BuildContext context) {
+    final LatLng startPoint = LatLng(widget.route.coordinates['startLatitude']!,
+        widget.route.coordinates['startLongitude']!);
+    final LatLng endPoint = LatLng(widget.route.coordinates['endLatitude']!,
+        widget.route.coordinates['endLongitude']!);
     debugPrint(widget.route.routeName);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
@@ -103,7 +108,7 @@ class _RoutesState extends State<Routes> {
                     Center(child: Text("-200m")),
                   ],
                 ),
-                const smallMap()
+                smallMap(startPoint, endPoint)
               ],
             ),
           ],
