@@ -11,6 +11,8 @@ class DetailsRoutes extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Route Details'),
+          backgroundColor: const Color.fromARGB(255, 131, 90, 33),
+          foregroundColor: const Color.fromARGB(255, 252, 252, 252),
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {

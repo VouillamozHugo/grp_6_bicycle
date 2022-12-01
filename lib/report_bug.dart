@@ -13,6 +13,8 @@ class _ReportBugState extends State<ReportBug> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Report a bug'),
+          backgroundColor: const Color.fromARGB(255, 131, 90, 33),
+          foregroundColor: const Color.fromARGB(255, 252, 252, 252),
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
