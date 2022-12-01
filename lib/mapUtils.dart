@@ -182,8 +182,3 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     debugPrint("Start point " + success.toString());
   }
 }
-
-class LineString {
-  LineString(this.lineString);
-  List<dynamic> lineString;
-}

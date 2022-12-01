@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/mapUtils.dart';
+import 'package:grp_6_bicycle/smallmap.dart';
 
 import 'details_route.dart';
 
@@ -101,11 +103,7 @@ class _RoutesState extends State<Routes> {
                     Center(child: Text("-200m")),
                   ],
                 ),
-                Image.asset(
-                  width: 100,
-                  height: 100,
-                  'images/map.png',
-                ),
+                const smallMap()
               ],
             ),
           ],
