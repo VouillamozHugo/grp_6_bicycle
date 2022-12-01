@@ -143,7 +143,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     Polyline polyline = Polyline(
       //  polylineId: PolylineId("polyline"),
       color: Colors.red,
-      strokeWidth: 10,
+      strokeWidth: 8,
       points: _allRoutePoints,
     );
     _allPolylines.add(polyline);
