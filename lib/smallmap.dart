@@ -17,15 +17,15 @@ import 'DTO/UserDTO.dart';
 import 'firebase_options.dart';
 
 class smallMap extends StatefulWidget {
-  const smallMap({super.key});
+  final LatLng startpoint;
+  final LatLng endPoint;
+  const smallMap(this.startpoint, this.endPoint);
 
   @override
   State<smallMap> createState() => _smallMapState();
 }
 
 class _smallMapState extends State<smallMap> {
-  final LatLng startpoint = LatLng(46.283099, 7.539069);
-  final LatLng endPoint = LatLng(46.183099, 7.40);
   final _allRoutePoints = <LatLng>[];
   final _allMarkers = <Marker>[];
   final _allPolylines = <Polyline>[]; //
@@ -42,7 +42,8 @@ class _smallMapState extends State<smallMap> {
         Flexible(
             child: FlutterMap(
           options: MapOptions(
-            center: LatLng(startpoint.latitude, startpoint.longitude),
+            center:
+                LatLng(widget.startpoint.latitude, widget.startpoint.longitude),
             zoom: 11,
           ),
           nonRotatedChildren: [
@@ -68,12 +69,11 @@ class _smallMapState extends State<smallMap> {
   void getJsonData() async {
     // Create an instance of Class NetworkHelper which uses http package
     // for requesting data to the server and receiving response as JSON format
-    print("atlu");
     NetworkHelper network = NetworkHelper(
-      startLat: startpoint.latitude,
-      startLng: startpoint.longitude,
-      endLat: endPoint.latitude,
-      endLng: endPoint.longitude,
+      startLat: widget.startpoint.latitude,
+      startLng: widget.startpoint.longitude,
+      endLat: widget.endPoint.latitude,
+      endLng: widget.endPoint.longitude,
     );
 
     try {
@@ -108,7 +108,7 @@ class _smallMapState extends State<smallMap> {
     );
     _allPolylines.add(polyline);
     var markerStart = Marker(
-        point: startpoint,
+        point: widget.startpoint,
         builder: (context) => const Icon(
               Icons.add_location,
               size: 50,
@@ -116,7 +116,7 @@ class _smallMapState extends State<smallMap> {
             ));
     _allMarkers.add(markerStart);
     var markerEnd = Marker(
-        point: endPoint,
+        point: widget.endPoint,
         builder: (context) => const Icon(
               Icons.add_location,
               size: 50,
