@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -11,13 +10,11 @@ import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:latlong2/latlong.dart';
 
-
 import 'networkin.dart';
 
 import 'DB/UserDB.dart';
 import 'DTO/UserDTO.dart';
 import 'firebase_options.dart';
-
 
 //LINK TO API MAP => `https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg`
 // carte the base Flutter => https://tile.openstreetmap.org/{z}/{x}/{y}.png
@@ -169,9 +166,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
 
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
-
-      var distance = data['features'][0]['properties']['segments']['distance'];
-      print(distance);
 
       //  print(distance.toString());
 
