@@ -21,15 +21,10 @@ class NetworkHelper {
   Future getData() async {
     http.Response response = await http.get(Uri.parse(
         '$url$journeyMode?api_key=$apiKey&start=$startLng,$startLat&end=$endLng,$endLat'));
-    print(
-        "$url$journeyMode?$apiKey&start=$startLng,$startLat&end=$endLng,$endLat");
 
     if (response.statusCode == 200) {
       String data = response.body;
-      print("Response 200");
       return jsonDecode(data);
-    } else {
-      print(response.statusCode);
     }
   }
 }
