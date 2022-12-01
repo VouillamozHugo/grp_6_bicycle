@@ -22,6 +22,7 @@ class _AllRoutesState extends State<AllRoutes> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("ALL ROUTES WIDGET BUILD");
     getAllRoutes();
     return Scaffold(
       appBar: AppBar(
@@ -61,6 +62,7 @@ class _AllRoutesState extends State<AllRoutes> {
   }
 
   getAllRoutes() async {
+    if (routes.isNotEmpty) return;
     debugPrint("DATABASE ACCESS");
     RouteDB routeDB = RouteDB();
     List<RouteDTO> routesList = await routeDB.getAllRoutes();
