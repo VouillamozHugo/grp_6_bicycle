@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/rendering.dart';
@@ -123,10 +124,15 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
 
       print("data return");
       // We can reach to our desired JSON data manually as following
+
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
 
-      print(ls.toString());
+      var distance = data['features'][0]['properties']['segments']['distance'];
+      print(distance);
+
+      //  print(distance.toString());
+
       for (int i = 0; i < ls.lineString.length; i++) {
         _allRoutePoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
       }
