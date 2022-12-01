@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'networkin.dart';
