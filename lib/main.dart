@@ -1,4 +1,8 @@
+
+import 'package:flutter/foundation.dart';
+
 import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/rendering.dart';
@@ -7,9 +11,13 @@ import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:latlong2/latlong.dart';
 
+
+import 'networkin.dart';
+
 import 'DB/UserDB.dart';
 import 'DTO/UserDTO.dart';
 import 'firebase_options.dart';
+
 
 //LINK TO API MAP => `https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg`
 // carte the base Flutter => https://tile.openstreetmap.org/{z}/{x}/{y}.png
@@ -58,7 +66,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("My fucking map")),
+        appBar: AppBar(title: const Text("My map")),
         body: const Center(child: MarkersOnMap()));
   }
 }
@@ -72,7 +80,14 @@ class MarkersOnMap extends StatefulWidget {
 
 class _MarkersOnMapState extends State<MarkersOnMap> {
   final _allPoints = <LatLng>[];
+  final _allRoutePoints = <LatLng>[];
   final _allMarkers = <Marker>[];
+  final _allPolylines = <Polyline>[]; //
+  double startLat = 46.283274;
+  double startLng = 7.539856;
+  double endLat = 46.292957;
+  double endLng = 7.532569;
+  var data;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -80,7 +95,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         Flexible(
             child: FlutterMap(
           options: MapOptions(
-            onLongPress: (tapPosition, point) => moveEndPoint(point),
             onTap: (tapPosition, point) => addMarker(point),
             center: LatLng(46.283099, 7.539069),
             zoom: 15,
@@ -96,9 +110,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
                   'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg',
             ),
             PolylineLayer(
-              polylines: [
-                Polyline(points: _allPoints, strokeWidth: 5, color: Colors.red)
-              ],
+              polylines: _allPolylines,
             ),
             MarkerLayer(markers: _allMarkers)
           ],
@@ -107,66 +119,90 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
             //Icons.keyboard_backspace_rounded,
             backgroundColor: const Color.fromARGB(255, 235, 146, 35),
             onPressed: () {
-              removeLastMarker();
+              _allMarkers.clear();
+              _allPoints.clear();
+              _allPolylines.clear();
+              _allRoutePoints.clear();
+              setState(() {});
             }),
       ]),
     );
   }
 
   void addMarker(LatLng newPoint) {
-    // create the new marker (the beginning or the end of the path)
-
-    if (_allMarkers.length > 1) {
-      _allMarkers.removeLast();
-      var smallmarker = Marker(
-          point: _allPoints.elementAt(_allPoints.length - 1),
+    if (_allPoints.length < 2) {
+      var marker = Marker(
+          point: newPoint,
           builder: (context) => const Icon(
-                Icons.circle,
-                size: 15,
+                Icons.add_location,
+                size: 50,
                 color: Color.fromARGB(255, 180, 14, 2),
               ));
-      _allMarkers.add(smallmarker);
-    }
-    _allMarkers.add(createEnd_start_Marker(newPoint));
-
-    _allPoints.add(newPoint);
-  }
-
-  void removeLastMarker() {
-    if (_allPoints.isNotEmpty) {
-      _allPoints.removeLast();
-      _allMarkers.removeLast();
-      _allMarkers.removeLast();
-
-      if (_allPoints.length > 1) {
-        _allMarkers.add(createEnd_start_Marker(
-            _allPoints.elementAt(_allPoints.length - 1)));
+      _allMarkers.add(marker);
+      _allPoints.add(newPoint);
+      if (_allPoints.length == 2) {
+        print("Getting json data");
+        getJsonData();
       }
     }
-    setState(() {});
   }
 
-  void moveEndPoint(LatLng newPoint) {
-    // create the new marker (the beginning or the end of the path)
+// PART FOR THE ROUTE
 
-    if (_allPoints.isNotEmpty) {
-      _allMarkers.removeLast();
-      _allPoints.removeLast();
+  void getJsonData() async {
+    // Create an instance of Class NetworkHelper which uses http package
+    // for requesting data to the server and receiving response as JSON format
 
-      _allPoints.add(newPoint);
-      _allMarkers.add(createEnd_start_Marker(newPoint));
+    NetworkHelper network = NetworkHelper(
+      startLat: _allPoints.elementAt(0).latitude,
+      startLng: _allPoints.elementAt(0).longitude,
+      endLat: _allPoints.elementAt(1).latitude,
+      endLng: _allPoints.elementAt(1).longitude,
+    );
+
+    try {
+      // getData() returns a json Decoded data
+      data = await network.getData();
+
+      print("data return");
+      // We can reach to our desired JSON data manually as following
+
+      LineString ls =
+          LineString(data['features'][0]['geometry']['coordinates']);
+
+      var distance = data['features'][0]['properties']['segments']['distance'];
+      print(distance);
+
+      //  print(distance.toString());
+
+      for (int i = 0; i < ls.lineString.length; i++) {
+        _allRoutePoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
+      }
+
+      if (_allRoutePoints.length == ls.lineString.length) {
+        print("Set polylines");
+        print(_allRoutePoints.length);
+        setPolyLines();
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
-// put the marker creation in a class to avoid code repetition
-  Marker createEnd_start_Marker(LatLng position) {
-    var marker = Marker(
-        point: position,
-        builder: (context) => const Icon(
-              Icons.circle,
-              size: 25,
-              color: Color.fromARGB(255, 180, 14, 2),
-            ));
-    return marker;
+  setPolyLines() {
+    Polyline polyline = Polyline(
+      //  polylineId: PolylineId("polyline"),
+      color: Colors.red,
+      strokeWidth: 10,
+      points: _allRoutePoints,
+    );
+    _allPolylines.add(polyline);
+
+    setState(() {});
   }
+}
+
+class LineString {
+  LineString(this.lineString);
+  List<dynamic> lineString;
 }
