@@ -174,7 +174,10 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
 
-      //  var distance = data['features'][0]['properties']['segments']['distance'];
+      var distance = data['features'][0]['properties']['segments']['distance'];
+      print(distance);
+
+      //  print(distance.toString());
 
       for (int i = 0; i < ls.lineString.length; i++) {
         _allRoutePoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
