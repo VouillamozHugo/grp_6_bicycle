@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -9,15 +8,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/all_routes.dart';
 import 'package:latlong2/latlong.dart';
-
 
 import 'networkin.dart';
 
 import 'DB/UserDB.dart';
 import 'DTO/UserDTO.dart';
 import 'firebase_options.dart';
-
 
 //LINK TO API MAP => `https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg`
 // carte the base Flutter => https://tile.openstreetmap.org/{z}/{x}/{y}.png
@@ -67,7 +65,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("My map")),
-        body: const Center(child: MarkersOnMap()));
+        body: const Center(child: AllRoutes()));
   }
 }
 
@@ -169,11 +167,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
 
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
-
-      var distance = data['features'][0]['properties']['segments']['distance'];
-      print(distance);
-
-      //  print(distance.toString());
 
       for (int i = 0; i < ls.lineString.length; i++) {
         _allRoutePoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
