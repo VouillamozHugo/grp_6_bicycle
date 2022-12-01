@@ -8,8 +8,48 @@ import 'package:latlong2/latlong.dart';
 import 'details_route.dart';
 
 const int itemCount = 20;
-List<RouteDTO> routes = [];
 
+class AllRoutes extends StatefulWidget {
+  const AllRoutes({super.key});
+
+  @override
+  State<AllRoutes> createState() => _AllRoutesState();
+}
+
+class _AllRoutesState extends State<AllRoutes> {
+  List<RouteDTO> routes = []; //before the build to avoid reset at every render
+
+  @override
+  Widget build(BuildContext context) {
+    getAllRoutes();
+    return ListView.separated(
+      itemCount: routes.length,
+      itemBuilder: (BuildContext contect, int index) {
+        return Container(
+          margin: const EdgeInsets.all(10.0),
+          child: Routes(routes[index]),
+        );
+      },
+      separatorBuilder: (context, position) {
+        return const Card(
+          color: Color.fromARGB(255, 252, 252, 252),
+        );
+      },
+    );
+  }
+
+  getAllRoutes() async {
+    if (routes.isNotEmpty) return;
+    debugPrint("DATABASE ACCESS");
+    RouteDB routeDB = RouteDB();
+    List<RouteDTO> routesList = await routeDB.getAllRoutes();
+    setState(() {
+      routes = routesList;
+    });
+  }
+}
+
+/*
 class AllRoutes extends StatelessWidget {
   const AllRoutes({super.key});
 
@@ -36,7 +76,7 @@ class AllRoutes extends StatelessWidget {
     RouteDB routeDB = RouteDB();
     routes = await routeDB.getAllRoutes();
   }
-}
+}*/
 
 class Routes extends StatefulWidget {
   final RouteDTO route;
@@ -53,7 +93,6 @@ class _RoutesState extends State<Routes> {
         widget.route.coordinates['startLongitude']!);
     final LatLng endPoint = LatLng(widget.route.coordinates['endLatitude']!,
         widget.route.coordinates['endLongitude']!);
-    debugPrint(widget.route.routeName);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -64,7 +103,6 @@ class _RoutesState extends State<Routes> {
             },
           ),
         );
-        ;
       },
       child: Container(
         decoration: myBoxDecoration(),
@@ -122,8 +160,6 @@ class _RoutesState extends State<Routes> {
       ),
     );
   }
-
-  void setRoute() {}
 }
 
 BoxDecoration myBoxDecoration() {
