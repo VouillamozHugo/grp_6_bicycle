@@ -26,7 +26,7 @@ class _AllRoutesState extends State<AllRoutes> {
     getAllRoutes();
     return Scaffold(
       drawer: const MyDrawer(),
-      appBar: const MyAppBar(),
+      appBar: const MyAppBar(title: "All routes"),
       body: ListView.separated(
         itemCount: routes.length,
         itemBuilder: (BuildContext contect, int index) {

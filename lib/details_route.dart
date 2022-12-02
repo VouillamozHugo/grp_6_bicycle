@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:grp_6_bicycle/navigation/my_app_bar.dart';
+import 'package:grp_6_bicycle/navigation/my_drawer.dart';
 import 'package:grp_6_bicycle/report_bug.dart';
 
 import 'all_routes.dart';
@@ -8,20 +10,12 @@ class DetailsRoutes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Route Details'),
-          backgroundColor: const Color.fromARGB(255, 131, 90, 33),
-          foregroundColor: const Color.fromARGB(255, 252, 252, 252),
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
+    return const Scaffold(
+        appBar: MyAppBar(
+          title: "Route details",
         ),
-        body: const DetailsBuilder());
+        drawer: MyDrawer(),
+        body: DetailsBuilder());
   }
 }
 

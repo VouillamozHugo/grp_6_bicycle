@@ -36,7 +36,7 @@ class MyDrawer extends StatelessWidget {
             //child:
           ),
           ListTile(
-            leading: const Icon(Icons.person),
+            leading: const Icon(Icons.favorite),
             title: const Text(' My routes '),
             onTap: () {
               Navigator.push(
@@ -46,7 +46,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.book),
+            leading: const Icon(Icons.list),
             title: const Text(' All routes '),
             onTap: () {
               Navigator.push(
@@ -56,7 +56,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(Icons.workspace_premium),
+            leading: const Icon(Icons.settings),
             title: const Text(' Settings '),
             onTap: () {
               Navigator.pop(context);
