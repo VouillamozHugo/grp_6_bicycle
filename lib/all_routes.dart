@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
-import 'package:grp_6_bicycle/mapUtils.dart';
-import 'package:grp_6_bicycle/smallmap.dart';
-import 'package:latlong2/latlong.dart';
 
-import 'adminAddRoute.dart';
+import 'package:grp_6_bicycle/smallmap.dart';
+
 import 'details_route.dart';
+import 'navigation/my_app_bar.dart';
+import 'navigation/my_drawer.dart';
 
 const int itemCount = 20;
 
@@ -25,25 +25,8 @@ class _AllRoutesState extends State<AllRoutes> {
     debugPrint("ALL ROUTES WIDGET BUILD");
     getAllRoutes();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("My map"),
-        backgroundColor: const Color.fromARGB(255, 131, 90, 33),
-        foregroundColor: const Color.fromARGB(255, 252, 252, 252),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return const AdminMap();
-                  },
-                ),
-              );
-            },
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
+      drawer: const MyDrawer(),
+      appBar: const MyAppBar(),
       body: ListView.separated(
         itemCount: routes.length,
         itemBuilder: (BuildContext contect, int index) {
