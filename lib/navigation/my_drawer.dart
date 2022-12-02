@@ -12,11 +12,11 @@ class MyDrawer extends StatelessWidget {
         children: <Widget>[
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 131, 90, 33),
+              color: Color.fromARGB(60, 131, 90, 33),
             ),
             child: UserAccountsDrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromARGB(130, 183, 118, 34),
+                color: Color.fromARGB(60, 183, 118, 34),
               ),
               accountName: Text(
                 "Alex Moos",
@@ -25,7 +25,7 @@ class MyDrawer extends StatelessWidget {
               accountEmail: Text("alex.moos@gmail.com"),
               currentAccountPictureSize: Size.square(50),
               currentAccountPicture: CircleAvatar(
-                backgroundColor: Color.fromARGB(255, 131, 90, 33),
+                backgroundColor: Color.fromARGB(60, 131, 90, 33),
                 child: Text(
                   "A",
                   style: TextStyle(fontSize: 30.0, color: Colors.white),
