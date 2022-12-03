@@ -14,7 +14,6 @@ class DetailsRoutes extends StatelessWidget {
         appBar: MyAppBar(
           title: "Route details",
         ),
-        drawer: MyDrawer(),
         body: DetailsBuilder());
   }
 }

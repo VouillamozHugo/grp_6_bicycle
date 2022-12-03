@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grp_6_bicycle/navigation/my_app_bar.dart';
 
 class ReportBug extends StatefulWidget {
   const ReportBug({super.key});
@@ -10,19 +11,9 @@ class ReportBug extends StatefulWidget {
 class _ReportBugState extends State<ReportBug> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Report a bug'),
-          backgroundColor: const Color.fromARGB(255, 131, 90, 33),
-          foregroundColor: const Color.fromARGB(255, 252, 252, 252),
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
-        ),
-        body: const Text('BUG'));
+    return const Scaffold(
+      appBar: MyAppBar(title: 'Report a problem'),
+      body: Text('BUG'),
+    );
   }
 }
