@@ -76,7 +76,7 @@ class _RoutesState extends State<Routes> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return const DetailsRoutes();
+              return DetailsRoutes(widget.route);
             },
           ),
         );
