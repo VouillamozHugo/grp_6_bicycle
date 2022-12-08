@@ -1,46 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
-import 'package:grp_6_bicycle/mapUtils.dart';
+
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
-
 import 'details_route.dart';
+import 'navigation/my_app_bar.dart';
+import 'navigation/my_drawer.dart';
 
 const int itemCount = 20;
-List<RouteDTO> routes = [];
 
-class AllRoutes extends StatelessWidget {
+class AllRoutes extends StatefulWidget {
   const AllRoutes({super.key});
 
   @override
+  State<AllRoutes> createState() => _AllRoutesState();
+}
+
+class _AllRoutesState extends State<AllRoutes> {
+  List<RouteDTO> routes = []; //before the build to avoid reset at every render
+
+  @override
   Widget build(BuildContext context) {
+    debugPrint("ALL ROUTES WIDGET BUILD");
     getAllRoutes();
-    return ListView.separated(
-      itemCount: routes.length,
-      itemBuilder: (BuildContext contect, int index) {
-        return Container(
-          margin: const EdgeInsets.all(10.0),
-          child: Routes(routes[index]),
-        );
-      },
-      separatorBuilder: (context, position) {
-        return const Card(
-          color: Color.fromARGB(255, 252, 252, 252),
-        );
-      },
+    return Scaffold(
+      drawer: const MyDrawer(),
+      appBar: const MyAppBar(title: "All routes"),
+      body: ListView.separated(
+        itemCount: routes.length,
+        itemBuilder: (BuildContext contect, int index) {
+          return Container(
+            margin: const EdgeInsets.all(10.0),
+            child: Routes(routes[index]),
+          );
+        },
+        separatorBuilder: (context, position) {
+          return const Card(
+            color: Color.fromARGB(255, 252, 252, 252),
+          );
+        },
+      ),
     );
   }
 
   getAllRoutes() async {
+    if (routes.isNotEmpty) return;
+    debugPrint("DATABASE ACCESS");
     RouteDB routeDB = RouteDB();
-    routes = await routeDB.getAllRoutes();
+    List<RouteDTO> routesList = await routeDB.getAllRoutes();
+    setState(() {
+      routes = routesList;
+    });
   }
 }
 
 class Routes extends StatefulWidget {
   final RouteDTO route;
-  const Routes(this.route);
+  const Routes(this.route, {super.key});
 
   @override
   State<Routes> createState() => _RoutesState();
@@ -53,18 +70,16 @@ class _RoutesState extends State<Routes> {
         widget.route.coordinates['startLongitude']!);
     final LatLng endPoint = LatLng(widget.route.coordinates['endLatitude']!,
         widget.route.coordinates['endLongitude']!);
-    debugPrint(widget.route.routeName);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return const DetailsRoutes();
+              return DetailsRoutes(widget.route);
             },
           ),
         );
-        ;
       },
       child: Container(
         decoration: myBoxDecoration(),
@@ -122,8 +137,6 @@ class _RoutesState extends State<Routes> {
       ),
     );
   }
-
-  void setRoute() {}
 }
 
 BoxDecoration myBoxDecoration() {

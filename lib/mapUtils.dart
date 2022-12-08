@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/all_routes.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -68,7 +69,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
             onPressed: () {
               if (_allPoints.length == 2) {
                 if (inputTextController.text.isNotEmpty) {
-                  saveRouteInDatabase(inputTextController.text);
+                  saveRouteInDatabase(inputTextController.text, context);
                 }
               }
               _allMarkers.clear();
@@ -161,7 +162,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     }
   }
 
-  saveRouteInDatabase(nameOfRoute) async {
+  saveRouteInDatabase(nameOfRoute, context) async {
     Map<String, double> coordinates = Map();
     coordinates['startLatitude'] = _allPoints.elementAt(0).latitude;
     coordinates['endLatitude'] = _allPoints.elementAt(1).latitude;
@@ -178,5 +179,11 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         heightDiffDownMeters: 200);
     bool success = await routeDB.addRoute(route);
     debugPrint("Start point " + success.toString());
+    //clear previous navigation history
+    //and load all routes page
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const AllRoutes()),
+        ModalRoute.withName("/Home"));
   }
 }

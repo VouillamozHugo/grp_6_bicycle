@@ -1,47 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/navigation/my_app_bar.dart';
+import 'package:grp_6_bicycle/navigation/my_drawer.dart';
 import 'package:grp_6_bicycle/report_bug.dart';
 
 import 'all_routes.dart';
 
 class DetailsRoutes extends StatelessWidget {
-  const DetailsRoutes({super.key});
+  final RouteDTO route;
+  const DetailsRoutes(this.route, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Route Details'),
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
+        appBar: const MyAppBar(
+          title: "Route details",
         ),
-        body: const DetailsBuilder());
+        body: DetailsBuilder(route));
   }
 }
 
 class DetailsBuilder extends StatelessWidget {
-  const DetailsBuilder({super.key});
+  final RouteDTO route;
+  const DetailsBuilder(this.route, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        const Text(
-          "From Bramois To Vex",
-          style: TextStyle(
-            color: const Color.fromARGB(255, 131, 90, 33),
+        Text(
+          route.routeName,
+          style: const TextStyle(
+            color: Color.fromARGB(255, 131, 90, 33),
             height: 2,
             fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
         ),
         const Text('La jolie map d\'hugo UWU'),
-        const DetailsText(),
+        DetailsText(route),
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
@@ -67,7 +65,8 @@ class DetailsBuilder extends StatelessWidget {
 }
 
 class DetailsText extends StatelessWidget {
-  const DetailsText({super.key});
+  final RouteDTO route;
+  const DetailsText(this.route, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -91,12 +90,13 @@ class DetailsText extends StatelessWidget {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: const [
-              Text("Bramois"),
-              Text("Vex"),
-              Text("4km"),
-              Text("60m"),
-              Text("700m -200m"),
+            children: [
+              Text(route.startPoint),
+              Text(route.endPoint),
+              Text("${route.distanceKm}km"),
+              Text("${route.durationMinutes}m"),
+              Text(
+                  "${route.heightDiffUpMeters}m -${route.heightDiffDownMeters}m"),
             ],
           ),
         ],

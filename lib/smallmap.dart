@@ -82,6 +82,7 @@ class _smallMapState extends State<smallMap> {
 
       // We can reach to our desired JSON data manually as following
 
+      if (data == null) return;
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
 
