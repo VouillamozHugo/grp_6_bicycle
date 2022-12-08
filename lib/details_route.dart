@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/navigation/my_app_bar.dart';
 import 'package:grp_6_bicycle/navigation/my_drawer.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:grp_6_bicycle/report_bug.dart';
+import 'package:grp_6_bicycle/smallmap.dart';
 
 import 'all_routes.dart';
 
@@ -26,6 +28,10 @@ class DetailsBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LatLng startPoint = LatLng(route.coordinates['startLatitude']!,
+        route.coordinates['startLongitude']!);
+    final LatLng endPoint = LatLng(
+        route.coordinates['endLatitude']!, route.coordinates['endLongitude']!);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -38,7 +44,7 @@ class DetailsBuilder extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const Text('La jolie map d\'hugo UWU'),
+        SmallMap(startPoint, endPoint, 300, 800),
         DetailsText(route),
         GestureDetector(
           behavior: HitTestBehavior.opaque,

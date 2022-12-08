@@ -16,16 +16,18 @@ import 'DB/UserDB.dart';
 import 'DTO/UserDTO.dart';
 import 'firebase_options.dart';
 
-class smallMap extends StatefulWidget {
+class SmallMap extends StatefulWidget {
   final LatLng startpoint;
   final LatLng endPoint;
-  const smallMap(this.startpoint, this.endPoint);
+  final double mapHeight;
+  final double mapWidth;
+  const SmallMap(this.startpoint, this.endPoint, this.mapHeight, this.mapWidth);
 
   @override
-  State<smallMap> createState() => _smallMapState();
+  State<SmallMap> createState() => _SmallMapState();
 }
 
-class _smallMapState extends State<smallMap> {
+class _SmallMapState extends State<SmallMap> {
   final _allRoutePoints = <LatLng>[];
   final _allMarkers = <Marker>[];
   final _allPolylines = <Polyline>[]; //
@@ -35,9 +37,9 @@ class _smallMapState extends State<smallMap> {
   @override
   Widget build(BuildContext context) {
     getJsonData();
-    return Container(
-      width: 200,
-      height: 170,
+    return SizedBox(
+      width: widget.mapWidth,
+      height: widget.mapHeight,
       child: Column(children: [
         Flexible(
             child: FlutterMap(

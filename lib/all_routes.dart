@@ -129,7 +129,7 @@ class _RoutesState extends State<Routes> {
                     Center(child: Text(widget.route.endPoint)),
                   ],
                 ),
-                smallMap(startPoint, endPoint)
+                SmallMap(startPoint, endPoint, 170, 200)
               ],
             ),
           ],
