@@ -32,6 +32,10 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   final _allPolylines = <Polyline>[]; //
   final RouteDB routeDB = RouteDB();
 
+  var layer =
+      'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg';
+  var sateliteIsOn = false;
+
   var data;
 
   final inputTextController = TextEditingController();
@@ -53,10 +57,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
             ),
           ],
           children: [
-            TileLayer(
-              urlTemplate:
-                  'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg',
-            ),
+            TileLayer(urlTemplate: layer),
             PolylineLayer(
               polylines: _allPolylines,
             ),
@@ -64,8 +65,14 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
           ],
         )),
         FloatingActionButton(
+          onPressed: changeLayer,
+          child: const Icon(Icons.layers),
+          backgroundColor: Colors.transparent,
+        ),
+        FloatingActionButton(
             //Icons.keyboard_backspace_rounded,
-            backgroundColor: const Color.fromARGB(255, 235, 146, 35),
+            backgroundColor: Colors.transparent,
+            child: const Icon(Icons.save),
             onPressed: () {
               if (_allPoints.length == 2) {
                 if (inputTextController.text.isNotEmpty) {
@@ -81,6 +88,18 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
             }),
       ]),
     );
+  }
+
+  void changeLayer() {
+    if (sateliteIsOn) {
+      layer =
+          'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg';
+    } else {
+      layer =
+          'https://wmts20.geo.admin.ch/1.0.0/ch.swisstopo.swissimage/default/current/3857/{z}/{x}/{y}.jpeg';
+    }
+    sateliteIsOn = !sateliteIsOn;
+    setState(() {});
   }
 
   void addMarker(LatLng newPoint) {
