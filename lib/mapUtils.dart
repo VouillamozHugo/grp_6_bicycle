@@ -94,7 +94,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
       _allMarkers.add(marker);
       _allPoints.add(newPoint);
       if (_allPoints.length == 2) {
-        print("Getting json data");
         getJsonData();
       }
     }
@@ -116,8 +115,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     try {
       // getData() returns a json Decoded data
       data = await network.getData();
-
-      print("data return");
       // We can reach to our desired JSON data manually as following
 
       LineString ls =

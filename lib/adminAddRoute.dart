@@ -14,7 +14,7 @@ class _AdminMapState extends State<AdminMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("My fucking map")),
-        body: const Center(child: AdminMap()));
+        appBar: AppBar(title: const Text("Add new map")),
+        body: const Center(child: MarkersOnMap()));
   }
 }
