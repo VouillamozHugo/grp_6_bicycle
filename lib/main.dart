@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
+import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
 import 'firebase_options.dart';
 
@@ -27,7 +29,14 @@ void readDB() async {
   try {
     UserCredential userCredential = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-            email: "alex.moos@mail.com", password: "123456!");
+            email: "benjamin.biollaz@mail.com", password: "123456");
+    UserDB userDB = UserDB();
+    UserDTO user = UserDTO(
+        firstName: "Benjamin",
+        lastName: "Biollaz",
+        userType: 1,
+        favoriteRoutes: []);
+    await userDB.createUser(userCredential.user?.uid as String, user);
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
       print('The password provided is too weak.');
@@ -37,6 +46,19 @@ void readDB() async {
   } catch (e) {
     print(e);
   }*/
+
+  //login
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: "benjamin.biollaz@mail.com", password: "123456");
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      print('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      print('Wrong password provided for that user.');
+    }
+  }
 
   //listen to changes
   FirebaseAuth.instance.authStateChanges().listen((User? user) {
