@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RouteDTO {
   RouteDTO(
-      {required this.routeName,
+      {required this.creatorId,
+      required this.routeName,
       required this.startPoint,
       required this.endPoint,
       required this.coordinates,
@@ -11,6 +12,7 @@ class RouteDTO {
       required this.heightDiffUpMeters,
       required this.heightDiffDownMeters});
 
+  final String creatorId;
   final String routeName;
   final String startPoint;
   final String endPoint;
@@ -26,6 +28,7 @@ class RouteDTO {
   ) {
     final data = snapshot.data();
     return RouteDTO(
+      creatorId: data?['creatorId'],
       routeName: data?['routeName'],
       startPoint: data?['startPoint'],
       endPoint: data?['endPoint'],
@@ -39,6 +42,7 @@ class RouteDTO {
 
   Map<String, Object?> ToFirestore() {
     return {
+      'creatorId': creatorId,
       'routeName': routeName,
       'startPoint': startPoint,
       'endPoint': endPoint,
