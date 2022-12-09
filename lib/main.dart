@@ -48,19 +48,6 @@ void readDB() async {
     print(e);
   }*/
 
-  //login
-  try {
-    UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: "benjamin.biollaz@mail.com", password: "123456");
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'user-not-found') {
-      print('No user found for that email.');
-    } else if (e.code == 'wrong-password') {
-      print('Wrong password provided for that user.');
-    }
-  }
-
   //listen to changes
   FirebaseAuth.instance.authStateChanges().listen((User? user) {
     if (user == null) {
