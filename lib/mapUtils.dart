@@ -176,15 +176,17 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     coordinates['startLongitude'] = _allPoints.elementAt(0).longitude;
     coordinates['endLongitude'] = _allPoints.elementAt(1).longitude;
     RouteDTO route = RouteDTO(
-        creatorId: "NotAnIdYet",
-        routeName: nameOfRoute,
-        startPoint: "Bramois",
-        endPoint: "Liddes",
-        coordinates: coordinates,
-        distanceKm: distance,
-        durationMinutes: duration,
-        heightDiffUpMeters: 800,
-        heightDiffDownMeters: 200);
+      creatorId: "NotAnIdYet",
+      routeName: nameOfRoute,
+      startPoint: "Bramois",
+      endPoint: "Liddes",
+      coordinates: coordinates,
+      distanceKm: distance,
+      durationMinutes: duration,
+      heightDiffUpMeters: 800,
+      heightDiffDownMeters: 200,
+      numberOfLikes: 0,
+    );
     bool success = await routeDB.addRoute(route);
     debugPrint("Start point " + success.toString());
     //clear previous navigation history

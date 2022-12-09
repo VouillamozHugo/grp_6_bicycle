@@ -10,7 +10,8 @@ class RouteDTO {
       required this.distanceKm,
       required this.durationMinutes,
       required this.heightDiffUpMeters,
-      required this.heightDiffDownMeters});
+      required this.heightDiffDownMeters,
+      required this.numberOfLikes});
 
   final String creatorId;
   final String routeName;
@@ -21,6 +22,7 @@ class RouteDTO {
   final double durationMinutes;
   final int heightDiffUpMeters;
   final int heightDiffDownMeters;
+  final int numberOfLikes;
 
   factory RouteDTO.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -28,16 +30,16 @@ class RouteDTO {
   ) {
     final data = snapshot.data();
     return RouteDTO(
-      creatorId: data?['creatorId'],
-      routeName: data?['routeName'],
-      startPoint: data?['startPoint'],
-      endPoint: data?['endPoint'],
-      coordinates: Map.from(data?['coordinates']),
-      distanceKm: data?['distanceKm'],
-      durationMinutes: data?['durationMinutes'],
-      heightDiffUpMeters: data?['heightDiffUpMeters'],
-      heightDiffDownMeters: data?['heightDiffDownMeters'],
-    );
+        creatorId: data?['creatorId'],
+        routeName: data?['routeName'],
+        startPoint: data?['startPoint'],
+        endPoint: data?['endPoint'],
+        coordinates: Map.from(data?['coordinates']),
+        distanceKm: data?['distanceKm'],
+        durationMinutes: data?['durationMinutes'],
+        heightDiffUpMeters: data?['heightDiffUpMeters'],
+        heightDiffDownMeters: data?['heightDiffDownMeters'],
+        numberOfLikes: data?['numberOfLikes']);
   }
 
   Map<String, Object?> ToFirestore() {
@@ -51,6 +53,7 @@ class RouteDTO {
       'durationMinutes': durationMinutes,
       'heightDiffUpMeters': heightDiffUpMeters,
       'heightDiffDownMeters': heightDiffDownMeters,
+      'numberOfLikes': numberOfLikes,
     };
   }
 }
