@@ -64,21 +64,60 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: const Text('login'),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const AllRoutes();
-                    },
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Need an account ? '),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return const AllRoutes();
+                        },
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    'Register',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 51, 102, 204),
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
-                );
-              },
-              child: const Text('Register'),
+                ),
+              ],
             ),
+            const FractionallySizedBox(
+                widthFactor: 0.7,
+                child: LoginRegisterInput(name: 'name', obscure: false)),
           ],
         ),
       ),
     );
+  }
+}
+
+class LoginRegisterInput extends StatelessWidget {
+  final bool obscure;
+  final String name;
+  const LoginRegisterInput(
+      {super.key, required this.name, required this.obscure});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      obscureText: obscure,
+      decoration: InputDecoration(
+        focusedBorder: InputBorder.none,
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Color.fromARGB(255, 80, 62, 33),
+          ),
+        ),
+        labelText: name,
+      ),
+    );
+    ;
   }
 }
