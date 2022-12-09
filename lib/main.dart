@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
+import 'package:grp_6_bicycle/login_page.dart';
 import 'firebase_options.dart';
 
 //LINK TO API MAP => `https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg`
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: appTitle,
-      home: const AllRoutes(),
+      home: const LoginPage(),
     ); // MaterialApp
   }
 }
