@@ -11,9 +11,7 @@ import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
-
 import 'networkin.dart';
-
 import 'DB/UserDB.dart';
 import 'DTO/UserDTO.dart';
 import 'firebase_options.dart';
@@ -37,6 +35,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   var sateliteIsOn = false;
 
   var data;
+  var distance;
+  var duration;
 
   final inputTextController = TextEditingController();
   @override
@@ -65,13 +65,11 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
           ],
         )),
         FloatingActionButton(
-          heroTag: "layersButton",
           onPressed: changeLayer,
           child: const Icon(Icons.layers),
           backgroundColor: Colors.transparent,
         ),
         FloatingActionButton(
-            heroTag: "saveButton",
             //Icons.keyboard_backspace_rounded,
             backgroundColor: Colors.transparent,
             child: const Icon(Icons.save),
@@ -138,10 +136,13 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
       // getData() returns a json Decoded data
       data = await network.getData();
       // We can reach to our desired JSON data manually as following
-
       LineString ls =
           LineString(data['features'][0]['geometry']['coordinates']);
-
+      distance = data['features'][0]['properties']['segments'][0]['distance'];
+      duration = data['features'][0]['properties']['segments'][0]['duration'];
+      print(data.toString());
+      duration = duration / 60;
+      distance = distance / 1000;
       //  print(distance.toString());
 
       for (int i = 0; i < ls.lineString.length; i++) {
@@ -149,8 +150,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
       }
 
       if (_allRoutePoints.length == ls.lineString.length) {
-        print("Set polylines");
-        print(_allRoutePoints.length);
         setPolyLines();
       }
     } catch (e) {
@@ -194,8 +193,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         startPoint: "Bramois",
         endPoint: "Liddes",
         coordinates: coordinates,
-        distanceKm: 59,
-        durationMinutes: 240,
+        distanceKm: distance,
+        durationMinutes: duration,
         heightDiffUpMeters: 800,
         heightDiffDownMeters: 200);
     bool success = await routeDB.addRoute(route);

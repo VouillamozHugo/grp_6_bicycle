@@ -15,8 +15,8 @@ class RouteDTO {
   final String startPoint;
   final String endPoint;
   final Map<String, double> coordinates;
-  final int distanceKm;
-  final int durationMinutes;
+  final double distanceKm;
+  final double durationMinutes;
   final int heightDiffUpMeters;
   final int heightDiffDownMeters;
 
