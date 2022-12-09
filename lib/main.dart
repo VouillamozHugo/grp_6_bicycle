@@ -25,6 +25,25 @@ void main() async {
 }
 
 void readDB() async {
+  Map<String, double> coordinates = Map();
+  coordinates['startLatitude'] = 4.16;
+  coordinates['endLatitude'] = 4.18;
+  coordinates['startLongitude'] = 4.18;
+  coordinates['endLongitude'] = 4.18;
+  RouteDTO route = RouteDTO(
+    creatorId: "NotAnIdYet",
+    routeName: "nameOfRoute",
+    startPoint: "Bramois",
+    endPoint: "Liddes",
+    coordinates: coordinates,
+    distanceKm: 12,
+    durationMinutes: 12,
+    heightDiffUpMeters: 800,
+    heightDiffDownMeters: 200,
+    numberOfLikes: 0,
+  );
+  RouteDB routeDB = RouteDB();
+  routeDB.addRoute(route);
   //sign up
   /*
   try {
@@ -67,7 +86,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: appTitle,
-      home: const LoginPage(),
+      home: const AllRoutes(),
     ); // MaterialApp
   }
 }
