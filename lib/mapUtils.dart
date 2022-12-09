@@ -169,19 +169,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     setState(() {});
   }
 
-  findRouteInDB() async {
-    RouteDTO? route = await routeDB.getRouteByName("benjamin");
-    if (route != null) {
-      LatLng startpoint = LatLng(route.coordinates['startLatitude']!,
-          route.coordinates['startLongitude']!);
-      LatLng endPoint = LatLng(route.coordinates['endLatitude']!,
-          route.coordinates['endLongitude']!);
-      _allPoints.add(startpoint);
-      _allPoints.add(endPoint);
-      getJsonData();
-    }
-  }
-
   saveRouteInDatabase(nameOfRoute, context) async {
     Map<String, double> coordinates = Map();
     coordinates['startLatitude'] = _allPoints.elementAt(0).latitude;
@@ -189,14 +176,17 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     coordinates['startLongitude'] = _allPoints.elementAt(0).longitude;
     coordinates['endLongitude'] = _allPoints.elementAt(1).longitude;
     RouteDTO route = RouteDTO(
-        routeName: nameOfRoute,
-        startPoint: "Bramois",
-        endPoint: "Liddes",
-        coordinates: coordinates,
-        distanceKm: distance,
-        durationMinutes: duration,
-        heightDiffUpMeters: 800,
-        heightDiffDownMeters: 200);
+      creatorId: "NotAnIdYet",
+      routeName: nameOfRoute,
+      startPoint: "Bramois",
+      endPoint: "Liddes",
+      coordinates: coordinates,
+      distanceKm: distance,
+      durationMinutes: duration,
+      heightDiffUpMeters: 800,
+      heightDiffDownMeters: 200,
+      numberOfLikes: 0,
+    );
     bool success = await routeDB.addRoute(route);
     debugPrint("Start point " + success.toString());
     //clear previous navigation history

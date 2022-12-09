@@ -8,4 +8,8 @@ class UserDB {
   Future<UserDTO> getUserById(String id) async {
     return await userRef.doc(id).get().then((snapshot) => snapshot.data()!);
   }
+
+  void createUser(String userAuthId, UserDTO user) async {
+    await userRef.doc(userAuthId).set(user);
+  }
 }
