@@ -14,6 +14,8 @@ class _LoginPageState extends State<LoginPage> {
   String loginMessage = "";
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
+  final brown = const Color.fromARGB(255, 80, 62, 33);
+  final orange = const Color.fromARGB(255, 212, 134, 34);
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +36,25 @@ class _LoginPageState extends State<LoginPage> {
               widthFactor: 0.7,
               child: TextField(
                 controller: emailTextController,
-                decoration: const InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(255, 80, 62, 33),
-                    ),
-                  ),
-                  labelText: 'Login',
+                obscureText: false,
+                style: TextStyle(
+                  color: brown,
                 ),
+                cursorColor: orange,
+                decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: orange,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: brown,
+                      ),
+                    ),
+                    labelText: 'Email',
+                    labelStyle:
+                        TextStyle(color: brown, fontWeight: FontWeight.w500)),
               ),
             ),
             FractionallySizedBox(
@@ -49,14 +62,24 @@ class _LoginPageState extends State<LoginPage> {
               child: TextField(
                 controller: passwordTextController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Color.fromARGB(255, 80, 62, 33),
-                    ),
-                  ),
-                  labelText: 'Password',
+                style: TextStyle(
+                  color: brown,
                 ),
+                cursorColor: orange,
+                decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: orange,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: brown,
+                      ),
+                    ),
+                    labelText: 'Password',
+                    labelStyle:
+                        TextStyle(color: brown, fontWeight: FontWeight.w500)),
               ),
             ),
             OutlinedButton(
@@ -66,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Need an account ? '),
+                Text('Need an account ? ', style: TextStyle(color: brown)),
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(
@@ -87,9 +110,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
-            const FractionallySizedBox(
-                widthFactor: 0.7,
-                child: LoginRegisterInput(name: 'name', obscure: false)),
           ],
         ),
       ),
@@ -142,29 +162,5 @@ class _LoginPageState extends State<LoginPage> {
       areAllFieldsValid = false;
     }
     return areAllFieldsValid;
-  }
-}
-
-class LoginRegisterInput extends StatelessWidget {
-  final bool obscure;
-  final String name;
-  const LoginRegisterInput(
-      {super.key, required this.name, required this.obscure});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      obscureText: obscure,
-      decoration: InputDecoration(
-        focusedBorder: InputBorder.none,
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color.fromARGB(255, 80, 62, 33),
-          ),
-        ),
-        labelText: name,
-      ),
-    );
-    ;
   }
 }
