@@ -142,12 +142,16 @@ class _RoutesState extends State<Routes> {
 BoxDecoration myBoxDecoration() {
   return BoxDecoration(
     color: const Color.fromARGB(247, 247, 247, 247),
-    border: Border.all(
-      color: const Color.fromARGB(255, 80, 62, 33),
-      width: 1.0,
-    ),
+    border: myBorder(),
     borderRadius: const BorderRadius.all(
       Radius.circular(10.0),
     ),
+  );
+}
+
+Border myBorder() {
+  return Border.all(
+    color: const Color.fromARGB(255, 80, 62, 33),
+    width: 1.0,
   );
 }

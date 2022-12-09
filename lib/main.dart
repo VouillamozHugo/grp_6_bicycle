@@ -6,6 +6,7 @@ import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
+import 'package:grp_6_bicycle/login_page.dart';
 import 'firebase_options.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -79,7 +80,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: appTitle,
-      home: const AllRoutes(),
+      home: const LoginPage(),
     ); // MaterialApp
   }
 }
