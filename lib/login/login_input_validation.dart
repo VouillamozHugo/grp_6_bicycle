@@ -15,9 +15,18 @@ class InputValidation {
     return LoginMessageState("", true);
   }
 
-  LoginMessageState validatePassword(String password) {
+  LoginMessageState validatePassword(
+      String password, String passwordConfirmation) {
     if (password.isEmpty) {
       return LoginMessageState("Fill in password.", false);
+    }
+    if (password != passwordConfirmation) {
+      return LoginMessageState(
+          "Confirmation password does not match the provided one.", false);
+    }
+    if (password.length < 8) {
+      return LoginMessageState(
+          "Password must have at least 8 characters.", false);
     }
     return LoginMessageState("", true);
   }

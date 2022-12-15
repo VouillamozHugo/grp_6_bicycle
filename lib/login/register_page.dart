@@ -250,8 +250,8 @@ class _RegisterPageState extends State<RegisterPage> {
     //they are container for the error message and the input validity
     LoginMessageState emailState =
         validator.validatEmail(emailTextController.text);
-    LoginMessageState passwordState =
-        validator.validatePassword(passwordTextController.text);
+    LoginMessageState passwordState = validator.validatePassword(
+        passwordTextController.text, passwordConfirmationTextController.text);
     LoginMessageState namesState = validator.validateNames(
         firstNameTextController.text, lastNameTextController.text);
 
