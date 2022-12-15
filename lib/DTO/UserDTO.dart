@@ -5,11 +5,13 @@ class UserDTO {
       {required this.firstName,
       required this.lastName,
       required this.userType,
-      required this.favoriteRoutes});
+      required this.favoriteRoutes,
+      this.createdRoutes});
   final String firstName;
   final String lastName;
   final int userType;
   final List<String>? favoriteRoutes;
+  final List<String>? createdRoutes;
 
   factory UserDTO.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -23,6 +25,9 @@ class UserDTO {
       favoriteRoutes: data?['favoriteRoutes'] is Iterable
           ? List.from(data?['favoriteRoutes'])
           : null,
+      createdRoutes: data?['createdRoutes'] is Iterable
+          ? List.from(data?['createdRoutes'])
+          : null,
     );
   }
 
@@ -32,6 +37,7 @@ class UserDTO {
       'lastName': lastName,
       'userType': userType,
       'favoriteRoutes': favoriteRoutes,
+      'createdRoutes': createdRoutes,
     };
   }
 }

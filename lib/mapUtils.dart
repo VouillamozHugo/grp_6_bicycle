@@ -39,13 +39,16 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   var duration;
 
   final inputTextController = TextEditingController();
+  final brown = const Color.fromARGB(255, 80, 62, 33);
+  final orange = const Color.fromARGB(255, 212, 134, 34);
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(children: [
-        TextField(controller: inputTextController),
-        Flexible(
-            child: FlutterMap(
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      SizedBox(
+        height: queryData.size.height * 0.7,
+        child: FlutterMap(
           options: MapOptions(
             onTap: (tapPosition, point) => addMarker(point),
             center: LatLng(46.283099, 7.539069),
@@ -63,31 +66,74 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
             ),
             MarkerLayer(markers: _allMarkers)
           ],
-        )),
-        FloatingActionButton(
-          onPressed: changeLayer,
-          child: const Icon(Icons.layers),
-          backgroundColor: Colors.transparent,
         ),
-        FloatingActionButton(
-            //Icons.keyboard_backspace_rounded,
-            backgroundColor: Colors.transparent,
-            child: const Icon(Icons.save),
-            onPressed: () {
-              if (_allPoints.length == 2) {
-                if (inputTextController.text.isNotEmpty) {
-                  saveRouteInDatabase(inputTextController.text, context);
-                }
-              }
-              _allMarkers.clear();
-              _allPoints.clear();
-              _allPolylines.clear();
-              _allRoutePoints.clear();
+      ),
+      FractionallySizedBox(
+        widthFactor: 0.7,
+        child: TextField(
+          controller: inputTextController,
+          obscureText: false,
+          style: TextStyle(
+            color: brown,
+          ),
+          cursorColor: orange,
+          decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: orange,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: brown,
+                ),
+              ),
+              labelText: 'Route name',
+              labelStyle: TextStyle(color: brown, fontWeight: FontWeight.w500)),
+        ),
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          SizedBox(
+            width: queryData.size.width * 0.1,
+            height: queryData.size.height * 0.1,
+            child: IconButton(
+              onPressed: changeLayer,
+              icon: const Icon(
+                Icons.layers,
+                size: 50,
+                color: Color.fromARGB(255, 212, 134, 34),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: queryData.size.width * 0.1,
+            height: queryData.size.height * 0.1,
+            child: IconButton(
+                //Icons.keyboard_backspace_rounded
+                icon: const Icon(
+                  Icons.save,
+                  size: 50,
+                  color: Color.fromARGB(255, 212, 134, 34),
+                ),
+                onPressed: () {
+                  if (_allPoints.length == 2) {
+                    if (inputTextController.text.isNotEmpty) {
+                      saveRouteInDatabase(inputTextController.text, context);
+                    }
+                  }
+                  _allMarkers.clear();
+                  _allPoints.clear();
+                  _allPolylines.clear();
+                  _allRoutePoints.clear();
 
-              setState(() {});
-            }),
-      ]),
-    );
+                  setState(() {});
+                }),
+          ),
+        ],
+      ),
+    ]);
   }
 
   void changeLayer() {
@@ -169,19 +215,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     setState(() {});
   }
 
-  findRouteInDB() async {
-    RouteDTO? route = await routeDB.getRouteByName("benjamin");
-    if (route != null) {
-      LatLng startpoint = LatLng(route.coordinates['startLatitude']!,
-          route.coordinates['startLongitude']!);
-      LatLng endPoint = LatLng(route.coordinates['endLatitude']!,
-          route.coordinates['endLongitude']!);
-      _allPoints.add(startpoint);
-      _allPoints.add(endPoint);
-      getJsonData();
-    }
-  }
-
   saveRouteInDatabase(nameOfRoute, context) async {
     Map<String, double> coordinates = Map();
     coordinates['startLatitude'] = _allPoints.elementAt(0).latitude;
@@ -189,21 +222,24 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     coordinates['startLongitude'] = _allPoints.elementAt(0).longitude;
     coordinates['endLongitude'] = _allPoints.elementAt(1).longitude;
     RouteDTO route = RouteDTO(
-        routeName: nameOfRoute,
-        startPoint: "Bramois",
-        endPoint: "Liddes",
-        coordinates: coordinates,
-        distanceKm: distance,
-        durationMinutes: duration,
-        heightDiffUpMeters: 800,
-        heightDiffDownMeters: 200);
+      creatorId: "NotAnIdYet",
+      routeName: nameOfRoute,
+      startPoint: "Bramois",
+      endPoint: "Liddes",
+      coordinates: coordinates,
+      distanceKm: distance,
+      durationMinutes: duration,
+      heightDiffUpMeters: 800,
+      heightDiffDownMeters: 200,
+      numberOfLikes: 0,
+    );
     bool success = await routeDB.addRoute(route);
     debugPrint("Start point " + success.toString());
     //clear previous navigation history
     //and load all routes page
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const AllRoutes()),
-        ModalRoute.withName("/Home"));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AllRoutes()),
+    );
   }
 }

@@ -19,6 +19,16 @@ class RouteDB {
     }
   }
 
+  Future<List<RouteDTO?>> getRoutesByCreatorId(String creatorId) async {
+    final querySnapshot =
+        await routeRef.where("creatorId", isEqualTo: creatorId).get();
+    List<RouteDTO> routes = [];
+    for (var doc in querySnapshot.docs) {
+      routes.add(doc.data());
+    }
+    return routes;
+  }
+
   Future<List<RouteDTO>> getAllRoutes() async {
     final querySnapshot = await routeRef.get();
     List<RouteDTO> routes = [];
@@ -41,6 +51,7 @@ class RouteDB {
     final querySnapshot =
         await routeRef.where("routeName", isEqualTo: routeName).get();
     try {
+      //throws an exception if the number of records is different than 1
       await routeRef.doc(querySnapshot.docs.single.id).delete();
       return true;
     } on StateError {

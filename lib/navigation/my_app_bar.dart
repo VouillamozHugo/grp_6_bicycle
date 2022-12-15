@@ -13,7 +13,7 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(title),
-      backgroundColor: const Color.fromARGB(130, 131, 90, 33),
+      backgroundColor: const Color.fromARGB(255, 183, 118, 34),
       foregroundColor: const Color.fromARGB(255, 252, 252, 252),
       actions: [
         IconButton(
