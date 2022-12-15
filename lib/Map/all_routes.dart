@@ -25,7 +25,7 @@ class _AllRoutesState extends State<AllRoutes> {
     debugPrint("ALL ROUTES WIDGET BUILD");
     getAllRoutes();
     return Scaffold(
-      drawer: const MyDrawer(),
+      drawer: const Drawer(),
       appBar: const MyAppBar(title: "All routes"),
       body: ListView.separated(
         itemCount: routes.length,

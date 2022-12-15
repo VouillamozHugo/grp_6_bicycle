@@ -249,7 +249,9 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         distanceKm: distance,
         durationMinutes: duration,
         heightDiffUpMeters: startElevation,
-        heightDiffDownMeters: endElevation);
+        heightDiffDownMeters: endElevation,
+        creatorId: '',
+        numberOfLikes: 0);
     bool success = await routeDB.addRoute(route);
     debugPrint("Start point " + success.toString());
     //clear previous navigation history
