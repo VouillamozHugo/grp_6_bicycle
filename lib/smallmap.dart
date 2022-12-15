@@ -10,7 +10,7 @@ import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:latlong2/latlong.dart';
 
-import 'networkin.dart';
+import 'Map/networkin.dart';
 
 import 'DB/UserDB.dart';
 import 'DTO/UserDTO.dart';
