@@ -4,7 +4,7 @@ import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
-import 'details_route.dart';
+import 'Map/details_route.dart';
 import 'navigation/my_app_bar.dart';
 import 'navigation/my_drawer.dart';
 

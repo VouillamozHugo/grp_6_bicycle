@@ -3,18 +3,22 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
-import 'package:grp_6_bicycle/all_routes.dart';
+import 'package:grp_6_bicycle/Map/all_routes.dart';
+import 'package:grp_6_bicycle/Map/geolocation.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
-import 'networkin.dart';
-import 'DB/UserDB.dart';
-import 'DTO/UserDTO.dart';
-import 'firebase_options.dart';
+
+import '../DB/UserDB.dart';
+import '../DTO/UserDTO.dart';
+import '../firebase_options.dart';
+import 'package:open_route_service/open_route_service.dart';
+import 'package:draw_graph/draw_graph.dart';
+import 'package:draw_graph/models/feature.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MarkersOnMap extends StatefulWidget {
   const MarkersOnMap({super.key});
@@ -29,6 +33,10 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   final _allMarkers = <Marker>[];
   final _allPolylines = <Polyline>[]; //
   final RouteDB routeDB = RouteDB();
+  final geolocation _geolocation = geolocation();
+  var _allElevation = <double?>[];
+
+  final GeolocatorPlatform _geolocatorPlateform = GeolocatorPlatform.instance;
 
   var layer =
       'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg';
@@ -37,6 +45,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   var data;
   var distance;
   var duration;
+  var startElevation;
+  var endElevation;
 
   final inputTextController = TextEditingController();
   final brown = const Color.fromARGB(255, 80, 62, 33);
@@ -167,37 +177,58 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
 
 // PART FOR THE ROUTE
 
+// PART FOR THE ROUTE
+
   void getJsonData() async {
     // Create an instance of Class NetworkHelper which uses http package
     // for requesting data to the server and receiving response as JSON format
 
-    NetworkHelper network = NetworkHelper(
-      startLat: _allPoints.elementAt(0).latitude,
-      startLng: _allPoints.elementAt(0).longitude,
-      endLat: _allPoints.elementAt(1).latitude,
-      endLng: _allPoints.elementAt(1).longitude,
-    );
-
     try {
       // getData() returns a json Decoded data
-      data = await network.getData();
-      // We can reach to our desired JSON data manually as following
-      LineString ls =
-          LineString(data['features'][0]['geometry']['coordinates']);
-      distance = data['features'][0]['properties']['segments'][0]['distance'];
-      duration = data['features'][0]['properties']['segments'][0]['duration'];
-      print(data.toString());
-      duration = duration / 60;
-      distance = distance / 1000;
-      //  print(distance.toString());
+      // data = await network.getData();
+      OpenRouteService openRouteService = OpenRouteService(
+          apiKey: '5b3ce3597851110001cf6248f83ccaf685cb453bb7c34e18c7a9e31f');
+      List<ORSCoordinate> routeCoordinates =
+          await openRouteService.directionsRouteCoordsGet(
+              startCoordinate: ORSCoordinate(
+                  latitude: _allPoints.elementAt(0).latitude,
+                  longitude: _allPoints.elementAt(0).longitude),
+              endCoordinate: ORSCoordinate(
+                  latitude: _allPoints.elementAt(1).latitude,
+                  longitude: _allPoints.elementAt(1).longitude));
 
-      for (int i = 0; i < ls.lineString.length; i++) {
-        _allRoutePoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
+      for (int i = 0; i < routeCoordinates.length; i++) {
+        _allRoutePoints.add(LatLng(
+            routeCoordinates[i].latitude, routeCoordinates[i].longitude));
+
+        if (i % 15 == 0) {
+          var pointElevation = await openRouteService.elevationPointGet(
+              geometry: ORSCoordinate(
+                  latitude: routeCoordinates[i].latitude,
+                  longitude: routeCoordinates[i].longitude));
+          _allElevation.add(pointElevation.coordinates[0].altitude);
+        }
       }
 
-      if (_allRoutePoints.length == ls.lineString.length) {
-        setPolyLines();
-      }
+      _allElevation.forEach(print);
+
+      startElevation = await openRouteService.elevationPointGet(
+          geometry: ORSCoordinate(
+              latitude: _allPoints.elementAt(0).latitude,
+              longitude: _allPoints.elementAt(0).longitude));
+      endElevation = await openRouteService.elevationPointGet(
+          geometry: ORSCoordinate(
+              latitude: _allPoints.elementAt(1).latitude,
+              longitude: _allPoints.elementAt(1).longitude));
+      var data = await openRouteService.directionsRouteGeoJsonGet(
+          startCoordinate: ORSCoordinate(
+              latitude: _allPoints.elementAt(0).latitude,
+              longitude: _allPoints.elementAt(0).longitude),
+          endCoordinate: ORSCoordinate(
+              latitude: _allPoints.elementAt(1).latitude,
+              longitude: _allPoints.elementAt(1).longitude));
+      duration = data.features[0].properties['segments'][0]['duration'];
+      distance = data.features[0].properties['segments'][0]['distance'];
     } catch (e) {
       print(e);
     }
@@ -241,5 +272,20 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
       context,
       MaterialPageRoute(builder: (context) => const AllRoutes()),
     );
+  }
+
+  Future _getCurrentPosition() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    bool serviceEnabled;
+
+    serviceEnabled = await _geolocatorPlateform.isLocationServiceEnabled();
+    if (serviceEnabled) {
+      final position = await _geolocatorPlateform.getCurrentPosition();
+      return LatLng(position.latitude, position.longitude);
+    }
   }
 }
