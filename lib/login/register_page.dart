@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grp_6_bicycle/login_page.dart';
+import 'package:grp_6_bicycle/login/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

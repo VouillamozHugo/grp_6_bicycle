@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:grp_6_bicycle/register_page.dart';
+import 'package:grp_6_bicycle/login/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
