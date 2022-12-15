@@ -4,7 +4,7 @@ import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 import 'package:grp_6_bicycle/login/LoginWrapper.dart';
 
-import '../all_routes.dart';
+import '../Map/all_routes.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
