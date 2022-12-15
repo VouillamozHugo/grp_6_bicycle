@@ -65,11 +65,13 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
           ],
         )),
         FloatingActionButton(
+          heroTag: "layersButton",
           onPressed: changeLayer,
           child: const Icon(Icons.layers),
           backgroundColor: Colors.transparent,
         ),
         FloatingActionButton(
+            heroTag: "saveButton",
             //Icons.keyboard_backspace_rounded,
             backgroundColor: Colors.transparent,
             child: const Icon(Icons.save),
