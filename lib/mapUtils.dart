@@ -193,9 +193,9 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     debugPrint("Start point " + success.toString());
     //clear previous navigation history
     //and load all routes page
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const AllRoutes()),
-        ModalRoute.withName("/Home"));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AllRoutes()),
+    );
   }
 }
