@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grp_6_bicycle/login/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -82,9 +83,14 @@ class _LoginPageState extends State<LoginPage> {
                         TextStyle(color: brown, fontWeight: FontWeight.w500)),
               ),
             ),
-            OutlinedButton(
-              onPressed: login,
-              child: const Text('login'),
+            SizedBox(
+              width: queryData.size.width * 0.3,
+              height: queryData.size.width * 0.08,
+              child: OutlinedButton(
+                  onPressed: login,
+                  style:
+                      OutlinedButton.styleFrom(side: BorderSide(color: brown)),
+                  child: textCreator('Login', orange)),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return const AllRoutes();
+                          return const RegisterPage();
                         },
                       ),
                     );
@@ -103,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text(
                     'Register',
                     style: TextStyle(
-                      color: Color.fromARGB(255, 51, 102, 204),
+                      color: Color.fromARGB(255, 212, 134, 34),
                       decoration: TextDecoration.underline,
                     ),
                   ),
