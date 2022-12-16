@@ -100,7 +100,6 @@ class _AppDrawerState extends State<AppDrawer> {
 
   void logout() async {
     await FirebaseAuth.instance.signOut();
-    redirectUserToLogin();
   }
 
   void redirectUserToLogin() {
