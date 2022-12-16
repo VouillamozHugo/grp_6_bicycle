@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 import 'package:grp_6_bicycle/login/LoginWrapper.dart';
+import 'package:grp_6_bicycle/navigation/route_names.dart';
 
 import '../Map/all_routes.dart';
 
@@ -54,20 +55,14 @@ class _AppDrawerState extends State<AppDrawer> {
             leading: const Icon(Icons.favorite),
             title: const Text(' My routes '),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AllRoutes()),
-              );
+              Navigator.pushNamed(context, RouteNames.favoriteRoutes);
             },
           ),
           ListTile(
             leading: const Icon(Icons.list),
             title: const Text(' All routes '),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AllRoutes()),
-              );
+              Navigator.pushNamed(context, RouteNames.allRoutes);
             },
           ),
           ListTile(
