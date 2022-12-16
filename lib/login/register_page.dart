@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
-import 'package:grp_6_bicycle/login/login_message_state.dart';
+import 'package:grp_6_bicycle/generic_widgets/FormInput.dart';
+import 'package:grp_6_bicycle/login/input_message_state.dart';
 import 'package:grp_6_bicycle/login/login_page.dart';
-import 'login_message_state.dart';
-import 'login_input_validation.dart';
+import 'input_message_state.dart';
+import 'register_input_validation.dart';
 
 import '../DB/UserDB.dart';
 import '../DTO/UserDTO.dart';
@@ -24,9 +25,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordConfirmationTextController = TextEditingController();
   final firstNameTextController = TextEditingController();
   final lastNameTextController = TextEditingController();
-  String emailMessage = "";
-  String passwordMessage = "";
-  String namesMessage = "";
+  String? emailMessage;
+  String? passwordMessage;
+  String? namesMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -42,130 +43,35 @@ class _RegisterPageState extends State<RegisterPage> {
               height: 120,
               width: queryData.size.width * 0.7,
             ),
-            Text(namesMessage, style: const TextStyle(color: Colors.red)),
-            FractionallySizedBox(
-              widthFactor: 0.7,
-              child: TextField(
-                controller: firstNameTextController,
-                style: TextStyle(
-                  color: brown,
-                ),
-                cursorColor: orange,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: orange,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: brown,
-                      ),
-                    ),
-                    labelText: 'Firstname',
-                    labelStyle:
-                        TextStyle(color: brown, fontWeight: FontWeight.w500)),
-              ),
+            FormInput(
+              textController: firstNameTextController,
+              labelText: "First name",
+              obscureText: false,
+              errorText: namesMessage,
             ),
-            FractionallySizedBox(
-              widthFactor: 0.7,
-              child: TextField(
-                controller: lastNameTextController,
-                style: TextStyle(
-                  color: brown,
-                ),
-                cursorColor: orange,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: orange,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: brown,
-                      ),
-                    ),
-                    labelText: 'Lastname',
-                    labelStyle:
-                        TextStyle(color: brown, fontWeight: FontWeight.w500)),
-              ),
+            FormInput(
+              textController: lastNameTextController,
+              labelText: "Last name",
+              obscureText: false,
+              errorText: null,
             ),
-            Text(emailMessage, style: const TextStyle(color: Colors.red)),
-            FractionallySizedBox(
-              widthFactor: 0.7,
-              child: TextField(
-                controller: emailTextController,
-                style: TextStyle(
-                  color: brown,
-                ),
-                cursorColor: orange,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: orange,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: brown,
-                      ),
-                    ),
-                    labelText: 'Email',
-                    labelStyle:
-                        TextStyle(color: brown, fontWeight: FontWeight.w500)),
-              ),
+            FormInput(
+              textController: emailTextController,
+              labelText: "Email",
+              obscureText: false,
+              errorText: emailMessage,
             ),
-            Text(passwordMessage, style: const TextStyle(color: Colors.red)),
-            FractionallySizedBox(
-              widthFactor: 0.7,
-              child: TextField(
-                controller: passwordTextController,
-                obscureText: true,
-                style: TextStyle(
-                  color: brown,
-                ),
-                cursorColor: orange,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: orange,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: brown,
-                      ),
-                    ),
-                    labelText: 'Password',
-                    labelStyle:
-                        TextStyle(color: brown, fontWeight: FontWeight.w500)),
-              ),
+            FormInput(
+              textController: passwordTextController,
+              labelText: "Password",
+              obscureText: true,
+              errorText: passwordMessage,
             ),
-            FractionallySizedBox(
-              widthFactor: 0.7,
-              child: TextField(
-                controller: passwordConfirmationTextController,
-                obscureText: true,
-                style: TextStyle(
-                  color: brown,
-                ),
-                cursorColor: orange,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: orange,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: brown,
-                      ),
-                    ),
-                    labelText: 'Confirm Password',
-                    labelStyle:
-                        TextStyle(color: brown, fontWeight: FontWeight.w500)),
-              ),
+            FormInput(
+              textController: passwordConfirmationTextController,
+              labelText: "Confirm password",
+              obscureText: true,
+              errorText: null,
             ),
             FractionallySizedBox(
               widthFactor: 0.7,
@@ -248,11 +154,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
     //the login message state have a text and a value
     //they are container for the error message and the input validity
-    LoginMessageState emailState =
+    InputMessageState emailState =
         validator.validatEmail(emailTextController.text);
-    LoginMessageState passwordState = validator.validatePassword(
+    InputMessageState passwordState = validator.validatePassword(
         passwordTextController.text, passwordConfirmationTextController.text);
-    LoginMessageState namesState = validator.validateNames(
+    InputMessageState namesState = validator.validateNames(
         firstNameTextController.text, lastNameTextController.text);
 
     //write all errors on inputs

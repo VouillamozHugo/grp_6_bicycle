@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:grp_6_bicycle/generic_widgets/FormInput.dart';
 import 'package:grp_6_bicycle/login/register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -33,56 +34,16 @@ class _LoginPageState extends State<LoginPage> {
               width: queryData.size.width * 0.7,
             ),
             Text(loginMessage, style: const TextStyle(color: Colors.red)),
-            FractionallySizedBox(
-              widthFactor: 0.7,
-              child: TextField(
-                controller: emailTextController,
+            FormInput(
+                textController: emailTextController,
+                labelText: "Email",
                 obscureText: false,
-                style: TextStyle(
-                  color: brown,
-                ),
-                cursorColor: orange,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: orange,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: brown,
-                      ),
-                    ),
-                    labelText: 'Email',
-                    labelStyle:
-                        TextStyle(color: brown, fontWeight: FontWeight.w500)),
-              ),
-            ),
-            FractionallySizedBox(
-              widthFactor: 0.7,
-              child: TextField(
-                controller: passwordTextController,
+                errorText: null),
+            FormInput(
+                textController: passwordTextController,
+                labelText: "Password",
                 obscureText: true,
-                style: TextStyle(
-                  color: brown,
-                ),
-                cursorColor: orange,
-                decoration: InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: orange,
-                      ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: brown,
-                      ),
-                    ),
-                    labelText: 'Password',
-                    labelStyle:
-                        TextStyle(color: brown, fontWeight: FontWeight.w500)),
-              ),
-            ),
+                errorText: null),
             SizedBox(
               width: queryData.size.width * 0.3,
               height: queryData.size.width * 0.08,
@@ -154,19 +115,39 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool validateInputs() {
-    bool areAllFieldsValid = true;
+    if (emailTextController.text.isEmpty &&
+        passwordTextController.text.isEmpty) {
+      setState(() {
+        loginMessage = "Fill in email and password fields.";
+      });
+      return false;
+    }
+
     if (emailTextController.text.isEmpty) {
       setState(() {
         loginMessage = "Fill in mail address.";
       });
-      areAllFieldsValid = false;
+      return false;
     }
     if (passwordTextController.text.isEmpty) {
       setState(() {
         loginMessage = "Fill in password.";
       });
-      areAllFieldsValid = false;
+      return false;
     }
-    return areAllFieldsValid;
+    //reset error message if everything is ok
+    setState(() {
+      loginMessage = "";
+    });
+    return true;
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
