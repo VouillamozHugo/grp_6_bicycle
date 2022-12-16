@@ -27,7 +27,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final lastNameTextController = TextEditingController();
   String? emailMessage;
   String? passwordMessage;
-  String? namesMessage;
+  String? firstNameMessage;
+  String? lastNameMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +48,13 @@ class _RegisterPageState extends State<RegisterPage> {
               textController: firstNameTextController,
               labelText: "First name",
               obscureText: false,
-              errorText: namesMessage,
+              errorText: firstNameMessage,
             ),
             FormInput(
               textController: lastNameTextController,
               labelText: "Last name",
               obscureText: false,
-              errorText: null,
+              errorText: lastNameMessage,
             ),
             FormInput(
               textController: emailTextController,
@@ -158,17 +159,23 @@ class _RegisterPageState extends State<RegisterPage> {
         validator.validatEmail(emailTextController.text);
     InputMessageState passwordState = validator.validatePassword(
         passwordTextController.text, passwordConfirmationTextController.text);
-    InputMessageState namesState = validator.validateNames(
-        firstNameTextController.text, lastNameTextController.text);
+    InputMessageState firstnamesState =
+        validator.validateFirstName(firstNameTextController.text);
+    InputMessageState lastnamesState =
+        validator.validateLastName(lastNameTextController.text);
 
     //write all errors on inputs
     setState(() {
       emailMessage = emailState.message;
       passwordMessage = passwordState.message;
-      namesMessage = namesState.message;
+      firstNameMessage = firstnamesState.message;
+      lastNameMessage = lastnamesState.message;
     });
 
-    return (namesState.result && emailState.result && passwordState.result);
+    return (emailState.result &&
+        passwordState.result &&
+        firstnamesState.result &&
+        lastnamesState.result);
   }
 
   UserDTO buildUserFromFields() {

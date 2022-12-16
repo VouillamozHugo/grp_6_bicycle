@@ -21,8 +21,7 @@ class InputValidation {
       return InputMessageState("Fill in password.", false);
     }
     if (password != passwordConfirmation) {
-      return InputMessageState(
-          "Confirmation password does not match the provided one.", false);
+      return InputMessageState("Confirmation password does not match.", false);
     }
     if (password.length < 8) {
       return InputMessageState(
@@ -31,11 +30,17 @@ class InputValidation {
     return InputMessageState(null, true);
   }
 
-  InputMessageState validateNames(String lastName, String firstName) {
-    if (lastName.isNotEmpty && firstName.isNotEmpty) {
-      return InputMessageState(null, true);
+  InputMessageState validateFirstName(String firstName) {
+    if (firstName.isEmpty) {
+      return InputMessageState("Fill in first name.", false);
     }
-    return InputMessageState(
-        "Fill in both first name and last name fields.", false);
+    return InputMessageState(null, true);
+  }
+
+  InputMessageState validateLastName(String lastName) {
+    if (lastName.isEmpty) {
+      return InputMessageState("Fill in last name.", false);
+    }
+    return InputMessageState(null, true);
   }
 }
