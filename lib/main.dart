@@ -21,10 +21,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: appTitle,
-      home: const LoginWrapper(),
-    ); // MaterialApp
+    return const LoginWrapper(); // MaterialApp
   }
 }
