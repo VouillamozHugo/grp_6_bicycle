@@ -2,10 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grp_6_bicycle/Map/adminAddRoute.dart';
-import 'package:grp_6_bicycle/all_routes.dart';
-import 'package:grp_6_bicycle/login/login_page.dart';
-import 'package:grp_6_bicycle/login/register_page.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
 
 class LoginWrapper extends StatefulWidget {
@@ -52,16 +48,7 @@ class _LoginWrapperState extends State<LoginWrapper> {
       title: 'CycleWay',
       navigatorKey: _navigatorKey,
       initialRoute: user == null ? RouteNames.login : RouteNames.allRoutes,
-      routes: {
-        //cycling routes
-        RouteNames.allRoutes: (context) => const AllRoutes(),
-        RouteNames.drawRoutes: (context) => const AdminMap(),
-        RouteNames.favoriteRoutes: (context) => const AllRoutes(),
-
-        //register / login
-        RouteNames.login: (context) => const LoginPage(),
-        RouteNames.register: (context) => const RegisterPage(),
-      },
+      routes: RouteNames.routes,
     );
   }
 }
