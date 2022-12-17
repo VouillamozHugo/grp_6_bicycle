@@ -1,5 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:grp_6_bicycle/DB/FirebaseConst.dart';
+import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 
 class RouteDB {
   final routeRef = FirebaseConst.routeRef;
@@ -19,9 +23,23 @@ class RouteDB {
     }
   }
 
-  Future<List<RouteDTO?>> getRoutesByCreatorId(String creatorId) async {
+  Future<List<RouteDTO>> getRoutesByCreatorId(String creatorId) async {
     final querySnapshot =
         await routeRef.where("creatorId", isEqualTo: creatorId).get();
+    List<RouteDTO> routes = [];
+    for (var doc in querySnapshot.docs) {
+      routes.add(doc.data());
+    }
+    return routes;
+  }
+
+  Future<List<RouteDTO>> getFavoriteRoutesByUserId(UserDTO user) async {
+    if (user.favoriteRoutes == null || user.favoriteRoutes!.isEmpty) {
+      return [];
+    }
+    final querySnapshot =
+        //__name__ property points to the document id
+        await routeRef.where('__name__', whereIn: user.favoriteRoutes).get();
     List<RouteDTO> routes = [];
     for (var doc in querySnapshot.docs) {
       routes.add(doc.data());

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/Map/adminAddRoute.dart';
+import 'package:grp_6_bicycle/Map/favorite_routes.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
 import 'package:grp_6_bicycle/login/login_page.dart';
 import 'package:grp_6_bicycle/login/register_page.dart';
@@ -9,7 +10,7 @@ class RouteNames {
     //cycling routes
     allRoutes: (context) => const AllRoutes(),
     drawRoutes: (context) => const AdminMap(),
-    favoriteRoutes: (context) => const AllRoutes(),
+    favoriteRoutes: (context) => const FavoriteRoutes(),
 
     //register / login
     login: (context) => const LoginPage(),

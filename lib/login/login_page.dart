@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:grp_6_bicycle/all_routes.dart';
+import 'package:grp_6_bicycle/Map/all_routes.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:grp_6_bicycle/generic_widgets/FormInput.dart';
 import 'package:grp_6_bicycle/login/register_page.dart';
+import 'package:grp_6_bicycle/navigation/route_names.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -59,13 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                 Text('Need an account ? ', style: TextStyle(color: brown)),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return const RegisterPage();
-                        },
-                      ),
-                    );
+                    Navigator.pushNamed(context, RouteNames.register);
                   },
                   child: const Text(
                     'Register',
@@ -105,13 +100,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void navigateToAllRoutes() {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (BuildContext context) {
-          return const AllRoutes();
-        },
-      ),
-    );
+    Navigator.pushNamed(context, RouteNames.allRoutes);
   }
 
   bool validateInputs() {
