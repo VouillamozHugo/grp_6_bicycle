@@ -53,7 +53,7 @@ class _AllRoutesState extends State<AllRoutes> {
       routes = routesList;
     });
   }
-}
+} 
 
 class Routes extends StatefulWidget {
   final RouteDTO route;
@@ -64,6 +64,11 @@ class Routes extends StatefulWidget {
 }
 
 class _RoutesState extends State<Routes> {
+  bool isFavorite = false;
+  Icon favorite = const Icon(
+    Icons.favorite,
+  );
+
   @override
   Widget build(BuildContext context) {
     final LatLng startPoint = LatLng(widget.route.coordinates['startLatitude']!,
@@ -99,10 +104,15 @@ class _RoutesState extends State<Routes> {
                   Icons.warning,
                   color: Colors.yellow,
                 ),
-                const Icon(
-                  Icons.favorite,
-                  color: Colors.pink,
-                )
+                IconButton(
+                  onPressed: () {
+                    isFavorite = !isFavorite;
+                    setState(() {
+                      getFavorite(isFavorite);
+                    });
+                  },
+                  icon: getFavorite(isFavorite),
+                ),
               ],
             ),
             Row(
@@ -135,6 +145,20 @@ class _RoutesState extends State<Routes> {
           ],
         ),
       ),
+    );
+  }
+}
+
+Icon getFavorite(bool isFav) {
+  if (isFav) {
+    return const Icon(
+      Icons.favorite,
+      color: Colors.pink,
+    );
+  } else {
+    return const Icon(
+      Icons.favorite_border,
+      color: Colors.pink,
     );
   }
 }

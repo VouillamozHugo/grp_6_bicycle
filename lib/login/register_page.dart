@@ -86,13 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: OutlinedButton.styleFrom(
                           side: BorderSide(color: brown)),
                       onPressed: () {
-                        Navigator.of(context).pop(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return const LoginPage();
-                            },
-                          ),
-                        );
+                        Navigator.of(context).pop();
                       },
                       child: textCreator('Go to login', orange),
                     ),
