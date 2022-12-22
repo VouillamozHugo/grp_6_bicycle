@@ -13,6 +13,9 @@ class UserDTO {
   final List<String>? favoriteRoutes;
   final List<String>? createdRoutes;
 
+  static const BIKER_USER_TYPE = 1;
+  static const ADMIN_USER_TYPE = 2;
+
   factory UserDTO.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,

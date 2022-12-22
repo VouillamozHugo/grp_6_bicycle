@@ -1,5 +1,8 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/Map/adminAddRoute.dart';
+import 'package:grp_6_bicycle/Map/created_routes.dart';
 import 'package:grp_6_bicycle/Map/favorite_routes.dart';
 import 'package:grp_6_bicycle/all_routes.dart';
 import 'package:grp_6_bicycle/login/login_page.dart';
@@ -15,6 +18,9 @@ class RouteNames {
     //register / login
     login: (context) => const LoginPage(),
     register: (context) => const RegisterPage(),
+
+    //admin
+    createdRoutes: (context) => const CreatedRoutes(),
   };
 
   //cycling routes
@@ -25,4 +31,7 @@ class RouteNames {
   //login / register
   static const String login = "login";
   static const String register = "register";
+
+  //admin
+  static const String createdRoutes = "createdRoutes";
 }

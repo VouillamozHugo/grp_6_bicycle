@@ -6,14 +6,14 @@ import '../DB/UserDB.dart';
 import '../DTO/RouteDTO.dart';
 import '../DTO/UserDTO.dart';
 
-class FavoriteRoutes extends StatefulWidget {
-  const FavoriteRoutes({super.key});
+class CreatedRoutes extends StatefulWidget {
+  const CreatedRoutes({super.key});
 
   @override
-  State<FavoriteRoutes> createState() => _FavoriteRoutesState();
+  State<CreatedRoutes> createState() => _CreatedRoutesState();
 }
 
-class _FavoriteRoutesState extends State<FavoriteRoutes> {
+class _CreatedRoutesState extends State<CreatedRoutes> {
   //before the build to avoid reset at every render
   List<RouteDTO> routes = [];
   UserDTO? user;
