@@ -17,10 +17,12 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> {
   UserDTO? loggedInUser;
   String? loggedInEmail;
+  ListTile? createdRouteAdmin;
 
   @override
   Widget build(BuildContext context) {
     setConnectedUser();
+    setAvailableNavigationButtons();
     return Drawer(
       child: Column(
         children: <Widget>[
@@ -51,6 +53,8 @@ class _AppDrawerState extends State<AppDrawer> {
             //BoxDecoration
             //child:
           ),
+          // conditional rendering
+          createdRouteAdmin ?? const Center(),
           ListTile(
             leading: const Icon(Icons.favorite),
             title: const Text(' My routes '),
@@ -109,10 +113,27 @@ class _AppDrawerState extends State<AppDrawer> {
       return;
     }
     String loggedInId = authUser.uid;
-    UserDTO tempUser = await UserDB().getUserById(loggedInId);
+    UserDTO? tempUser = await UserDB().getUserById(loggedInId);
     setState(() {
       loggedInUser = tempUser;
       loggedInEmail = authUser.email;
     });
+  }
+
+  void setAvailableNavigationButtons() {
+    if (loggedInUser == null) return;
+    switch (loggedInUser!.userType) {
+      // user navigation
+      case UserDTO.BIKER_USER_TYPE:
+        break;
+      // admin navigation
+      case UserDTO.ADMIN_USER_TYPE:
+        createdRouteAdmin = ListTile(
+            leading: const Icon(Icons.admin_panel_settings),
+            title: const Text(' Created routes '),
+            onTap: () {
+              Navigator.pushNamed(context, RouteNames.createdRoutes);
+            });
+    }
   }
 }
