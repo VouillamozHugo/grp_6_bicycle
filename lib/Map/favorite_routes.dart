@@ -21,7 +21,11 @@ class _FavoriteRoutesState extends State<FavoriteRoutes> {
   @override
   Widget build(BuildContext context) {
     getFavoriteRoutes();
-    return RoutesList(routes: routes, listTitle: "Favorite routes");
+    return RoutesList(
+      routes: routes,
+      listTitle: "Favorite routes",
+      areRoutesEditable: false,
+    );
   }
 
   getFavoriteRoutes() async {

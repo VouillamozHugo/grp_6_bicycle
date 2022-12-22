@@ -24,7 +24,11 @@ class _CreatedRoutesState extends State<CreatedRoutes> {
   Widget build(BuildContext context) {
     redirectNonAdminUser();
     getCreatedRoutes();
-    return RoutesList(routes: routes, listTitle: "Created routes");
+    return RoutesList(
+      routes: routes,
+      listTitle: "Created routes",
+      areRoutesEditable: true,
+    );
   }
 
   getCreatedRoutes() async {

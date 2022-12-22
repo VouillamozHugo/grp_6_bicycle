@@ -18,7 +18,11 @@ class _AllRoutesState extends State<AllRoutes> {
   @override
   Widget build(BuildContext context) {
     getAllRoutes();
-    return RoutesList(routes: routes, listTitle: "All routes");
+    return RoutesList(
+      routes: routes,
+      listTitle: "All routes",
+      areRoutesEditable: false,
+    );
   }
 
   getAllRoutes() async {

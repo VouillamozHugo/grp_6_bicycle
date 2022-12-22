@@ -13,11 +13,13 @@ import '../navigation/my_drawer.dart';
 class RoutesList extends StatefulWidget {
   final List<RouteDTO> routes;
   final String listTitle;
+  final bool areRoutesEditable;
 
   const RoutesList({
     super.key,
     required this.routes,
     required this.listTitle,
+    required this.areRoutesEditable,
   });
 
   @override
@@ -37,7 +39,7 @@ class _RoutesListState extends State<RoutesList> {
         itemBuilder: (BuildContext contect, int index) {
           return Container(
             margin: const EdgeInsets.all(10.0),
-            child: Routes(widget.routes[index]),
+            child: Routes(widget.routes[index], widget.areRoutesEditable),
           );
         },
         separatorBuilder: (context, position) {
@@ -62,7 +64,8 @@ class _RoutesListState extends State<RoutesList> {
 
 class Routes extends StatefulWidget {
   final RouteDTO route;
-  const Routes(this.route, {super.key});
+  final bool isRouteEditable;
+  const Routes(this.route, this.isRouteEditable, {super.key});
 
   @override
   State<Routes> createState() => _RoutesState();
@@ -86,7 +89,7 @@ class _RoutesState extends State<Routes> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return DetailsRoutes(widget.route);
+              return DetailsRoutes(widget.route, widget.isRouteEditable);
             },
           ),
         );

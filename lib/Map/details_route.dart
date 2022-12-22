@@ -10,7 +10,8 @@ import 'all_routes.dart';
 
 class DetailsRoutes extends StatelessWidget {
   final RouteDTO route;
-  const DetailsRoutes(this.route, {super.key});
+  final bool isRouteEditable;
+  const DetailsRoutes(this.route, this.isRouteEditable, {super.key});
 
   @override
   Widget build(BuildContext context) {
