@@ -33,7 +33,7 @@ class RouteDB {
     return routes;
   }
 
-  Future<List<RouteDTO>> getFavoriteRoutesByUserId(UserDTO user) async {
+  Future<List<RouteDTO>> getFavoriteRoutesByUser(UserDTO user) async {
     if (user.favoriteRoutes == null || user.favoriteRoutes!.isEmpty) {
       return [];
     }
@@ -49,6 +49,20 @@ class RouteDB {
 
   Future<List<RouteDTO>> getAllRoutes() async {
     final querySnapshot = await routeRef.get();
+    List<RouteDTO> routes = [];
+    for (var doc in querySnapshot.docs) {
+      routes.add(doc.data());
+    }
+    return routes;
+  }
+
+  Future<List<RouteDTO>> getCreatedRoutesByUser(UserDTO user) async {
+    if (user.createdRoutes == null || user.createdRoutes!.isEmpty) {
+      return [];
+    }
+    final querySnapshot =
+        //__name__ property points to the document id
+        await routeRef.where('__name__', whereIn: user.createdRoutes).get();
     List<RouteDTO> routes = [];
     for (var doc in querySnapshot.docs) {
       routes.add(doc.data());

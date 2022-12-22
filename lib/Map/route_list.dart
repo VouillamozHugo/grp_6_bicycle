@@ -52,7 +52,7 @@ class _RoutesListState extends State<RoutesList> {
   getUser() async {
     if (user != null) return;
     UserDB u = UserDB();
-    UserDTO userTemp = await u.getUserById(u.getConnectedUser()!.uid);
+    UserDTO? userTemp = await u.getConnectedUser();
     setState(() {
       user = userTemp;
     });

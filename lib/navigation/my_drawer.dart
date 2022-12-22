@@ -109,7 +109,7 @@ class _AppDrawerState extends State<AppDrawer> {
       return;
     }
     String loggedInId = authUser.uid;
-    UserDTO tempUser = await UserDB().getUserById(loggedInId);
+    UserDTO? tempUser = await UserDB().getUserById(loggedInId);
     setState(() {
       loggedInUser = tempUser;
       loggedInEmail = authUser.email;

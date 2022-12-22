@@ -20,23 +20,23 @@ class _FavoriteRoutesState extends State<FavoriteRoutes> {
 
   @override
   Widget build(BuildContext context) {
-    getFavoriteRoutes();
-    return RoutesList(routes: routes, listTitle: "Favorite routes");
+    getCreatedRoutes();
+    return RoutesList(routes: routes, listTitle: "Created routes");
   }
 
-  getFavoriteRoutes() async {
+  getCreatedRoutes() async {
     // condition to only access the db once
     if (user != null) return;
     debugPrint("DATABASE ACCESS");
 
-    //access user
+    // access user
     UserDB udb = UserDB();
     UserDTO? userTemp = await udb.getConnectedUser();
     if (userTemp == null) return;
 
     // access user's routes
     RouteDB routeDB = RouteDB();
-    List<RouteDTO> routesList = await routeDB.getFavoriteRoutesByUser(userTemp);
+    List<RouteDTO> routesList = await routeDB.getCreatedRoutesByUser(userTemp);
     setState(() {
       user = userTemp;
       routes = routesList;
