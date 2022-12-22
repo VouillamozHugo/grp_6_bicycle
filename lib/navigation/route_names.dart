@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/Map/adminAddRoute.dart';
 import 'package:grp_6_bicycle/Map/created_routes.dart';

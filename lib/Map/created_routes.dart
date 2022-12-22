@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/Map/route_list.dart';
+import 'package:grp_6_bicycle/login/login_manager.dart';
+import 'package:grp_6_bicycle/navigation/route_names.dart';
 
 import '../DB/RouteDB.dart';
 import '../DB/UserDB.dart';
@@ -20,6 +22,7 @@ class _CreatedRoutesState extends State<CreatedRoutes> {
 
   @override
   Widget build(BuildContext context) {
+    redirectNonAdminUser();
     getCreatedRoutes();
     return RoutesList(routes: routes, listTitle: "Created routes");
   }
@@ -41,5 +44,12 @@ class _CreatedRoutesState extends State<CreatedRoutes> {
       user = userTemp;
       routes = routesList;
     });
+  }
+
+  redirectNonAdminUser() async {
+    debugPrint("checking if the user is an admin");
+    if (!await LoginManager.isAnAdminConnected()) {
+      Navigator.pushNamed(context, RouteNames.login);
+    }
   }
 }

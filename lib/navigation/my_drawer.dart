@@ -53,7 +53,8 @@ class _AppDrawerState extends State<AppDrawer> {
             //BoxDecoration
             //child:
           ),
-          createdRouteAdmin ?? const Text(""),
+          // conditional rendering
+          createdRouteAdmin ?? const Center(),
           ListTile(
             leading: const Icon(Icons.favorite),
             title: const Text(' My routes '),
