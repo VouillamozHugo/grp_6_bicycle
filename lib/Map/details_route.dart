@@ -6,8 +6,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:grp_6_bicycle/report_bug.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 
-import 'all_routes.dart';
-
 class DetailsRoutes extends StatelessWidget {
   final RouteDTO route;
   const DetailsRoutes(this.route, {super.key});
@@ -109,4 +107,17 @@ class DetailsText extends StatelessWidget {
       )),
     );
   }
+}
+
+BoxDecoration myBoxDecoration() {
+  return BoxDecoration(
+    color: const Color.fromARGB(247, 247, 247, 247),
+    border: Border.all(
+      color: const Color.fromARGB(255, 80, 62, 33),
+      width: 1.0,
+    ),
+    borderRadius: const BorderRadius.all(
+      Radius.circular(10.0),
+    ),
+  );
 }
