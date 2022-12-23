@@ -101,6 +101,11 @@ class RouteDB {
         oldRoute.startPoint == newRoute.startPoint &&
         oldRoute.endPoint == newRoute.endPoint) return false;
 
+    // check user rights to update this route
+    if (oldRoute.creatorId != UserDB().getConnectedFirebaseUser()!.uid) {
+      return false;
+    }
+
     //unique name constraint
     if (oldRoute.routeName != newRoute.routeName &&
         await getRouteByName(newRoute.routeName) != null) return false;
