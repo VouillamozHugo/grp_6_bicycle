@@ -17,13 +17,14 @@ class DetailsRoutes extends StatelessWidget {
         appBar: const MyAppBar(
           title: "Route details",
         ),
-        body: DetailsBuilder(route));
+        body: DetailsBuilder(route, isRouteEditable));
   }
 }
 
 class DetailsBuilder extends StatelessWidget {
   final RouteDTO route;
-  const DetailsBuilder(this.route, {super.key});
+  final bool isRouteEditable;
+  const DetailsBuilder(this.route, this.isRouteEditable, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,20 +32,20 @@ class DetailsBuilder extends StatelessWidget {
         route.coordinates['startLongitude']!);
     final LatLng endPoint = LatLng(
         route.coordinates['endLatitude']!, route.coordinates['endLongitude']!);
+
+    TextEditingController routeNameTextController =
+        TextEditingController(text: route.routeName);
+
+    // route name can't use the same method as other detail fields
+    // as it has a different size and a different layout context
+    final routeNameField = setRouteNameField(routeNameTextController);
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(
-          route.routeName,
-          style: const TextStyle(
-            color: Color.fromARGB(255, 131, 90, 33),
-            height: 2,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        routeNameField,
         SmallMap(startPoint, endPoint, 300, 800),
-        DetailsText(route),
+        DetailsText(route, isRouteEditable, routeNameTextController),
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
@@ -67,14 +68,40 @@ class DetailsBuilder extends StatelessWidget {
       ],
     );
   }
+
+  Widget setRouteNameField(TextEditingController routeNameTextController) {
+    const routeNameTextStyle = TextStyle(
+      color: Color.fromARGB(255, 131, 90, 33),
+      height: 2,
+      fontSize: 30,
+      fontWeight: FontWeight.bold,
+    );
+    return isRouteEditable
+        ? TextField(
+            style: routeNameTextStyle,
+            controller: routeNameTextController,
+            textAlign: TextAlign.center,
+          )
+        : Text(
+            route.routeName,
+            style: routeNameTextStyle,
+          );
+  }
 }
 
 class DetailsText extends StatelessWidget {
   final RouteDTO route;
-  const DetailsText(this.route, {super.key});
+  final bool isRouteEditable;
+  final TextEditingController routeNameController;
+  const DetailsText(this.route, this.isRouteEditable, this.routeNameController,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final startPointTextController =
+        TextEditingController(text: route.startPoint);
+    final endPointTextController =
+        TextEditingController(text: route.startPoint);
     return Container(
       decoration: myBoxDecoration(),
       margin: const EdgeInsets.all(20),
@@ -93,21 +120,50 @@ class DetailsText extends StatelessWidget {
               Text("Height diff."),
             ],
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(route.startPoint),
-              Text(route.endPoint),
-              Text("${route.distanceKm}km"),
-              Text("${route.durationMinutes}m"),
-              Text(
-                  "${route.heightDiffUpMeters}m -${route.heightDiffDownMeters}m"),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                getTextFieldOrText(
+                    isRouteEditable,
+                    route.startPoint,
+                    startPointTextController,
+                    const TextStyle(),
+                    TextAlign.right),
+                getTextFieldOrText(isRouteEditable, route.endPoint,
+                    endPointTextController, const TextStyle(), TextAlign.right),
+                Text("${route.distanceKm}km"),
+                Text("${route.durationMinutes}m"),
+                Text(
+                    "${route.heightDiffUpMeters}m -${route.heightDiffDownMeters}m"),
+              ],
+            ),
           ),
         ],
       )),
     );
   }
+}
+
+Widget getTextFieldOrText(
+    bool isRouteEditable,
+    String initialText,
+    TextEditingController textEditingController,
+    TextStyle textStyle,
+    TextAlign textAlign) {
+  if (isRouteEditable) {
+    return Expanded(
+      child: TextField(
+        style: textStyle,
+        controller: textEditingController,
+        textAlign: textAlign,
+      ),
+    );
+  }
+  return Text(
+    initialText,
+    style: textStyle,
+  );
 }
 
 BoxDecoration myBoxDecoration() {
