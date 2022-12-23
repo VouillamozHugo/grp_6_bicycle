@@ -95,10 +95,19 @@ class RouteDB {
   /*
   Edit
   */
-  Future<bool> udpateRoute(String routeToUpdateName, RouteDTO newRoute) async {
+  Future<bool> udpateRoute(RouteDTO oldRoute, RouteDTO newRoute) async {
+    // do not access db if no changes have been made
+    if (oldRoute.routeName == newRoute.routeName &&
+        oldRoute.startPoint == newRoute.startPoint &&
+        oldRoute.endPoint == newRoute.endPoint) return false;
+
+    //unique name constraint
+    if (oldRoute.routeName != newRoute.routeName &&
+        await getRouteByName(newRoute.routeName) != null) return false;
+
     try {
       final queryDocumentSnapshot =
-          await getRouteDocumentSnapshotByName(routeToUpdateName);
+          await getRouteDocumentSnapshotByName(oldRoute.routeName);
       routeRef.doc(queryDocumentSnapshot.id).set(newRoute);
       return true;
       //throws an exception when no route is found

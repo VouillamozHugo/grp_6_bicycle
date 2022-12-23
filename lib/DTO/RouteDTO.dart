@@ -14,9 +14,9 @@ class RouteDTO {
       required this.numberOfLikes});
 
   final String creatorId;
-  final String routeName;
-  final String startPoint;
-  final String endPoint;
+  String routeName;
+  String startPoint;
+  String endPoint;
   final Map<String, double> coordinates;
   final double distanceKm;
   final double durationMinutes;
@@ -55,5 +55,19 @@ class RouteDTO {
       'heightDiffDownMeters': heightDiffDownMeters,
       'numberOfLikes': numberOfLikes,
     };
+  }
+
+  RouteDTO clone() {
+    return RouteDTO(
+        creatorId: creatorId,
+        routeName: routeName,
+        startPoint: startPoint,
+        endPoint: endPoint,
+        coordinates: coordinates,
+        distanceKm: distanceKm,
+        durationMinutes: durationMinutes,
+        heightDiffUpMeters: heightDiffUpMeters,
+        heightDiffDownMeters: heightDiffDownMeters,
+        numberOfLikes: numberOfLikes);
   }
 }
