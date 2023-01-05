@@ -284,7 +284,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         startPoint: "Bramois",
         endPoint: "Liddes",
         coordinates: coordinates,
-        distanceKm: distance,
+        distanceKm: distance as double,
         durationMinutes: duration / 60 as double,
         creatorId: UserDB().getConnectedFirebaseUser()!.uid,
         heightDiffUpMeters: 0,
