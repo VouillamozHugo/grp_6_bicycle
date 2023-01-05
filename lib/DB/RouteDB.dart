@@ -8,6 +8,7 @@ import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 
 class RouteDB {
   final routeRef = FirebaseConst.routeRef;
+  final userRef = FirebaseConst.userRef;
 
   /*
   Single member query
@@ -127,7 +128,13 @@ class RouteDB {
   Future<bool> addRoute(RouteDTO route) async {
     //route name must be unique
     if (await getRouteByName(route.routeName) == null) {
-      await routeRef.add(route);
+      //add in route collection
+      DocumentReference<RouteDTO> createdRouteRef = await routeRef.add(route);
+
+      //add in user created routes
+      await userRef.doc(UserDB().getConnectedFirebaseUser()!.uid).update({
+        "createdRoutes": FieldValue.arrayUnion([createdRouteRef.id]),
+      });
       return true;
     }
     return false;
