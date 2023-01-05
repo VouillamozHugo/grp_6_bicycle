@@ -74,8 +74,15 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        updateRouteButton,
-        deleteRouteButton,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            updateRouteButton,
+            const SizedBox(width: 10),
+            deleteRouteButton,
+            const SizedBox(width: 20),
+          ],
+        ),
         routeNameField,
         SmallMap(startPoint, endPoint, 300, 800),
         DetailsText(route, widget.isRouteEditable, startPointTextController,
@@ -105,13 +112,10 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
 
   Widget setDeleteButton(ButtonStyle buttonStyle, String routeName) {
     return widget.isRouteEditable
-        ? Align(
-            alignment: Alignment.centerRight,
-            child: OutlinedButton(
-                onPressed: () => deleteRoute(routeName),
-                style: buttonStyle,
-                child: textCreator('Delete', ApplicationConstants.ORANGE)),
-          )
+        ? OutlinedButton(
+            onPressed: () => deleteRoute(routeName),
+            style: buttonStyle,
+            child: textCreator('Delete', ApplicationConstants.ORANGE))
         : const Center();
   }
 
@@ -122,14 +126,11 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
     TextEditingController endPointTextController,
   ) {
     return widget.isRouteEditable
-        ? Align(
-            alignment: Alignment.center,
-            child: OutlinedButton(
-                onPressed: () => updateRoute(routeNameTextController,
-                    startPointTextController, endPointTextController),
-                style: buttonStyle,
-                child: textCreator('Edit', ApplicationConstants.ORANGE)),
-          )
+        ? OutlinedButton(
+            onPressed: () => updateRoute(routeNameTextController,
+                startPointTextController, endPointTextController),
+            style: buttonStyle,
+            child: textCreator('Edit', ApplicationConstants.ORANGE))
         : const Center();
   }
 
