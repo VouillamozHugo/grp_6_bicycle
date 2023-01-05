@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/Map/adminAddRoute.dart';
 import 'package:grp_6_bicycle/Map/created_routes.dart';
 import 'package:grp_6_bicycle/Map/favorite_routes.dart';
-import 'package:grp_6_bicycle/all_routes.dart';
+import 'package:grp_6_bicycle/Map/all_routes.dart';
 import 'package:grp_6_bicycle/login/login_page.dart';
 import 'package:grp_6_bicycle/login/register_page.dart';
 

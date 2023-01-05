@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/route_list.dart';
 
-import '../DB/RouteDB.dart';
+import '../DB/RouteWithIdDB.dart';
 import '../DB/UserDB.dart';
-import '../DTO/RouteDTO.dart';
 import '../DTO/UserDTO.dart';
 
 class FavoriteRoutes extends StatefulWidget {
@@ -15,14 +15,14 @@ class FavoriteRoutes extends StatefulWidget {
 
 class _FavoriteRoutesState extends State<FavoriteRoutes> {
   //before the build to avoid reset at every render
-  List<RouteDTO> routes = [];
+  List<RouteWithId> routes = [];
   UserDTO? user;
 
   @override
   Widget build(BuildContext context) {
     getFavoriteRoutes();
     return RoutesList(
-      routes: routes,
+      fullRoutes: routes,
       listTitle: "Favorite routes",
       areRoutesEditable: false,
     );
@@ -39,8 +39,9 @@ class _FavoriteRoutesState extends State<FavoriteRoutes> {
     if (userTemp == null) return;
 
     // access user's routes
-    RouteDB routeDB = RouteDB();
-    List<RouteDTO> routesList = await routeDB.getFavoriteRoutesByUser(userTemp);
+    RouteWithIdDB routeDB = RouteWithIdDB();
+    List<RouteWithId> routesList =
+        await routeDB.getFavoritesRoutesByUser(userTemp);
     setState(() {
       user = userTemp;
       routes = routesList;
