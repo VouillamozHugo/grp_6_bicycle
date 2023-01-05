@@ -23,4 +23,17 @@ class UserDB {
   void createUser(String userAuthId, UserDTO user) async {
     await userRef.doc(userAuthId).set(user);
   }
+
+  Future<bool> udpateFavorite(UserDTO user, String id) async {
+    user.favoriteRoutes!.contains(id)
+        ? user.favoriteRoutes!.remove(id)
+        : user.favoriteRoutes!.add(id);
+    try {
+      userRef.doc(getConnectedFirebaseUser()?.uid).set(user);
+      return true;
+      //throws an exception when no route is found
+    } on StateError {
+      return false;
+    }
+  }
 }
