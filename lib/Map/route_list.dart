@@ -79,11 +79,11 @@ class Routes extends StatefulWidget {
 }
 
 class _RoutesState extends State<Routes> {
-  late bool isFavorite =
-      widget.user.favoriteRoutes!.contains(widget.routeWithId.id);
+  late bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
+    isFavorite = widget.user.favoriteRoutes!.contains(widget.routeWithId.id);
     final LatLng startPoint = LatLng(
         widget.routeWithId.route.coordinates['startLatitude']!,
         widget.routeWithId.route.coordinates['startLongitude']!);
@@ -122,7 +122,9 @@ class _RoutesState extends State<Routes> {
                 ),
                 IconButton(
                   onPressed: () {
-                    isFavorite = !isFavorite;
+                    //isFavorite = !isFavorite;
+                    UserDB u = UserDB();
+                    u.udpateFavorite(widget.user, widget.routeWithId.id);
                     setState(() {
                       getFavorite(isFavorite);
                     });
