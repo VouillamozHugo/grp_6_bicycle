@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:grp_6_bicycle/BLL/route_sorter.dart';
 import 'package:grp_6_bicycle/DB/UserDB.dart';
-import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/details_route.dart';
 
@@ -9,21 +8,18 @@ import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../DB/RouteDB.dart';
-import '../DB/RouteWithIdDB.dart';
 import '../DTO/UserDTO.dart';
 import '../navigation/my_app_bar.dart';
 import '../navigation/my_drawer.dart';
 
 class RoutesList extends StatefulWidget {
   final List<RouteWithId> fullRoutes;
-  //final List<RouteDTO> routes;
   final String listTitle;
   final bool areRoutesEditable;
 
   const RoutesList({
     super.key,
     required this.fullRoutes,
-    //required this.routes,
     required this.listTitle,
     required this.areRoutesEditable,
   });
@@ -34,28 +30,77 @@ class RoutesList extends StatefulWidget {
 
 class _RoutesListState extends State<RoutesList> {
   UserDTO? user;
+  final sortingCriterias = [
+    "distance",
+    "duration",
+    "Height up difference",
+    "Height down difference"
+  ];
+  String selectedCriteria = "distance";
+  bool isSortingAsc = true;
+
   @override
   Widget build(BuildContext context) {
     getUser();
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: MyAppBar(title: widget.listTitle),
-      body: ListView.separated(
-        itemCount: widget.fullRoutes.length,
-        itemBuilder: (BuildContext contect, int index) {
-          return Container(
-            margin: const EdgeInsets.all(10.0),
-            child: Routes(
-                widget.fullRoutes[index], widget.areRoutesEditable, user!),
-          );
-        },
-        separatorBuilder: (context, position) {
-          return const Card(
-            color: Color.fromARGB(255, 252, 252, 252),
-          );
-        },
+      body: Column(
+        children: [
+          Row(
+            children: [
+              const SizedBox(width: 15),
+              DropdownButton(
+                  items: sortingCriterias.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                  value: selectedCriteria,
+                  onChanged: (newValue) => setSelection(newValue)),
+              IconButton(
+                onPressed: sortRoutes,
+                icon: isSortingAsc
+                    ? const Icon(Icons.arrow_downward)
+                    : const Icon(Icons.arrow_upward),
+              ),
+            ],
+          ),
+          Expanded(
+            child: ListView.separated(
+              itemCount: widget.fullRoutes.length,
+              itemBuilder: (BuildContext contect, int index) {
+                return Container(
+                  margin: const EdgeInsets.all(10.0),
+                  child: Routes(widget.fullRoutes[index],
+                      widget.areRoutesEditable, user!),
+                );
+              },
+              separatorBuilder: (context, position) {
+                return const Card(
+                  color: Color.fromARGB(255, 252, 252, 252),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
+  }
+
+  setSelection(String? newValue) {
+    setState(() {
+      selectedCriteria = newValue!;
+    });
+  }
+
+  sortRoutes() {
+    setState(() {
+      isSortingAsc = !isSortingAsc;
+      RouteSorter()
+          .sortRoute(widget.fullRoutes, selectedCriteria, isSortingAsc);
+    });
   }
 
   getUser() async {
