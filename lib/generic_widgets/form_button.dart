@@ -4,14 +4,17 @@ import 'package:grp_6_bicycle/login/register_page.dart';
 import '../application_constants.dart';
 
 class FormButton extends StatelessWidget {
-  const FormButton({super.key});
+  final Function onClickFunction;
+  final String buttonText;
+  const FormButton(
+      {super.key, required this.onClickFunction, required this.buttonText});
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-        onPressed: () => {},
+        onPressed: () => onClickFunction,
         style: OutlinedButton.styleFrom(
             side: const BorderSide(color: ApplicationConstants.BROWN)),
-        child: textCreator('Edit', ApplicationConstants.ORANGE));
+        child: textCreator(buttonText, ApplicationConstants.ORANGE));
   }
 }

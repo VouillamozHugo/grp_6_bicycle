@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/application_constants.dart';
+import 'package:grp_6_bicycle/generic_widgets/form_button.dart';
 import 'package:grp_6_bicycle/navigation/my_app_bar.dart';
 import 'package:grp_6_bicycle/navigation/my_drawer.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
@@ -64,7 +65,10 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
 
     final updateRouteButton = setUpdateButton(routeNameTextController,
         startPointTextController, endPointTextController);
-    //   final deleteRouteButton = widget.isRouteEditable ?
+    /* final deleteRouteButton = widget.isRouteEditable
+        ? FormButton(
+            onClickFunction: deleteRoute(route.routeName), buttonText: "Delete")
+        : const Center();*/
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
