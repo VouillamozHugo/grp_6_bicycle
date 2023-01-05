@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:grp_6_bicycle/DTO/NotificationDTO.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import '../DTO/UserDTO.dart';
 
@@ -13,5 +14,10 @@ class FirebaseConst {
   static final routeRef = db.collection('Routes').withConverter(
         fromFirestore: RouteDTO.fromFirestore,
         toFirestore: (RouteDTO route, _) => route.ToFirestore(),
+      );
+
+  static final notifRef = db.collection('Notifications').withConverter(
+        fromFirestore: NotificationDTO.fromFirestore,
+        toFirestore: (NotificationDTO notif, _) => notif.ToFirestore(),
       );
 }

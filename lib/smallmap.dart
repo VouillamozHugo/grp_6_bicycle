@@ -22,6 +22,7 @@ class SmallMap extends StatefulWidget {
   final LatLng endPoint;
   final double mapHeight;
   final double mapWidth;
+  bool firstTime = true;
   SmallMap(this.startpoint, this.endPoint, this.mapHeight, this.mapWidth);
 
   @override
@@ -43,7 +44,10 @@ class _SmallMapState extends State<SmallMap> {
 
   @override
   Widget build(BuildContext context) {
-    getJsonData();
+    if (widget.firstTime) {
+      getJsonData();
+      widget.firstTime = false;
+    }
     return SizedBox(
       width: widget.mapWidth,
       height: widget.mapHeight,
@@ -78,7 +82,7 @@ class _SmallMapState extends State<SmallMap> {
   void getJsonData() async {
     // Create an instance of Class NetworkHelper which uses http package
     // for requesting data to the server and receiving response as JSON format
-
+    print("Hello you ");
     try {
       // getData() returns a json Decoded data
       // data = await network.getData();
@@ -87,42 +91,16 @@ class _SmallMapState extends State<SmallMap> {
       List<ORSCoordinate> routeCoordinates =
           await openRouteService.directionsRouteCoordsGet(
               startCoordinate: ORSCoordinate(
-                  latitude: _allPoints.elementAt(0).latitude,
-                  longitude: _allPoints.elementAt(0).longitude),
+                  latitude: widget.startpoint.latitude,
+                  longitude: widget.startpoint.longitude),
               endCoordinate: ORSCoordinate(
-                  latitude: _allPoints.elementAt(1).latitude,
-                  longitude: _allPoints.elementAt(1).longitude));
+                  latitude: widget.endPoint.latitude,
+                  longitude: widget.endPoint.longitude));
 
       for (int i = 0; i < routeCoordinates.length; i++) {
         _allRoutePoints.add(LatLng(
             routeCoordinates[i].latitude, routeCoordinates[i].longitude));
-
-        if (i % 15 == 0) {
-          var pointElevation = await openRouteService.elevationPointGet(
-              geometry: ORSCoordinate(
-                  latitude: routeCoordinates[i].latitude,
-                  longitude: routeCoordinates[i].longitude));
-          _allElevation.add(pointElevation.coordinates[0].altitude);
-        }
       }
-      startElevation = await openRouteService.elevationPointGet(
-          geometry: ORSCoordinate(
-              latitude: _allPoints.elementAt(0).latitude,
-              longitude: _allPoints.elementAt(0).longitude));
-      endElevation = await openRouteService.elevationPointGet(
-          geometry: ORSCoordinate(
-              latitude: _allPoints.elementAt(1).latitude,
-              longitude: _allPoints.elementAt(1).longitude));
-      var data = await openRouteService.directionsRouteGeoJsonGet(
-          startCoordinate: ORSCoordinate(
-              latitude: _allPoints.elementAt(0).latitude,
-              longitude: _allPoints.elementAt(0).longitude),
-          endCoordinate: ORSCoordinate(
-              latitude: _allPoints.elementAt(1).latitude,
-              longitude: _allPoints.elementAt(1).longitude));
-      duration = data.features[0].properties['segments'][0]['duration'];
-      distance = data.features[0].properties['segments'][0]['distance'];
-
       setPolyLines();
     } catch (e) {
       print(e);
@@ -156,9 +134,4 @@ class _SmallMapState extends State<SmallMap> {
 
     setState(() {});
   }
-}
-
-class LineString {
-  LineString(this.lineString);
-  List<dynamic> lineString;
 }

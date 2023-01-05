@@ -29,11 +29,12 @@ class _ReportBugState extends State<ReportBug> {
         appBar: MyAppBar(title: 'Report a problem'),
         body: Column(children: [
           BugReportMap(
+              widget.route.toString,
               LatLng(widget.route.coordinates['startLatitude']!,
                   widget.route.coordinates['startLongitude']!),
               LatLng(widget.route.coordinates['endLatitude']!,
                   widget.route.coordinates['endLongitude']!),
-              500,
+              800,
               800),
         ]));
   }

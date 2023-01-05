@@ -273,7 +273,6 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   }
 
   saveRouteInDatabase(nameOfRoute, context) async {
-    print("test");
     Map<String, double> coordinates = Map();
     coordinates['startLatitude'] = _allPoints.elementAt(0).latitude;
     coordinates['endLatitude'] = _allPoints.elementAt(1).latitude;

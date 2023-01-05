@@ -7,9 +7,12 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
+import 'package:grp_6_bicycle/DTO/NotificationDTO.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:open_route_service/open_route_service.dart';
+
+import '../DB/NotificationDB.dart';
 
 class BugReportMap extends StatefulWidget {
   final LatLng startpoint;
@@ -17,8 +20,10 @@ class BugReportMap extends StatefulWidget {
   final double mapHeight;
   final double mapWidth;
   bool firstTime = true;
+  var routeID;
 
-  BugReportMap(this.startpoint, this.endPoint, this.mapHeight, this.mapWidth);
+  BugReportMap(this.routeID, this.startpoint, this.endPoint, this.mapHeight,
+      this.mapWidth);
 
   @override
   State<BugReportMap> createState() => _BugReportMap();
@@ -40,10 +45,12 @@ class _BugReportMap extends State<BugReportMap> {
   final TextEditingController startPointText = TextEditingController();
   final TextEditingController endPointText = TextEditingController();
   final TextEditingController textProblem = TextEditingController();
+  final NotificationDB notifDB = NotificationDB();
   bool hasBug = false;
 
   @override
   Widget build(BuildContext context) {
+    var count = _allClickableMarkers.length;
     if (widget.firstTime) {
       getJsonData();
       widget.firstTime = false;
@@ -75,11 +82,11 @@ class _BugReportMap extends State<BugReportMap> {
             MarkerLayer(markers: _allClickableMarkers)
           ],
         )),
-        const Text("Start of the problem"),
+        Text("Start of the problem ( between 0 and $count )"),
         TextField(
           controller: startPointText,
         ),
-        const Text("End of the problem"),
+        Text("End of the problem ( between 0 and $count )"),
         TextField(
           controller: endPointText,
         ),
@@ -87,7 +94,8 @@ class _BugReportMap extends State<BugReportMap> {
         TextField(
           controller: textProblem,
         ),
-        FloatingActionButton(onPressed: setPolylines)
+        FloatingActionButton(onPressed: setPolylines),
+        FloatingActionButton(onPressed: saveNotificationInDB)
       ]),
     );
   }
@@ -120,7 +128,7 @@ class _BugReportMap extends State<BugReportMap> {
                   routeCoordinates[i].latitude, routeCoordinates[i].longitude),
               builder: (context) => const Icon(
                     Icons.circle,
-                    size: 25,
+                    size: 15,
                     color: Color.fromARGB(255, 51, 102, 197),
                   ));
 
@@ -143,7 +151,6 @@ class _BugReportMap extends State<BugReportMap> {
                 color: Color.fromARGB(255, 180, 14, 2),
               ));
       _allClickableMarkers.add(markerEnd);
-
       setPolylines();
     } catch (e) {
       print(e);
@@ -156,50 +163,55 @@ class _BugReportMap extends State<BugReportMap> {
     final _segment3 = <LatLng>[];
 
     if (startPointText.text.isNotEmpty && endPointText.text.isNotEmpty) {
-      var IndexfinSegment1 = int.parse(startPointText.text);
-      var IndexfinSegment2 = int.parse(endPointText.text);
+      if (int.parse(startPointText.text) > 0 &&
+          int.parse(startPointText.text) < _allClickableMarkers.length &&
+          int.parse(endPointText.text) > 0 &&
+          int.parse(endPointText.text) < _allClickableMarkers.length) {
+        var IndexfinSegment1 = int.parse(startPointText.text);
+        var IndexfinSegment2 = int.parse(endPointText.text);
 
-      LatLng finSegment1 = _allClickableMarkers[IndexfinSegment1].point;
-      LatLng finSegment2 = _allClickableMarkers[IndexfinSegment2].point;
+        LatLng finSegment1 = _allClickableMarkers[IndexfinSegment1].point;
+        LatLng finSegment2 = _allClickableMarkers[IndexfinSegment2].point;
 
-      var index1 = _allRoutePoints.indexOf(finSegment1);
+        var index1 = _allRoutePoints.indexOf(finSegment1);
 
-      for (var i = 0; i < index1; i++) {
-        _segment1.add(_allRoutePoints[i]);
+        for (var i = 0; i < index1; i++) {
+          _segment1.add(_allRoutePoints[i]);
+        }
+        var index2 = _allRoutePoints.indexOf(finSegment2);
+
+        for (var i = index1; i < index2; i++) {
+          _segment2.add(_allRoutePoints[i]);
+        }
+        for (var i = index2; i < _allRoutePoints.length; i++) {
+          _segment3.add(_allRoutePoints[i]);
+        }
+
+        Polyline polyline = Polyline(
+          //  polylineId: PolylineId("polyline"),
+          color: Colors.green,
+          strokeWidth: 10,
+          points: _segment1,
+        );
+        Polyline polyline2 = Polyline(
+          //  polylineId: PolylineId("polyline"),
+          color: Colors.orange,
+          strokeWidth: 10,
+          points: _segment2,
+        );
+        Polyline polyline3 = Polyline(
+          //  polylineId: PolylineId("polyline"),
+          color: Colors.green,
+          strokeWidth: 10,
+          points: _segment3,
+        );
+        for (var i = 0; i < _allPolylines.length; i++) {
+          _allPolylines.removeLast();
+        }
+        _allPolylines.add(polyline);
+        _allPolylines.add(polyline2);
+        _allPolylines.add(polyline3);
       }
-      var index2 = _allRoutePoints.indexOf(finSegment2);
-
-      for (var i = index1; i < index2; i++) {
-        _segment2.add(_allRoutePoints[i]);
-      }
-      for (var i = index2; i < _allRoutePoints.length; i++) {
-        _segment3.add(_allRoutePoints[i]);
-      }
-
-      Polyline polyline = Polyline(
-        //  polylineId: PolylineId("polyline"),
-        color: Colors.green,
-        strokeWidth: 10,
-        points: _segment1,
-      );
-      Polyline polyline2 = Polyline(
-        //  polylineId: PolylineId("polyline"),
-        color: Colors.orange,
-        strokeWidth: 10,
-        points: _segment2,
-      );
-      Polyline polyline3 = Polyline(
-        //  polylineId: PolylineId("polyline"),
-        color: Colors.green,
-        strokeWidth: 10,
-        points: _segment3,
-      );
-      for (var i = 0; i < _allPolylines.length; i++) {
-        _allPolylines.removeLast();
-      }
-      _allPolylines.add(polyline);
-      _allPolylines.add(polyline2);
-      _allPolylines.add(polyline3);
     } else {
       Polyline polyline = Polyline(
         color: Colors.green,
@@ -211,5 +223,31 @@ class _BugReportMap extends State<BugReportMap> {
     }
 
     setState(() {});
+  }
+
+  saveNotificationInDB() async {
+    var IndexfinSegment1 = int.parse(startPointText.text);
+    var IndexfinSegment2 = int.parse(endPointText.text);
+
+    LatLng finSegment1 = _allClickableMarkers[IndexfinSegment1].point;
+    LatLng finSegment2 = _allClickableMarkers[IndexfinSegment2].point;
+
+    Map<String, double> problemCoords = Map();
+    problemCoords['endLatCoord'] = finSegment2.latitude;
+    problemCoords['endLongCoord'] = finSegment2.longitude;
+    problemCoords['startLatCoord'] = finSegment1.latitude;
+    problemCoords['startLongCoord'] = finSegment1.longitude;
+
+    NotificationDTO notification = NotificationDTO(
+        problemDescription: textProblem.text,
+        isValidatedByAdmin: false,
+        affectedRouteId: 1,
+        problemType: "",
+        problemCoords: problemCoords);
+
+    bool success = await notifDB.addNotif(notification);
+    debugPrint("Start point " + success.toString());
+    //clear previous navigation history
+    //and load all routes page
   }
 }
