@@ -22,7 +22,7 @@ class RouteDTO {
   final double durationMinutes;
   final int heightDiffUpMeters;
   final int heightDiffDownMeters;
-  final int numberOfLikes;
+  int numberOfLikes;
 
   factory RouteDTO.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,

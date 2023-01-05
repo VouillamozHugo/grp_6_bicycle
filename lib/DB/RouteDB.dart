@@ -121,6 +121,22 @@ class RouteDB {
     }
   }
 
+  Future<void> udpateNumberOfLike(RouteDTO route, bool fav) async {
+    if (fav) {
+      route.numberOfLikes += 1;
+    } else {
+      route.numberOfLikes -= 1;
+    }
+    try {
+      final queryDocumentSnapshot =
+          await getRouteDocumentSnapshotByName(route.routeName);
+      routeRef.doc(queryDocumentSnapshot.id).set(route);
+      //throws an exception when no route is found
+    } on StateError {
+      return;
+    }
+  }
+
   /*
   Add
    */
