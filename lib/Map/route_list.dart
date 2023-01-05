@@ -79,11 +79,11 @@ class Routes extends StatefulWidget {
 }
 
 class _RoutesState extends State<Routes> {
-  late bool isFavorite;
+  late bool isFavorite =
+      widget.user.favoriteRoutes!.contains(widget.routeWithId.id);
 
   @override
   Widget build(BuildContext context) {
-    isFavorite = widget.user.favoriteRoutes!.contains(widget.routeWithId.id);
     final LatLng startPoint = LatLng(
         widget.routeWithId.route.coordinates['startLatitude']!,
         widget.routeWithId.route.coordinates['startLongitude']!);
