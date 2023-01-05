@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:grp_6_bicycle/DB/FirebaseConst.dart';
@@ -8,20 +9,41 @@ import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 class RouteDB {
   final routeRef = FirebaseConst.routeRef;
 
+  /*
+  Single member query
+  */
+
   Future<RouteDTO> getRouteById(String id) async {
     return await routeRef.doc(id).get().then((snapshot) => snapshot.data()!);
   }
 
   Future<RouteDTO?> getRouteByName(String routeName) async {
-    final querySnapshot =
-        await routeRef.where("routeName", isEqualTo: routeName).get();
     try {
-      //throws an exception if the number of records is different than 1
-      return querySnapshot.docs.single.data();
+      final queryDocumentSnapshot =
+          await getRouteDocumentSnapshotByName(routeName);
+      return queryDocumentSnapshot.data();
+      //throws an exception when no route is found
     } on StateError {
       return null;
     }
   }
+
+  // the queryDocumentSnapshot contains the document id and its data
+  Future<QueryDocumentSnapshot<RouteDTO>> getRouteDocumentSnapshotByName(
+      String routeName) async {
+    final querySnapshot =
+        await routeRef.where("routeName", isEqualTo: routeName).get();
+    //throws an exception if the number of records is different than 1
+    try {
+      return querySnapshot.docs.single;
+    } on StateError {
+      throw StateError("Document with name ${routeName}not found.");
+    }
+  }
+
+  /*
+   Multiple member query 
+   */
 
   Future<List<RouteDTO>> getRoutesByCreatorId(String creatorId) async {
     final querySnapshot =
@@ -70,6 +92,38 @@ class RouteDB {
     return routes;
   }
 
+  /*
+  Edit
+  */
+  Future<bool> udpateRoute(RouteDTO oldRoute, RouteDTO newRoute) async {
+    // do not access db if no changes have been made
+    if (oldRoute.routeName == newRoute.routeName &&
+        oldRoute.startPoint == newRoute.startPoint &&
+        oldRoute.endPoint == newRoute.endPoint) return false;
+
+    // check user rights to update this route
+    if (oldRoute.creatorId != UserDB().getConnectedFirebaseUser()!.uid) {
+      return false;
+    }
+
+    //unique name constraint
+    if (oldRoute.routeName != newRoute.routeName &&
+        await getRouteByName(newRoute.routeName) != null) return false;
+
+    try {
+      final queryDocumentSnapshot =
+          await getRouteDocumentSnapshotByName(oldRoute.routeName);
+      routeRef.doc(queryDocumentSnapshot.id).set(newRoute);
+      return true;
+      //throws an exception when no route is found
+    } on StateError {
+      return false;
+    }
+  }
+
+  /*
+  Add
+   */
   Future<bool> addRoute(RouteDTO route) async {
     //route name must be unique
     if (await getRouteByName(route.routeName) == null) {
@@ -79,15 +133,13 @@ class RouteDB {
     return false;
   }
 
+  /*
+  Delete
+  */
   Future<bool> deleteRouteByRouteName(String routeName) async {
-    final querySnapshot =
-        await routeRef.where("routeName", isEqualTo: routeName).get();
-    try {
-      //throws an exception if the number of records is different than 1
-      await routeRef.doc(querySnapshot.docs.single.id).delete();
-      return true;
-    } on StateError {
-      return false;
-    }
+    final queryDocumentSnapshot =
+        await getRouteDocumentSnapshotByName(routeName);
+    await routeRef.doc(queryDocumentSnapshot.id).delete();
+    return true;
   }
 }
