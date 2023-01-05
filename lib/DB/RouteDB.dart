@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:grp_6_bicycle/DB/FirebaseConst.dart';
 import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
@@ -40,57 +38,6 @@ class RouteDB {
     } on StateError {
       throw StateError("Document with name ${routeName}not found.");
     }
-  }
-
-  /*
-   Multiple member query 
-   */
-
-  Future<List<RouteDTO>> getRoutesByCreatorId(String creatorId) async {
-    final querySnapshot =
-        await routeRef.where("creatorId", isEqualTo: creatorId).get();
-    List<RouteDTO> routes = [];
-    for (var doc in querySnapshot.docs) {
-      routes.add(doc.data());
-    }
-    return routes;
-  }
-
-  Future<List<RouteDTO>> getFavoriteRoutesByUser(UserDTO user) async {
-    if (user.favoriteRoutes == null || user.favoriteRoutes!.isEmpty) {
-      return [];
-    }
-    final querySnapshot =
-        //__name__ property points to the document id
-        await routeRef.where('__name__', whereIn: user.favoriteRoutes).get();
-    List<RouteDTO> routes = [];
-    for (var doc in querySnapshot.docs) {
-      routes.add(doc.data());
-    }
-    return routes;
-  }
-
-  Future<List<RouteDTO>> getAllRoutes() async {
-    final querySnapshot = await routeRef.get();
-    List<RouteDTO> routes = [];
-    for (var doc in querySnapshot.docs) {
-      routes.add(doc.data());
-    }
-    return routes;
-  }
-
-  Future<List<RouteDTO>> getCreatedRoutesByUser(UserDTO user) async {
-    if (user.createdRoutes == null || user.createdRoutes!.isEmpty) {
-      return [];
-    }
-    final querySnapshot =
-        //__name__ property points to the document id
-        await routeRef.where('__name__', whereIn: user.createdRoutes).get();
-    List<RouteDTO> routes = [];
-    for (var doc in querySnapshot.docs) {
-      routes.add(doc.data());
-    }
-    return routes;
   }
 
   /*

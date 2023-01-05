@@ -57,7 +57,7 @@ class _AppDrawerState extends State<AppDrawer> {
           createdRouteAdmin ?? const Center(),
           ListTile(
             leading: const Icon(Icons.favorite),
-            title: const Text(' My routes '),
+            title: const Text(' Favorite routes '),
             onTap: () {
               Navigator.pushNamed(context, RouteNames.favoriteRoutes);
             },
