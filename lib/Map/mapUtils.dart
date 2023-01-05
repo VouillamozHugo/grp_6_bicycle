@@ -286,15 +286,9 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         coordinates: coordinates,
         distanceKm: distance,
         durationMinutes: duration,
-<<<<<<< HEAD
-        heightDiffUpMeters: startElevation,
-        heightDiffDownMeters: endElevation,
-        creatorId: UserDB().getConnectedFirebaseUser()!.uid,
-=======
         heightDiffUpMeters: 0,
         heightDiffDownMeters: 0,
-        creatorId: '',
->>>>>>> 4e35834d799355f2ffd18f1023aefce9c1dcca9b
+        creatorId: UserDB().getConnectedFirebaseUser()!.uid,
         numberOfLikes: 0);
     bool success = await routeDB.addRoute(route);
 
