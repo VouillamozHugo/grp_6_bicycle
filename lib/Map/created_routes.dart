@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:grp_6_bicycle/DB/RouteWithIdDB.dart';
+import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/route_list.dart';
 import 'package:grp_6_bicycle/login/login_manager.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
 
-import '../DB/RouteDB.dart';
 import '../DB/UserDB.dart';
-import '../DTO/RouteDTO.dart';
 import '../DTO/UserDTO.dart';
 
 class CreatedRoutes extends StatefulWidget {
@@ -17,7 +17,7 @@ class CreatedRoutes extends StatefulWidget {
 
 class _CreatedRoutesState extends State<CreatedRoutes> {
   //before the build to avoid reset at every render
-  List<RouteDTO> routes = [];
+  List<RouteWithId> routes = [];
   UserDTO? user;
 
   @override
@@ -25,7 +25,7 @@ class _CreatedRoutesState extends State<CreatedRoutes> {
     redirectNonAdminUser();
     getCreatedRoutes();
     return RoutesList(
-      routes: routes,
+      fullRoutes: routes,
       listTitle: "Created routes",
       areRoutesEditable: true,
     );
@@ -42,8 +42,9 @@ class _CreatedRoutesState extends State<CreatedRoutes> {
     if (userTemp == null) return;
 
     // access user's routes
-    RouteDB routeDB = RouteDB();
-    List<RouteDTO> routesList = await routeDB.getCreatedRoutesByUser(userTemp);
+    RouteWithIdDB routeDB = RouteWithIdDB();
+    List<RouteWithId> routesList =
+        await routeDB.getCreatedRoutesByUser(userTemp);
     setState(() {
       user = userTemp;
       routes = routesList;

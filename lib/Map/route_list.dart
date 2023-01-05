@@ -1,23 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/details_route.dart';
 
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../DB/RouteWithIdDB.dart';
 import '../DTO/UserDTO.dart';
 import '../navigation/my_app_bar.dart';
 import '../navigation/my_drawer.dart';
 
 class RoutesList extends StatefulWidget {
-  final List<RouteDTO> routes;
+  final List<RouteWithId> fullRoutes;
+  //final List<RouteDTO> routes;
   final String listTitle;
   final bool areRoutesEditable;
 
   const RoutesList({
     super.key,
-    required this.routes,
+    required this.fullRoutes,
+    //required this.routes,
     required this.listTitle,
     required this.areRoutesEditable,
   });
@@ -35,11 +40,12 @@ class _RoutesListState extends State<RoutesList> {
       drawer: const AppDrawer(),
       appBar: MyAppBar(title: widget.listTitle),
       body: ListView.separated(
-        itemCount: widget.routes.length,
+        itemCount: widget.fullRoutes.length,
         itemBuilder: (BuildContext contect, int index) {
           return Container(
             margin: const EdgeInsets.all(10.0),
-            child: Routes(widget.routes[index], widget.areRoutesEditable),
+            child: Routes(
+                widget.fullRoutes[index], widget.areRoutesEditable, user!),
           );
         },
         separatorBuilder: (context, position) {
@@ -63,33 +69,35 @@ class _RoutesListState extends State<RoutesList> {
 }
 
 class Routes extends StatefulWidget {
-  final RouteDTO route;
+  final RouteWithId routeWithId;
   final bool isRouteEditable;
-  const Routes(this.route, this.isRouteEditable, {super.key});
+  final UserDTO user;
+  const Routes(this.routeWithId, this.isRouteEditable, this.user, {super.key});
 
   @override
   State<Routes> createState() => _RoutesState();
 }
 
 class _RoutesState extends State<Routes> {
-  bool isFavorite = false;
-  Icon favorite = const Icon(
-    Icons.favorite,
-  );
+  late bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
-    final LatLng startPoint = LatLng(widget.route.coordinates['startLatitude']!,
-        widget.route.coordinates['startLongitude']!);
-    final LatLng endPoint = LatLng(widget.route.coordinates['endLatitude']!,
-        widget.route.coordinates['endLongitude']!);
+    isFavorite = widget.user.favoriteRoutes!.contains(widget.routeWithId.id);
+    final LatLng startPoint = LatLng(
+        widget.routeWithId.route.coordinates['startLatitude']!,
+        widget.routeWithId.route.coordinates['startLongitude']!);
+    final LatLng endPoint = LatLng(
+        widget.routeWithId.route.coordinates['endLatitude']!,
+        widget.routeWithId.route.coordinates['endLongitude']!);
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) {
-              return DetailsRoutes(widget.route, widget.isRouteEditable);
+              return DetailsRoutes(
+                  widget.routeWithId.route, widget.isRouteEditable);
             },
           ),
         );
@@ -103,7 +111,7 @@ class _RoutesState extends State<Routes> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.route.routeName,
+                  widget.routeWithId.route.routeName,
                   style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 80, 62, 33)),
@@ -114,7 +122,9 @@ class _RoutesState extends State<Routes> {
                 ),
                 IconButton(
                   onPressed: () {
-                    isFavorite = !isFavorite;
+                    //isFavorite = !isFavorite;
+                    UserDB u = UserDB();
+                    u.udpateFavorite(widget.user, widget.routeWithId.id);
                     setState(() {
                       getFavorite(isFavorite);
                     });
@@ -138,13 +148,17 @@ class _RoutesState extends State<Routes> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Center(child: Text("${widget.route.distanceKm}km")),
-                    Center(child: Text("${widget.route.heightDiffUpMeters}m")),
+                    Center(
+                        child:
+                            Text("${widget.routeWithId.route.distanceKm}km")),
+                    Center(
+                        child: Text(
+                            "${widget.routeWithId.route.heightDiffUpMeters}m")),
                     Text(
-                      widget.route.startPoint,
+                      widget.routeWithId.route.startPoint,
                       textAlign: TextAlign.left,
                     ),
-                    Center(child: Text(widget.route.endPoint)),
+                    Center(child: Text(widget.routeWithId.route.endPoint)),
                   ],
                 ),
                 SmallMap(startPoint, endPoint, 170, 200)

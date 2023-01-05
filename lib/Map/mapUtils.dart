@@ -9,6 +9,7 @@ import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/Map/all_routes.dart';
 import 'package:grp_6_bicycle/Map/geolocation.dart';
+import 'package:grp_6_bicycle/navigation/route_names.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 import 'networkin.dart';
@@ -285,18 +286,20 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         coordinates: coordinates,
         distanceKm: distance,
         durationMinutes: duration,
+<<<<<<< HEAD
+        heightDiffUpMeters: startElevation,
+        heightDiffDownMeters: endElevation,
+        creatorId: UserDB().getConnectedFirebaseUser()!.uid,
+=======
         heightDiffUpMeters: 0,
         heightDiffDownMeters: 0,
         creatorId: '',
+>>>>>>> 4e35834d799355f2ffd18f1023aefce9c1dcca9b
         numberOfLikes: 0);
     bool success = await routeDB.addRoute(route);
-    debugPrint("Start point " + success.toString());
-    //clear previous navigation history
-    //and load all routes page
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const AllRoutes()),
-        ModalRoute.withName("/Home"));
+
+    // navigate to all routes
+    Navigator.pushNamed(context, RouteNames.allRoutes);
   }
 
   Future _getCurrentPosition() async {
