@@ -7,6 +7,7 @@ import 'package:grp_6_bicycle/Map/details_route.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../DB/RouteDB.dart';
 import '../DTO/UserDTO.dart';
 import '../navigation/my_app_bar.dart';
 import '../navigation/my_drawer.dart';
@@ -165,17 +166,25 @@ class _RoutesState extends State<Routes> {
                   Icons.warning,
                   color: Colors.yellow,
                 ),
-                IconButton(
-                  onPressed: () {
-                    //isFavorite = !isFavorite;
-                    UserDB u = UserDB();
-                    u.udpateFavorite(widget.user, widget.routeWithId.id);
-                    setState(() {
-                      getFavorite(isFavorite);
-                    });
-                  },
-                  icon: getFavorite(isFavorite),
-                ),
+                Row(
+                  children: [
+                    Text("${widget.routeWithId.route.numberOfLikes}"),
+                    IconButton(
+                      onPressed: () {
+                        //isFavorite = !isFavorite;
+                        UserDB u = UserDB();
+                        RouteDB r = RouteDB();
+                        u.udpateFavorite(widget.user, widget.routeWithId.id);
+                        setState(() {
+                          r.udpateNumberOfLike(
+                              widget.routeWithId.route, !isFavorite);
+                          getFavorite(isFavorite);
+                        });
+                      },
+                      icon: getFavorite(isFavorite),
+                    ),
+                  ],
+                )
               ],
             ),
             Row(
@@ -198,7 +207,7 @@ class _RoutesState extends State<Routes> {
                             Text("${widget.routeWithId.route.distanceKm}km")),
                     Center(
                         child: Text(
-                            "${widget.routeWithId.route.heightDiffUpMeters}m")),
+                            "${widget.routeWithId.route.durationMinutes} min")),
                     Text(
                       widget.routeWithId.route.startPoint,
                       textAlign: TextAlign.left,
