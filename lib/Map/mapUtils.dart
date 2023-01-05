@@ -39,6 +39,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   final _labelX = <String>[];
   final geolocation _geolocation = geolocation();
 
+  LatLng centerScreen = LatLng(46.283099, 7.539069);
+
   final GeolocatorPlatform _geolocatorPlateform = GeolocatorPlatform.instance;
 
   var layer =
@@ -74,7 +76,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         child: FlutterMap(
           options: MapOptions(
             onTap: (tapPosition, point) => addMarker(point),
-            center: LatLng(46.283099, 7.539069),
+            center: centerScreen,
             zoom: 15,
           ),
           nonRotatedChildren: [
@@ -162,6 +164,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   Future<void> changeLayer() async {
     LatLng currentPositon = await _getCurrentPosition();
     addMarker(currentPositon);
+    centerScreen = currentPositon;
+    setState(() {});
     if (sateliteIsOn) {
       layer =
           'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg';
@@ -269,6 +273,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   }
 
   saveRouteInDatabase(nameOfRoute, context) async {
+    print("test");
     Map<String, double> coordinates = Map();
     coordinates['startLatitude'] = _allPoints.elementAt(0).latitude;
     coordinates['endLatitude'] = _allPoints.elementAt(1).latitude;
@@ -281,9 +286,15 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         coordinates: coordinates,
         distanceKm: distance,
         durationMinutes: duration,
+<<<<<<< HEAD
         heightDiffUpMeters: startElevation,
         heightDiffDownMeters: endElevation,
         creatorId: UserDB().getConnectedFirebaseUser()!.uid,
+=======
+        heightDiffUpMeters: 0,
+        heightDiffDownMeters: 0,
+        creatorId: '',
+>>>>>>> 4e35834d799355f2ffd18f1023aefce9c1dcca9b
         numberOfLikes: 0);
     bool success = await routeDB.addRoute(route);
 

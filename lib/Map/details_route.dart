@@ -93,7 +93,7 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {
-                  return const ReportBug();
+                  return ReportBug(route);
                 },
               ),
             );
