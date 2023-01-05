@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/RouteWithIdDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/route_list.dart';
-import 'package:grp_6_bicycle/login/login_manager.dart';
+import 'package:grp_6_bicycle/BLL/login_manager.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
 
 import '../DB/UserDB.dart';

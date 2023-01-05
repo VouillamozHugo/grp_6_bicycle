@@ -1,4 +1,4 @@
-import 'package:grp_6_bicycle/login/input_message_state.dart';
+import 'package:grp_6_bicycle/BLL/input_message_state.dart';
 
 class InputValidation {
   InputMessageState validatEmail(String email) {
