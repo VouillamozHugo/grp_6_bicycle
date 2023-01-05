@@ -153,7 +153,7 @@ class _RoutesState extends State<Routes> {
                             Text("${widget.routeWithId.route.distanceKm}km")),
                     Center(
                         child: Text(
-                            "${widget.routeWithId.route.heightDiffUpMeters}m")),
+                            "${widget.routeWithId.route.durationMinutes} min")),
                     Text(
                       widget.routeWithId.route.startPoint,
                       textAlign: TextAlign.left,
