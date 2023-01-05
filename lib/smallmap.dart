@@ -9,6 +9,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:open_route_service/open_route_service.dart';
 
 import 'Map/networkin.dart';
 
@@ -21,18 +22,24 @@ class SmallMap extends StatefulWidget {
   final LatLng endPoint;
   final double mapHeight;
   final double mapWidth;
-  const SmallMap(this.startpoint, this.endPoint, this.mapHeight, this.mapWidth);
+  SmallMap(this.startpoint, this.endPoint, this.mapHeight, this.mapWidth);
 
   @override
   State<SmallMap> createState() => _SmallMapState();
 }
 
 class _SmallMapState extends State<SmallMap> {
+  final _allPoints = <LatLng>[];
   final _allRoutePoints = <LatLng>[];
   final _allMarkers = <Marker>[];
   final _allPolylines = <Polyline>[]; //
   final RouteDB routeDB = RouteDB();
+  var _allElevation = <double?>[];
   var data;
+  var startElevation;
+  var endElevation;
+  var distance;
+  var duration;
 
   @override
   Widget build(BuildContext context) {
@@ -71,32 +78,52 @@ class _SmallMapState extends State<SmallMap> {
   void getJsonData() async {
     // Create an instance of Class NetworkHelper which uses http package
     // for requesting data to the server and receiving response as JSON format
-    NetworkHelper network = NetworkHelper(
-      startLat: widget.startpoint.latitude,
-      startLng: widget.startpoint.longitude,
-      endLat: widget.endPoint.latitude,
-      endLng: widget.endPoint.longitude,
-    );
 
     try {
       // getData() returns a json Decoded data
-      data = await network.getData();
+      // data = await network.getData();
+      OpenRouteService openRouteService = OpenRouteService(
+          apiKey: '5b3ce3597851110001cf6248f83ccaf685cb453bb7c34e18c7a9e31f');
+      List<ORSCoordinate> routeCoordinates =
+          await openRouteService.directionsRouteCoordsGet(
+              startCoordinate: ORSCoordinate(
+                  latitude: _allPoints.elementAt(0).latitude,
+                  longitude: _allPoints.elementAt(0).longitude),
+              endCoordinate: ORSCoordinate(
+                  latitude: _allPoints.elementAt(1).latitude,
+                  longitude: _allPoints.elementAt(1).longitude));
 
-      // We can reach to our desired JSON data manually as following
+      for (int i = 0; i < routeCoordinates.length; i++) {
+        _allRoutePoints.add(LatLng(
+            routeCoordinates[i].latitude, routeCoordinates[i].longitude));
 
-      if (data == null) return;
-      LineString ls =
-          LineString(data['features'][0]['geometry']['coordinates']);
-
-      //  print(distance.toString());
-
-      for (int i = 0; i < ls.lineString.length; i++) {
-        _allRoutePoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
+        if (i % 15 == 0) {
+          var pointElevation = await openRouteService.elevationPointGet(
+              geometry: ORSCoordinate(
+                  latitude: routeCoordinates[i].latitude,
+                  longitude: routeCoordinates[i].longitude));
+          _allElevation.add(pointElevation.coordinates[0].altitude);
+        }
       }
+      startElevation = await openRouteService.elevationPointGet(
+          geometry: ORSCoordinate(
+              latitude: _allPoints.elementAt(0).latitude,
+              longitude: _allPoints.elementAt(0).longitude));
+      endElevation = await openRouteService.elevationPointGet(
+          geometry: ORSCoordinate(
+              latitude: _allPoints.elementAt(1).latitude,
+              longitude: _allPoints.elementAt(1).longitude));
+      var data = await openRouteService.directionsRouteGeoJsonGet(
+          startCoordinate: ORSCoordinate(
+              latitude: _allPoints.elementAt(0).latitude,
+              longitude: _allPoints.elementAt(0).longitude),
+          endCoordinate: ORSCoordinate(
+              latitude: _allPoints.elementAt(1).latitude,
+              longitude: _allPoints.elementAt(1).longitude));
+      duration = data.features[0].properties['segments'][0]['duration'];
+      distance = data.features[0].properties['segments'][0]['distance'];
 
-      if (_allRoutePoints.length == ls.lineString.length) {
-        setPolyLines();
-      }
+      setPolyLines();
     } catch (e) {
       print(e);
     }

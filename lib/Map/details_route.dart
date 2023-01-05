@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/application_constants.dart';
+import 'package:grp_6_bicycle/generic_widgets/form_button.dart';
 import 'package:grp_6_bicycle/navigation/my_app_bar.dart';
 import 'package:grp_6_bicycle/navigation/my_drawer.dart';
+import 'package:grp_6_bicycle/navigation/route_names.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:grp_6_bicycle/report_bug.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
@@ -61,13 +63,26 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
     // as it has a different size and a different layout context
     final routeNameField = setRouteNameField(routeNameTextController);
 
-    final updateRouteButton = setUpdateButton(routeNameTextController,
-        startPointTextController, endPointTextController);
+    // conditional rendering: only admin can update and delete
+    final updateRouteButton = setUpdateButton(
+        formButtonStyle,
+        routeNameTextController,
+        startPointTextController,
+        endPointTextController);
+    final deleteRouteButton = setDeleteButton(formButtonStyle, route.routeName);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        updateRouteButton,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            updateRouteButton,
+            const SizedBox(width: 10),
+            deleteRouteButton,
+            const SizedBox(width: 20),
+          ],
+        ),
         routeNameField,
         SmallMap(startPoint, endPoint, 300, 800),
         DetailsText(route, widget.isRouteEditable, startPointTextController,
@@ -78,7 +93,7 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (BuildContext context) {
-                  return const ReportBug();
+                  return ReportBug(route);
                 },
               ),
             );
@@ -95,22 +110,35 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
     );
   }
 
+  Widget setDeleteButton(ButtonStyle buttonStyle, String routeName) {
+    return widget.isRouteEditable
+        ? OutlinedButton(
+            onPressed: () => deleteRoute(routeName),
+            style: buttonStyle,
+            child: textCreator('Delete', ApplicationConstants.ORANGE))
+        : const Center();
+  }
+
   Widget setUpdateButton(
+    ButtonStyle buttonStyle,
     TextEditingController routeNameTextController,
     TextEditingController startPointTextController,
     TextEditingController endPointTextController,
   ) {
     return widget.isRouteEditable
-        ? Align(
-            alignment: Alignment.centerRight,
-            child: OutlinedButton(
-                onPressed: () => updateRoute(routeNameTextController,
-                    startPointTextController, endPointTextController),
-                style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: ApplicationConstants.BROWN)),
-                child: textCreator('Edit', ApplicationConstants.ORANGE)),
-          )
+        ? OutlinedButton(
+            onPressed: () => updateRoute(routeNameTextController,
+                startPointTextController, endPointTextController),
+            style: buttonStyle,
+            child: textCreator('Edit', ApplicationConstants.ORANGE))
         : const Center();
+  }
+
+  void deleteRoute(String routeName) async {
+    bool success = await RouteDB().deleteRouteByRouteName(routeName);
+    if (success) {
+      Navigator.pushNamed(context, RouteNames.createdRoutes);
+    }
   }
 
   void updateRoute(

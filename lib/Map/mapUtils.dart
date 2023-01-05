@@ -9,6 +9,7 @@ import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/Map/all_routes.dart';
 import 'package:grp_6_bicycle/Map/geolocation.dart';
+import 'package:grp_6_bicycle/navigation/route_names.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 import 'networkin.dart';
@@ -37,6 +38,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   final _features = <Feature>[];
   final _labelX = <String>[];
   final geolocation _geolocation = geolocation();
+
+  LatLng centerScreen = LatLng(46.283099, 7.539069);
 
   final GeolocatorPlatform _geolocatorPlateform = GeolocatorPlatform.instance;
 
@@ -73,7 +76,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         child: FlutterMap(
           options: MapOptions(
             onTap: (tapPosition, point) => addMarker(point),
-            center: LatLng(46.283099, 7.539069),
+            center: centerScreen,
             zoom: 15,
           ),
           nonRotatedChildren: [
@@ -161,6 +164,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   Future<void> changeLayer() async {
     LatLng currentPositon = await _getCurrentPosition();
     addMarker(currentPositon);
+    centerScreen = currentPositon;
+    setState(() {});
     if (sateliteIsOn) {
       layer =
           'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg';
@@ -268,6 +273,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   }
 
   saveRouteInDatabase(nameOfRoute, context) async {
+    print("test");
     Map<String, double> coordinates = Map();
     coordinates['startLatitude'] = _allPoints.elementAt(0).latitude;
     coordinates['endLatitude'] = _allPoints.elementAt(1).latitude;
@@ -279,19 +285,15 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         endPoint: "Liddes",
         coordinates: coordinates,
         distanceKm: distance,
-        durationMinutes: duration,
-        heightDiffUpMeters: startElevation,
-        heightDiffDownMeters: endElevation,
+        durationMinutes: duration / 60 as double,
         creatorId: UserDB().getConnectedFirebaseUser()!.uid,
+        heightDiffUpMeters: 0,
+        heightDiffDownMeters: 0,
         numberOfLikes: 0);
     bool success = await routeDB.addRoute(route);
-    debugPrint("Start point " + success.toString());
-    //clear previous navigation history
-    //and load all routes page
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const AllRoutes()),
-        ModalRoute.withName("/Home"));
+
+    // navigate to all routes
+    Navigator.pushNamed(context, RouteNames.allRoutes);
   }
 
   Future _getCurrentPosition() async {

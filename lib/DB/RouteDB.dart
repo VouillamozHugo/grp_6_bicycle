@@ -8,6 +8,7 @@ import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 
 class RouteDB {
   final routeRef = FirebaseConst.routeRef;
+  final userRef = FirebaseConst.userRef;
 
   /*
   Single member query
@@ -143,7 +144,13 @@ class RouteDB {
   Future<bool> addRoute(RouteDTO route) async {
     //route name must be unique
     if (await getRouteByName(route.routeName) == null) {
-      await routeRef.add(route);
+      //add in route collection
+      DocumentReference<RouteDTO> createdRouteRef = await routeRef.add(route);
+
+      //add in user created routes
+      await userRef.doc(UserDB().getConnectedFirebaseUser()!.uid).update({
+        "createdRoutes": FieldValue.arrayUnion([createdRouteRef.id]),
+      });
       return true;
     }
     return false;
@@ -155,7 +162,34 @@ class RouteDB {
   Future<bool> deleteRouteByRouteName(String routeName) async {
     final queryDocumentSnapshot =
         await getRouteDocumentSnapshotByName(routeName);
-    await routeRef.doc(queryDocumentSnapshot.id).delete();
+    String routeId = queryDocumentSnapshot.id;
+    String creatorId = queryDocumentSnapshot.data().creatorId;
+
+    //delete from route collection
+    await routeRef.doc(routeId).delete();
+
+    //delete from users favorites
+    deleteFromUserFavorite(routeId);
+
+    //delete route reference from the admin that has created it
+    deleteFromCreator(routeId, creatorId);
+
     return true;
+  }
+
+  void deleteFromUserFavorite(String routeId) async {
+    final QuerySnapshot<UserDTO> route_fav_users =
+        await userRef.where("favoriteRoutes", arrayContains: routeId).get();
+    for (var doc in route_fav_users.docs) {
+      userRef.doc(doc.id).update({
+        "favoriteRoutes": FieldValue.arrayRemove([routeId])
+      });
+    }
+  }
+
+  void deleteFromCreator(String routeId, String creatorId) async {
+    userRef.doc(creatorId).update({
+      "createdRoutes": FieldValue.arrayRemove([routeId])
+    });
   }
 }
