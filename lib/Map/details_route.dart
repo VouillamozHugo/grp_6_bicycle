@@ -4,6 +4,7 @@ import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/application_constants.dart';
 import 'package:grp_6_bicycle/navigation/my_app_bar.dart';
 import 'package:grp_6_bicycle/navigation/my_drawer.dart';
+import 'package:grp_6_bicycle/navigation/route_names.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:grp_6_bicycle/report_bug.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
@@ -63,6 +64,7 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
 
     final updateRouteButton = setUpdateButton(routeNameTextController,
         startPointTextController, endPointTextController);
+    //   final deleteRouteButton = widget.isRouteEditable ?
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -111,6 +113,13 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
                 child: textCreator('Edit', ApplicationConstants.ORANGE)),
           )
         : const Center();
+  }
+
+  void deleteRoute(String routeName) async {
+    bool success = await RouteDB().deleteRouteByRouteName(routeName);
+    if (success) {
+      Navigator.pushNamed(context, RouteNames.createdRoutes);
+    }
   }
 
   void updateRoute(
