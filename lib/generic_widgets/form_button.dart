@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/login/register_page.dart';
 
 import '../application_constants.dart';
+import 'package:flutter/material.dart';
+
+ButtonStyle formButtonStyle = OutlinedButton.styleFrom(
+    side: const BorderSide(color: ApplicationConstants.BROWN));
 
 class FormButton extends StatelessWidget {
   final Function onClickFunction;
@@ -13,8 +17,7 @@ class FormButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
         onPressed: () => onClickFunction,
-        style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: ApplicationConstants.BROWN)),
+        style: formButtonStyle,
         child: textCreator(buttonText, ApplicationConstants.ORANGE));
   }
 }

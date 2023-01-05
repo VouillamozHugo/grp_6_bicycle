@@ -63,17 +63,19 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
     // as it has a different size and a different layout context
     final routeNameField = setRouteNameField(routeNameTextController);
 
-    final updateRouteButton = setUpdateButton(routeNameTextController,
-        startPointTextController, endPointTextController);
-    /* final deleteRouteButton = widget.isRouteEditable
-        ? FormButton(
-            onClickFunction: deleteRoute(route.routeName), buttonText: "Delete")
-        : const Center();*/
+    // conditional rendering: only admin can update and delete
+    final updateRouteButton = setUpdateButton(
+        formButtonStyle,
+        routeNameTextController,
+        startPointTextController,
+        endPointTextController);
+    final deleteRouteButton = setDeleteButton(formButtonStyle, route.routeName);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         updateRouteButton,
+        deleteRouteButton,
         routeNameField,
         SmallMap(startPoint, endPoint, 300, 800),
         DetailsText(route, widget.isRouteEditable, startPointTextController,
@@ -101,19 +103,31 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
     );
   }
 
+  Widget setDeleteButton(ButtonStyle buttonStyle, String routeName) {
+    return widget.isRouteEditable
+        ? Align(
+            alignment: Alignment.centerRight,
+            child: OutlinedButton(
+                onPressed: () => deleteRoute(routeName),
+                style: buttonStyle,
+                child: textCreator('Delete', ApplicationConstants.ORANGE)),
+          )
+        : const Center();
+  }
+
   Widget setUpdateButton(
+    ButtonStyle buttonStyle,
     TextEditingController routeNameTextController,
     TextEditingController startPointTextController,
     TextEditingController endPointTextController,
   ) {
     return widget.isRouteEditable
         ? Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.center,
             child: OutlinedButton(
                 onPressed: () => updateRoute(routeNameTextController,
                     startPointTextController, endPointTextController),
-                style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: ApplicationConstants.BROWN)),
+                style: buttonStyle,
                 child: textCreator('Edit', ApplicationConstants.ORANGE)),
           )
         : const Center();
