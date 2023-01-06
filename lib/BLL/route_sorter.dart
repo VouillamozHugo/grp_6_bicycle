@@ -10,11 +10,8 @@ class RouteSorter {
       case "duration":
         sortRouteByDuration(routeList, isSortingAsc);
         break;
-      case "Height up difference":
-        sortRouteByHeightDiffUp(routeList, isSortingAsc);
-        break;
-      case "Height down difference":
-        sortRouteByHeightDiffDown(routeList, isSortingAsc);
+      case "Height difference":
+        sortRouteByHeightDiff(routeList, isSortingAsc);
         break;
     }
   }
@@ -39,24 +36,13 @@ class RouteSorter {
     }
   }
 
-  void sortRouteByHeightDiffUp(List<RouteWithId> routeList, bool isSortingAsc) {
+  void sortRouteByHeightDiff(List<RouteWithId> routeList, bool isSortingAsc) {
     if (isSortingAsc) {
       routeList.sort((a, b) =>
-          a.route.heightDiffUpMeters.compareTo(b.route.heightDiffUpMeters));
+          a.route.heightDiffMeters.compareTo(b.route.heightDiffMeters));
     } else {
       routeList.sort((a, b) =>
-          b.route.heightDiffUpMeters.compareTo(a.route.heightDiffUpMeters));
-    }
-  }
-
-  void sortRouteByHeightDiffDown(
-      List<RouteWithId> routeList, bool isSortingAsc) {
-    if (isSortingAsc) {
-      routeList.sort((a, b) =>
-          a.route.heightDiffDownMeters.compareTo(b.route.heightDiffDownMeters));
-    } else {
-      routeList.sort((a, b) =>
-          b.route.heightDiffDownMeters.compareTo(a.route.heightDiffDownMeters));
+          b.route.heightDiffMeters.compareTo(a.route.heightDiffMeters));
     }
   }
 }
