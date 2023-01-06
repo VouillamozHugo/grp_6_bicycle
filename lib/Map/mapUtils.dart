@@ -22,7 +22,8 @@ import 'package:draw_graph/models/feature.dart';
 import 'package:geolocator/geolocator.dart';
 
 class MarkersOnMap extends StatefulWidget {
-  const MarkersOnMap({super.key});
+  final UserDTO connectedUser;
+  const MarkersOnMap({super.key, required this.connectedUser});
 
   @override
   State<MarkersOnMap> createState() => _MarkersOnMapState();

@@ -43,7 +43,9 @@ class _RoutesListState extends State<RoutesList> {
     getUser();
     return Scaffold(
       drawer: const AppDrawer(),
-      appBar: MyAppBar(title: widget.listTitle),
+      appBar: MyAppBar(
+        title: widget.listTitle,
+      ),
       body: Column(
         children: [
           Row(

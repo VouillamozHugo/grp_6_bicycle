@@ -26,7 +26,9 @@ class _ReportBugState extends State<ReportBug> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MyAppBar(title: 'Report a problem'),
+        appBar: const MyAppBar(
+          title: 'Report a problem',
+        ),
         body: Column(children: [
           BugReportMap(
               widget.route.toString,

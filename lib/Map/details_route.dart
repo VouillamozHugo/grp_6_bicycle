@@ -20,9 +20,7 @@ class DetailsRoutes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const MyAppBar(
-          title: "Route details",
-        ),
+        appBar: const MyAppBar(title: "Route details"),
         body: DetailsBuilder(route, isRouteEditable));
   }
 }

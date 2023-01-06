@@ -10,7 +10,6 @@ class RouteNames {
   static final Map<String, Widget Function(BuildContext)> routes = {
     //cycling routes
     allRoutes: (context) => const AllRoutes(),
-    drawRoutes: (context) => const AdminMap(),
     favoriteRoutes: (context) => const FavoriteRoutes(),
 
     //register / login
