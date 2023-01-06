@@ -237,8 +237,7 @@ class DetailsText extends StatelessWidget {
                     endPointTextController, const TextStyle(), TextAlign.right),
                 Text("${route.distanceKm}km"),
                 Text("${route.durationMinutes}m"),
-                Text(
-                    "${route.heightDiffUpMeters}m -${route.heightDiffDownMeters}m"),
+                Text("${route.heightDiffMeters}m -${route}m"),
               ],
             ),
           ),

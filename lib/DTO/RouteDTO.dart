@@ -9,8 +9,7 @@ class RouteDTO {
       required this.coordinates,
       required this.distanceKm,
       required this.durationMinutes,
-      required this.heightDiffUpMeters,
-      required this.heightDiffDownMeters,
+      required this.heightDiffMeters,
       required this.numberOfLikes});
 
   final String creatorId;
@@ -20,8 +19,7 @@ class RouteDTO {
   final Map<String, double> coordinates;
   final double distanceKm;
   final double durationMinutes;
-  final int heightDiffUpMeters;
-  final int heightDiffDownMeters;
+  final int heightDiffMeters;
   int numberOfLikes;
 
   factory RouteDTO.fromFirestore(
@@ -37,8 +35,7 @@ class RouteDTO {
         coordinates: Map.from(data?['coordinates']),
         distanceKm: data?['distanceKm'],
         durationMinutes: data?['durationMinutes'],
-        heightDiffUpMeters: data?['heightDiffUpMeters'],
-        heightDiffDownMeters: data?['heightDiffDownMeters'],
+        heightDiffMeters: data?['heightDiffMeters'],
         numberOfLikes: data?['numberOfLikes']);
   }
 
@@ -51,8 +48,7 @@ class RouteDTO {
       'coordinates': coordinates,
       'distanceKm': distanceKm,
       'durationMinutes': durationMinutes,
-      'heightDiffUpMeters': heightDiffUpMeters,
-      'heightDiffDownMeters': heightDiffDownMeters,
+      'heightDiffMeters': heightDiffMeters,
       'numberOfLikes': numberOfLikes,
     };
   }
@@ -66,8 +62,7 @@ class RouteDTO {
         coordinates: coordinates,
         distanceKm: distanceKm,
         durationMinutes: durationMinutes,
-        heightDiffUpMeters: heightDiffUpMeters,
-        heightDiffDownMeters: heightDiffDownMeters,
+        heightDiffMeters: heightDiffMeters,
         numberOfLikes: numberOfLikes);
   }
 }

@@ -33,8 +33,7 @@ class _RoutesListState extends State<RoutesList> {
   final sortingCriterias = [
     "distance",
     "duration",
-    "Height up difference",
-    "Height down difference"
+    "Height difference",
   ];
   String selectedCriteria = "distance";
   bool isSortingAsc = true;
