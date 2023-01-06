@@ -214,10 +214,17 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
       fontWeight: FontWeight.bold,
     );
     return isEditActivated
-        ? TextField(
-            style: routeNameTextStyle,
-            controller: routeNameTextController,
-            textAlign: TextAlign.center,
+        ? Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  style: routeNameTextStyle,
+                  controller: routeNameTextController,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const Icon(Icons.edit),
+            ],
           )
         : Text(
             route.routeName,
@@ -241,7 +248,7 @@ class DetailsText extends StatelessWidget {
       decoration: myBoxDecoration(),
       margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(8),
-      height: 100,
+      height: 120,
       child: (Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -286,11 +293,27 @@ Widget getTextFieldOrText(
     TextStyle textStyle,
     TextAlign textAlign) {
   if (isRouteEditable) {
-    return Expanded(
-      child: TextField(
-        style: textStyle,
-        controller: textEditingController,
-        textAlign: textAlign,
+    return Flexible(
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Flexible(
+              child: TextField(
+                style: textStyle,
+                controller: textEditingController,
+                textAlign: textAlign,
+              ),
+            ),
+            const Flexible(
+              child: Icon(
+                Icons.edit,
+                size: 20,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
