@@ -156,16 +156,24 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
                   setState(() {});
                 }),
           ),
+          SizedBox(
+            width: queryData.size.width * 0.1,
+            height: queryData.size.height * 0.1,
+            child: IconButton(
+              onPressed: _myPosition,
+              icon: const Icon(
+                Icons.map_outlined,
+                size: 50,
+                color: Color.fromARGB(255, 212, 134, 34),
+              ),
+            ),
+          ),
         ],
       ),
     ]);
   }
 
   Future<void> changeLayer() async {
-    LatLng currentPositon = await _getCurrentPosition();
-    addMarker(currentPositon);
-    centerScreen = currentPositon;
-    setState(() {});
     if (sateliteIsOn) {
       layer =
           'https://wmts.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg';
@@ -293,6 +301,13 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
 
     // navigate to all routes
     Navigator.pushNamed(context, RouteNames.allRoutes);
+  }
+
+  _myPosition() async {
+    LatLng currentPositon = await _getCurrentPosition();
+    addMarker(currentPositon);
+    centerScreen = currentPositon;
+    setState(() {});
   }
 
   Future _getCurrentPosition() async {
