@@ -34,7 +34,7 @@ class _ReportBugState extends State<ReportBug> {
                   widget.route.coordinates['startLongitude']!),
               LatLng(widget.route.coordinates['endLatitude']!,
                   widget.route.coordinates['endLongitude']!),
-              800,
+              600,
               800),
         ]));
   }

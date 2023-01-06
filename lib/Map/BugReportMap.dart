@@ -9,6 +9,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/NotificationDTO.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
+import 'package:grp_6_bicycle/navigation/route_names.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:open_route_service/open_route_service.dart';
 
@@ -50,6 +51,8 @@ class _BugReportMap extends State<BugReportMap> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData queryData;
+    queryData = MediaQuery.of(context);
     var count = _allClickableMarkers.length;
     if (widget.firstTime) {
       getJsonData();
@@ -94,8 +97,30 @@ class _BugReportMap extends State<BugReportMap> {
         TextField(
           controller: textProblem,
         ),
-        FloatingActionButton(onPressed: setPolylines),
-        FloatingActionButton(onPressed: saveNotificationInDB)
+        SizedBox(
+          width: queryData.size.width * 0.1,
+          height: queryData.size.height * 0.1,
+          child: IconButton(
+            onPressed: setPolylines,
+            icon: const Icon(
+              Icons.display_settings,
+              size: 50,
+              color: Color.fromARGB(255, 212, 134, 34),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: queryData.size.width * 0.1,
+          height: queryData.size.height * 0.1,
+          child: IconButton(
+            onPressed: saveNotificationInDB,
+            icon: const Icon(
+              Icons.save,
+              size: 50,
+              color: Color.fromARGB(255, 212, 134, 34),
+            ),
+          ),
+        ),
       ]),
     );
   }
@@ -246,6 +271,9 @@ class _BugReportMap extends State<BugReportMap> {
         problemCoords: problemCoords);
 
     bool success = await notifDB.addNotif(notification);
+    if (success) {
+      Navigator.pushNamed(context, RouteNames.allRoutes);
+    }
     debugPrint("Start point " + success.toString());
     //clear previous navigation history
     //and load all routes page
