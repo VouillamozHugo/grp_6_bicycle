@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grp_6_bicycle/BLL/string_formater.dart';
 import 'package:grp_6_bicycle/BLL/route_sorter.dart';
 import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
@@ -135,6 +136,7 @@ class _RoutesState extends State<Routes> {
     final LatLng endPoint = LatLng(
         widget.routeWithId.route.coordinates['endLatitude']!,
         widget.routeWithId.route.coordinates['endLongitude']!);
+    StringFormater sf = StringFormater();
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -202,11 +204,13 @@ class _RoutesState extends State<Routes> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Center(
-                        child:
-                            Text("${widget.routeWithId.route.distanceKm}km")),
+                      child: Text(sf.calculateDistance(
+                          widget.routeWithId.route.distanceKm.floor())),
+                    ),
                     Center(
-                        child: Text(
-                            "${widget.routeWithId.route.durationMinutes} min")),
+                      child: Text(sf.calculateTime(
+                          widget.routeWithId.route.durationMinutes.floor())),
+                    ),
                     Text(
                       widget.routeWithId.route.startPoint,
                       textAlign: TextAlign.left,
