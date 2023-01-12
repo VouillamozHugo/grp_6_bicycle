@@ -12,6 +12,17 @@ class RouteDB {
   Single member query
   */
 
+  Future<String> getRouteIdByName(String routeName) async {
+    try {
+      final queryDocumentSnapshot =
+          await getRouteDocumentSnapshotByName(routeName);
+      return queryDocumentSnapshot.id;
+      //throws an exception when no route is found
+    } on StateError {
+      throw Exception("Route not found.");
+    }
+  }
+
   Future<RouteDTO> getRouteById(String id) async {
     return await routeRef.doc(id).get().then((snapshot) => snapshot.data()!);
   }

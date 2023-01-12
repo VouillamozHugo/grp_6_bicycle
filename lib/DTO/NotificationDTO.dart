@@ -5,14 +5,12 @@ class NotificationDTO {
     required this.problemDescription,
     required this.isValidatedByAdmin,
     required this.affectedRouteId,
-    required this.problemType,
     required this.problemCoords,
   });
 
   final String problemDescription;
   final bool isValidatedByAdmin;
-  final int affectedRouteId;
-  final String problemType;
+  final String affectedRouteId;
   final Map<String, double> problemCoords;
 
   factory NotificationDTO.fromFirestore(
@@ -24,7 +22,6 @@ class NotificationDTO {
         problemDescription: data?['problemDescription'],
         isValidatedByAdmin: data?['isValidatedByAdmin'],
         affectedRouteId: data?['affectedRouteId'],
-        problemType: data?['problemType'],
         problemCoords: data?['problemCoords']);
   }
 
@@ -33,7 +30,6 @@ class NotificationDTO {
       'problemDescription': problemDescription,
       'isValidatedByAdmin': isValidatedByAdmin,
       'affectedRouteId': affectedRouteId,
-      'problemType': problemType,
       'problemCoords': problemCoords,
     };
   }

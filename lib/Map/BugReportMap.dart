@@ -265,9 +265,8 @@ class _BugReportMap extends State<BugReportMap> {
 
     NotificationDTO notification = NotificationDTO(
         problemDescription: textProblem.text,
-        isValidatedByAdmin: false,
-        affectedRouteId: 1,
-        problemType: "",
+        isValidatedByAdmin: true,
+        affectedRouteId: widget.routeID,
         problemCoords: problemCoords);
 
     bool success = await notifDB.addNotif(notification);
