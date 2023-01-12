@@ -11,11 +11,11 @@ import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:open_route_service/open_route_service.dart';
 
-import 'Map/networkin.dart';
+import 'networkin.dart';
 
-import 'DB/UserDB.dart';
-import 'DTO/UserDTO.dart';
-import 'firebase_options.dart';
+import '../DB/UserDB.dart';
+import '../DTO/UserDTO.dart';
+import '../firebase_options.dart';
 
 class SmallMap extends StatefulWidget {
   final LatLng startpoint;

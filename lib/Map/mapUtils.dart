@@ -10,7 +10,7 @@ import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/Map/all_routes.dart';
 import 'package:grp_6_bicycle/Map/geolocation.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
-import 'package:grp_6_bicycle/smallmap.dart';
+import 'package:grp_6_bicycle/Map/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 import 'networkin.dart';
 import '../DB/UserDB.dart';

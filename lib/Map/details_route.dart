@@ -7,8 +7,8 @@ import 'package:grp_6_bicycle/navigation/my_app_bar.dart';
 import 'package:grp_6_bicycle/navigation/my_drawer.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:grp_6_bicycle/report_bug.dart';
-import 'package:grp_6_bicycle/smallmap.dart';
+import 'package:grp_6_bicycle/Map/report_bug.dart';
+import 'package:grp_6_bicycle/Map/smallmap.dart';
 
 import '../BLL/string_formater.dart';
 import '../login/register_page.dart';
