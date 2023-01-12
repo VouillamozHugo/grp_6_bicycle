@@ -5,7 +5,7 @@ import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/details_route.dart';
 
-import 'package:grp_6_bicycle/smallmap.dart';
+import 'package:grp_6_bicycle/Map/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../DB/RouteDB.dart';

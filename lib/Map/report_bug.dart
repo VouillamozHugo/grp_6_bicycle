@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:grp_6_bicycle/DB/RouteDB.dart';
 import 'package:grp_6_bicycle/Map/BugReportMap.dart';
-import 'package:grp_6_bicycle/smallmap.dart';
+import 'package:grp_6_bicycle/Map/smallmap.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:grp_6_bicycle/navigation/my_app_bar.dart';
 
-import 'DTO/RouteDTO.dart';
+import '../DTO/RouteDTO.dart';
 
 class ReportBug extends StatefulWidget {
   final RouteDTO route;
