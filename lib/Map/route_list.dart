@@ -166,10 +166,6 @@ class _RoutesState extends State<Routes> {
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 80, 62, 33)),
                 ),
-                const Icon(
-                  Icons.warning,
-                  color: Colors.yellow,
-                ),
                 Row(
                   children: [
                     Text("${widget.routeWithId.route.numberOfLikes}"),
