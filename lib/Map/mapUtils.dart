@@ -65,6 +65,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         ),
 */
   final inputTextController = TextEditingController();
+  final fromTextController = TextEditingController();
+  final toTextController = TextEditingController();
   final brown = const Color.fromARGB(255, 80, 62, 33);
   final orange = const Color.fromARGB(255, 212, 134, 34);
   @override
@@ -73,7 +75,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     queryData = MediaQuery.of(context);
     return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       SizedBox(
-        height: queryData.size.height * 0.7,
+        height: queryData.size.height * 0.5,
         child: FlutterMap(
           options: MapOptions(
             onTap: (tapPosition, point) => addMarker(point),
@@ -118,6 +120,54 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
               labelStyle: TextStyle(color: brown, fontWeight: FontWeight.w500)),
         ),
       ),
+      FractionallySizedBox(
+        widthFactor: 0.5,
+        child: TextField(
+          controller: fromTextController,
+          obscureText: false,
+          style: TextStyle(
+            color: brown,
+          ),
+          cursorColor: orange,
+          decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: orange,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: brown,
+                ),
+              ),
+              labelText: 'From',
+              labelStyle: TextStyle(color: brown, fontWeight: FontWeight.w500)),
+        ),
+      ),
+      FractionallySizedBox(
+        widthFactor: 0.5,
+        child: TextField(
+          controller: toTextController,
+          obscureText: false,
+          style: TextStyle(
+            color: brown,
+          ),
+          cursorColor: orange,
+          decoration: InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: orange,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: brown,
+                ),
+              ),
+              labelText: 'To',
+              labelStyle: TextStyle(color: brown, fontWeight: FontWeight.w500)),
+        ),
+      ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -146,7 +196,11 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
                 onPressed: () {
                   if (_allPoints.length == 2) {
                     if (inputTextController.text.isNotEmpty) {
-                      saveRouteInDatabase(inputTextController.text, context);
+                      saveRouteInDatabase(
+                          inputTextController.text,
+                          fromTextController.text,
+                          toTextController.text,
+                          context);
                     }
                   }
                   _allMarkers.clear();
@@ -281,7 +335,7 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     setState(() {});
   }
 
-  saveRouteInDatabase(nameOfRoute, context) async {
+  saveRouteInDatabase(nameOfRoute, from, to, context) async {
     Map<String, double> coordinates = Map();
     coordinates['startLatitude'] = _allPoints.elementAt(0).latitude;
     coordinates['endLatitude'] = _allPoints.elementAt(1).latitude;
@@ -289,8 +343,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
     coordinates['endLongitude'] = _allPoints.elementAt(1).longitude;
     RouteDTO route = RouteDTO(
         routeName: nameOfRoute,
-        startPoint: "Bramois",
-        endPoint: "Liddes",
+        startPoint: from,
+        endPoint: to,
         coordinates: coordinates,
         distanceKm: distance as double,
         durationMinutes: duration / 3.2 as double,

@@ -96,7 +96,7 @@ class _SmallMapState extends State<SmallMap> {
               endCoordinate: ORSCoordinate(
                   latitude: widget.endPoint.latitude,
                   longitude: widget.endPoint.longitude));
-
+      _allRoutePoints.clear();
       for (int i = 0; i < routeCoordinates.length; i++) {
         _allRoutePoints.add(LatLng(
             routeCoordinates[i].latitude, routeCoordinates[i].longitude));
@@ -109,11 +109,11 @@ class _SmallMapState extends State<SmallMap> {
 
   setPolyLines() {
     Polyline polyline = Polyline(
-      //  polylineId: PolylineId("polyline"),
       color: Colors.red,
       strokeWidth: 10,
       points: _allRoutePoints,
     );
+    //_allPolylines.removeLast();
     _allPolylines.add(polyline);
     var markerStart = Marker(
         point: widget.startpoint,
