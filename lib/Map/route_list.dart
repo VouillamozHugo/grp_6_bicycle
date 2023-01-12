@@ -132,6 +132,7 @@ class _RoutesState extends State<Routes> {
   @override
   Widget build(BuildContext context) {
     isFavorite = widget.user.favoriteRoutes!.contains(widget.routeWithId.id);
+    MediaQueryData queryData = MediaQuery.of(context);
     final LatLng startPoint = LatLng(
         widget.routeWithId.route.coordinates['startLatitude']!,
         widget.routeWithId.route.coordinates['startLongitude']!);
@@ -220,7 +221,7 @@ class _RoutesState extends State<Routes> {
                     Center(child: Text(widget.routeWithId.route.endPoint)),
                   ],
                 ),
-                SmallMap(startPoint, endPoint, 170, 200)
+                SmallMap(startPoint, endPoint, 170, queryData.size.width * 0.4)
               ],
             ),
           ],
