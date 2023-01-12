@@ -51,8 +51,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
   var data;
   var distance;
   var duration;
-  var startElevation;
-  var endElevation;
+  late ElevationData startElevation;
+  late ElevationData endElevation;
 
 /*
      LineGraph(
@@ -293,9 +293,10 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         endPoint: "Liddes",
         coordinates: coordinates,
         distanceKm: distance as double,
-        durationMinutes: duration / 60 as double,
+        durationMinutes: duration / 3.2 as double,
         creatorId: UserDB().getConnectedFirebaseUser()!.uid,
-        heightDiffMeters: 0,
+        heightDiffMeters: (endElevation.coordinates[0].altitude! -
+            startElevation.coordinates[0].altitude!) as int,
         numberOfLikes: 0);
     bool success = await routeDB.addRoute(route);
 

@@ -10,6 +10,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:grp_6_bicycle/report_bug.dart';
 import 'package:grp_6_bicycle/smallmap.dart';
 
+import '../BLL/string_formater.dart';
 import '../login/register_page.dart';
 
 class DetailsRoutes extends StatelessWidget {
@@ -211,6 +212,7 @@ class _DetailsBuilderState extends State<DetailsBuilder> {
       fontSize: 30,
       fontWeight: FontWeight.bold,
     );
+
     return isEditActivated
         ? Row(
             children: [
@@ -242,6 +244,7 @@ class DetailsText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    StringFormater sf = StringFormater();
     return Container(
       decoration: myBoxDecoration(),
       margin: const EdgeInsets.all(20),
@@ -272,9 +275,9 @@ class DetailsText extends StatelessWidget {
                     TextAlign.right),
                 getTextFieldOrText(isRouteEditable, route.endPoint,
                     endPointTextController, const TextStyle(), TextAlign.right),
-                Text("${route.distanceKm}km"),
-                Text("${route.durationMinutes}m"),
-                Text("${route.heightDiffMeters}m -${route}m"),
+                Text(sf.calculateDistance(route.distanceKm.floor())),
+                Text(sf.calculateTime(route.durationMinutes.floor())),
+                Text(sf.calculateDistance(route.heightDiffMeters)),
               ],
             ),
           ),
