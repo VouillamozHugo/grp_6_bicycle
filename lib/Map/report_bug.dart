@@ -24,17 +24,15 @@ class _ReportBugState extends State<ReportBug> {
   final TextEditingController startPointText = TextEditingController();
   final TextEditingController endPointText = TextEditingController();
   bool hasbug = false;
-  String? selectedRouteId;
   @override
   Widget build(BuildContext context) {
-    getRoute();
     return Scaffold(
         appBar: const MyAppBar(
           title: 'Report a problem',
         ),
         body: Column(children: [
           BugReportMap(
-              selectedRouteId,
+              widget.route,
               LatLng(widget.route.coordinates['startLatitude']!,
                   widget.route.coordinates['startLongitude']!),
               LatLng(widget.route.coordinates['endLatitude']!,
@@ -42,14 +40,5 @@ class _ReportBugState extends State<ReportBug> {
               600,
               800),
         ]));
-  }
-
-  getRoute() async {
-    if (selectedRouteId != null) return;
-    String routeIdTemp =
-        await RouteDB().getRouteIdByName(widget.route.routeName);
-    setState(() {
-      selectedRouteId = routeIdTemp;
-    });
   }
 }

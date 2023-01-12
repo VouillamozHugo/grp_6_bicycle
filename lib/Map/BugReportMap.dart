@@ -21,9 +21,9 @@ class BugReportMap extends StatefulWidget {
   final double mapHeight;
   final double mapWidth;
   bool firstTime = true;
-  var routeID;
+  var route;
 
-  BugReportMap(this.routeID, this.startpoint, this.endPoint, this.mapHeight,
+  BugReportMap(this.route, this.startpoint, this.endPoint, this.mapHeight,
       this.mapWidth);
 
   @override
@@ -48,9 +48,11 @@ class _BugReportMap extends State<BugReportMap> {
   final TextEditingController textProblem = TextEditingController();
   final NotificationDB notifDB = NotificationDB();
   bool hasBug = false;
+  String? selectedRouteId;
 
   @override
   Widget build(BuildContext context) {
+    getRoute();
     MediaQueryData queryData;
     queryData = MediaQuery.of(context);
     var count = _allClickableMarkers.length;
@@ -123,6 +125,15 @@ class _BugReportMap extends State<BugReportMap> {
         ),
       ]),
     );
+  }
+
+  getRoute() async {
+    if (selectedRouteId != null) return;
+    String routeIdTemp =
+        await RouteDB().getRouteIdByName(widget.route.routeName);
+    setState(() {
+      selectedRouteId = routeIdTemp;
+    });
   }
 
   void getJsonData() async {
@@ -265,16 +276,13 @@ class _BugReportMap extends State<BugReportMap> {
 
     NotificationDTO notification = NotificationDTO(
         problemDescription: textProblem.text,
-        isValidatedByAdmin: true,
-        affectedRouteId: widget.routeID,
+        isValidatedByAdmin: false,
+        affectedRouteId: selectedRouteId!,
         problemCoords: problemCoords);
 
     bool success = await notifDB.addNotif(notification);
     if (success) {
       Navigator.pushNamed(context, RouteNames.allRoutes);
     }
-    debugPrint("Start point " + success.toString());
-    //clear previous navigation history
-    //and load all routes page
   }
 }
