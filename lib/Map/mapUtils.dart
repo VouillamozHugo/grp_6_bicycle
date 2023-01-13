@@ -350,7 +350,8 @@ class _MarkersOnMapState extends State<MarkersOnMap> {
         durationMinutes: duration / 3.2 as double,
         creatorId: UserDB().getConnectedFirebaseUser()!.uid,
         heightDiffMeters: (endElevation.coordinates[0].altitude! -
-            startElevation.coordinates[0].altitude!) as int,
+                startElevation.coordinates[0].altitude!)
+            .toInt(),
         numberOfLikes: 0);
     bool success = await routeDB.addRoute(route);
 
