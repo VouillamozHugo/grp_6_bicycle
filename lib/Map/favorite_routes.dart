@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/route_list.dart';
 
-import '../DB/RouteWithIdDB.dart';
-import '../DB/UserDB.dart';
+import '../DAL/RouteWithIdDB.dart';
+import '../DAL/UserDB.dart';
 import '../DTO/UserDTO.dart';
 
 class FavoriteRoutes extends StatefulWidget {

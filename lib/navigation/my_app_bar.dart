@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:grp_6_bicycle/DB/UserDB.dart';
+import 'package:grp_6_bicycle/DAL/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 
 import '../Map/adminAddRoute.dart';

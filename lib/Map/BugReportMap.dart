@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:grp_6_bicycle/DB/RouteDB.dart';
+import 'package:grp_6_bicycle/DAL/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/NotificationDTO.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:open_route_service/open_route_service.dart';
 
-import '../DB/NotificationDB.dart';
+import '../DAL/NotificationDB.dart';
 
 class BugReportMap extends StatefulWidget {
   final LatLng startpoint;

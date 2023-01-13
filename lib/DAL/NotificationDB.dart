@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:grp_6_bicycle/DB/FirebaseConst.dart';
-import 'package:grp_6_bicycle/DB/UserDB.dart';
+import 'package:grp_6_bicycle/DAL/FirebaseConst.dart';
+import 'package:grp_6_bicycle/DAL/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/NotificationDTO.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/DTO/UserDTO.dart';

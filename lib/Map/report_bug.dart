@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:grp_6_bicycle/DB/RouteDB.dart';
+import 'package:grp_6_bicycle/DAL/RouteDB.dart';
 import 'package:grp_6_bicycle/Map/BugReportMap.dart';
 import 'package:grp_6_bicycle/Map/smallmap.dart';
 import 'package:latlong2/latlong.dart';

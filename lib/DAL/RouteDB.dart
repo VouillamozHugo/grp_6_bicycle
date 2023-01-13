@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:grp_6_bicycle/DB/FirebaseConst.dart';
-import 'package:grp_6_bicycle/DB/UserDB.dart';
+import 'package:grp_6_bicycle/DAL/FirebaseConst.dart';
+import 'package:grp_6_bicycle/DAL/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/DTO/UserDTO.dart';
 

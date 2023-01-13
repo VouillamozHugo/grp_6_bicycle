@@ -7,7 +7,7 @@ import 'package:grp_6_bicycle/login/login_page.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
 
 import '../display_logic/register_input_validation.dart';
-import '../DB/UserDB.dart';
+import '../DAL/UserDB.dart';
 import '../DTO/UserDTO.dart';
 
 class RegisterPage extends StatefulWidget {

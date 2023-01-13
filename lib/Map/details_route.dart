@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:grp_6_bicycle/DB/RouteDB.dart';
+import 'package:grp_6_bicycle/DAL/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/application_constants.dart';
 import 'package:grp_6_bicycle/generic_widgets/form_button.dart';

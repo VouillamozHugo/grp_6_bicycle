@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grp_6_bicycle/DB/RouteDB.dart';
-import 'package:grp_6_bicycle/DB/RouteWithIdDB.dart';
+import 'package:grp_6_bicycle/DAL/RouteDB.dart';
+import 'package:grp_6_bicycle/DAL/RouteWithIdDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/route_list.dart';

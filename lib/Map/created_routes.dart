@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:grp_6_bicycle/DB/RouteWithIdDB.dart';
+import 'package:grp_6_bicycle/DAL/RouteWithIdDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/route_list.dart';
 import 'package:grp_6_bicycle/display_logic/login_manager.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
 
-import '../DB/UserDB.dart';
+import '../DAL/UserDB.dart';
 import '../DTO/UserDTO.dart';
 
 class CreatedRoutes extends StatefulWidget {
