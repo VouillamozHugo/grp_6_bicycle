@@ -8,7 +8,9 @@ class NetworkHelper {
       required this.endLng,
       required this.endLat});
 
-  final String url = 'https://api.openrouteservice.org/v2/directions/';
+  final String url =
+      'https://api.openrouteservice.org/v2/directions/cycling-mountain';
+
   final String apiKey =
       '5b3ce3597851110001cf6248f83ccaf685cb453bb7c34e18c7a9e31f';
   final String journeyMode =
@@ -20,7 +22,8 @@ class NetworkHelper {
 
   Future getData() async {
     http.Response response = await http.get(Uri.parse(
-        '$url$journeyMode?api_key=$apiKey&start=$startLng,$startLat&end=$endLng,$endLat'));
+      '$url?api_key=$apiKey&start=$startLng,$startLat&end=$endLng,$endLat&elevation=True&extra_info=steepness',
+    ));
 
     if (response.statusCode == 200) {
       String data = response.body;

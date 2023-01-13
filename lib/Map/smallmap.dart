@@ -6,37 +6,48 @@ import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:grp_6_bicycle/DB/RouteDB.dart';
+import 'package:grp_6_bicycle/DAL/RouteDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteDTO.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:open_route_service/open_route_service.dart';
 
 import 'networkin.dart';
 
-import 'DB/UserDB.dart';
-import 'DTO/UserDTO.dart';
-import 'firebase_options.dart';
+import '../DAL/UserDB.dart';
+import '../DTO/UserDTO.dart';
+import '../firebase_options.dart';
 
 class SmallMap extends StatefulWidget {
   final LatLng startpoint;
   final LatLng endPoint;
   final double mapHeight;
   final double mapWidth;
-  const SmallMap(this.startpoint, this.endPoint, this.mapHeight, this.mapWidth);
+  bool firstTime = true;
+  SmallMap(this.startpoint, this.endPoint, this.mapHeight, this.mapWidth);
 
   @override
   State<SmallMap> createState() => _SmallMapState();
 }
 
 class _SmallMapState extends State<SmallMap> {
+  final _allPoints = <LatLng>[];
   final _allRoutePoints = <LatLng>[];
   final _allMarkers = <Marker>[];
   final _allPolylines = <Polyline>[]; //
   final RouteDB routeDB = RouteDB();
+  var _allElevation = <double?>[];
   var data;
+  var startElevation;
+  var endElevation;
+  var distance;
+  var duration;
 
   @override
   Widget build(BuildContext context) {
-    getJsonData();
+    if (widget.firstTime) {
+      getJsonData();
+      widget.firstTime = false;
+    }
     return SizedBox(
       width: widget.mapWidth,
       height: widget.mapHeight,
@@ -71,32 +82,26 @@ class _SmallMapState extends State<SmallMap> {
   void getJsonData() async {
     // Create an instance of Class NetworkHelper which uses http package
     // for requesting data to the server and receiving response as JSON format
-    NetworkHelper network = NetworkHelper(
-      startLat: widget.startpoint.latitude,
-      startLng: widget.startpoint.longitude,
-      endLat: widget.endPoint.latitude,
-      endLng: widget.endPoint.longitude,
-    );
-
+    print("Hello you ");
     try {
       // getData() returns a json Decoded data
-      data = await network.getData();
-
-      // We can reach to our desired JSON data manually as following
-
-      if (data == null) return;
-      LineString ls =
-          LineString(data['features'][0]['geometry']['coordinates']);
-
-      //  print(distance.toString());
-
-      for (int i = 0; i < ls.lineString.length; i++) {
-        _allRoutePoints.add(LatLng(ls.lineString[i][1], ls.lineString[i][0]));
+      // data = await network.getData();
+      OpenRouteService openRouteService = OpenRouteService(
+          apiKey: '5b3ce3597851110001cf6248f83ccaf685cb453bb7c34e18c7a9e31f');
+      List<ORSCoordinate> routeCoordinates =
+          await openRouteService.directionsRouteCoordsGet(
+              startCoordinate: ORSCoordinate(
+                  latitude: widget.startpoint.latitude,
+                  longitude: widget.startpoint.longitude),
+              endCoordinate: ORSCoordinate(
+                  latitude: widget.endPoint.latitude,
+                  longitude: widget.endPoint.longitude));
+      _allRoutePoints.clear();
+      for (int i = 0; i < routeCoordinates.length; i++) {
+        _allRoutePoints.add(LatLng(
+            routeCoordinates[i].latitude, routeCoordinates[i].longitude));
       }
-
-      if (_allRoutePoints.length == ls.lineString.length) {
-        setPolyLines();
-      }
+      setPolyLines();
     } catch (e) {
       print(e);
     }
@@ -104,11 +109,11 @@ class _SmallMapState extends State<SmallMap> {
 
   setPolyLines() {
     Polyline polyline = Polyline(
-      //  polylineId: PolylineId("polyline"),
       color: Colors.red,
       strokeWidth: 10,
       points: _allRoutePoints,
     );
+    //_allPolylines.removeLast();
     _allPolylines.add(polyline);
     var markerStart = Marker(
         point: widget.startpoint,
@@ -129,9 +134,4 @@ class _SmallMapState extends State<SmallMap> {
 
     setState(() {});
   }
-}
-
-class LineString {
-  LineString(this.lineString);
-  List<dynamic> lineString;
 }
