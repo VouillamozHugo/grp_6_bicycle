@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:grp_6_bicycle/BLL/string_formater.dart';
-import 'package:grp_6_bicycle/BLL/route_sorter.dart';
+import 'package:grp_6_bicycle/display_logic/string_formater.dart';
+import 'package:grp_6_bicycle/display_logic/route_sorter.dart';
 import 'package:grp_6_bicycle/DB/UserDB.dart';
 import 'package:grp_6_bicycle/DTO/RouteWithId.dart';
 import 'package:grp_6_bicycle/Map/details_route.dart';

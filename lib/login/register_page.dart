@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:grp_6_bicycle/Map/all_routes.dart';
 import 'package:grp_6_bicycle/generic_widgets/FormInput.dart';
-import 'package:grp_6_bicycle/BLL/input_message_state.dart';
+import 'package:grp_6_bicycle/display_logic/input_message_state.dart';
 import 'package:grp_6_bicycle/login/login_page.dart';
 import 'package:grp_6_bicycle/navigation/route_names.dart';
 
-import '../BLL/register_input_validation.dart';
+import '../display_logic/register_input_validation.dart';
 import '../DB/UserDB.dart';
 import '../DTO/UserDTO.dart';
 

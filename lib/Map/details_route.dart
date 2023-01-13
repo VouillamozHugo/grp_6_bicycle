@@ -10,7 +10,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:grp_6_bicycle/Map/report_bug.dart';
 import 'package:grp_6_bicycle/Map/smallmap.dart';
 
-import '../BLL/string_formater.dart';
+import '../display_logic/string_formater.dart';
 import '../login/register_page.dart';
 
 class DetailsRoutes extends StatelessWidget {
